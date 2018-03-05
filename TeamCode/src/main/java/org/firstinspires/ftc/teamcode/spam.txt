@@ -1,0 +1,108 @@
+            /*
+
+            while(current < target - 5 * delta) {
+                telemetry.update();
+                //prints all the variables
+                telemetry.addLine("IM IN THE WHILE");
+                telemetry.addLine("current: " + Double.toString(current));
+
+                turn(.3*power);
+
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = convertGyroReadings(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+                telemetry.update();
+            }
+
+            while((current) < (target-delta)) {
+                telemetry.update();
+                //prints all the variables
+                telemetry.addLine("I'M IN THE WHILE");
+                telemetry.addLine("current: " + Double.toString(current));
+
+                turn(.2*power);
+
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = convertGyroReadings(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+                telemetry.update();
+            }
+
+            while(current > target + delta){
+
+
+                telemetry.update();
+                //prints all the variables
+                telemetry.addLine("I'M IN THE WHILE");
+                telemetry.addLine("current: " + Double.toString(current));
+
+                turn(-.25*power);
+
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = convertGyroReadings(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+                telemetry.update();*/
+            }
+        }
+
+
+
+
+//    //this loop runs until the robot has turned the correct amount
+//        while (((current) < (target-5*delta)) || (current > (target+5*delta) )){
+//            telemetry.update();
+//            //prints all the variables
+//            telemetry.addLine("IM IN THE WHILE");
+//            telemetry.addLine("current: " + Double.toString(current));
+//
+//            if(direction == "left") {
+//                turn(power);
+//            }
+//            else if(direction == "right"){
+//                target = 360-target;
+//                turn(-power);
+//            }
+//            agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//            current = convertGyroReadings(Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle)));
+//            telemetry.update();
+//        }
+//
+//        telemetry.addLine("Out of 5 delta");
+//        telemetry.update();
+//
+//        while(((current) < (target-2*delta)) || (current > (target+2*delta) )) {
+//            telemetry.update();
+//            //prints all the variables
+//            telemetry.addLine("IM IN THE WHILE");
+//            telemetry.addLine("current: " + Double.toString(current));
+//
+//            if (direction == "left") {
+//                turn(.75 * power);
+//            }
+//            else if (direction == "right") {
+//                target = 360-target;
+//                turn(-.75 * power);
+//            }
+//
+//            agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//            current = convertGyroReadings(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+//            telemetry.update();
+//        }
+//        telemetry.addLine("Out of 2 delta");
+//        telemetry.update();
+//
+//        while(((current) < (target-delta)) || (current > (target+delta) )) {
+//            telemetry.update();
+//            //prints all the variables
+//            telemetry.addLine("I'M IN THE WHILE");
+//            telemetry.addLine("current: " + Double.toString(current));
+//
+//            if (direction == "left") {
+//                turn(.5 * power);
+//            }
+//            else if (direction == "right") {
+//                target = 360-target;
+//                turn(-.5 * power);
+//            }
+//
+//            agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//            current = convertGyroReadings(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+//            telemetry.update();
+//        }

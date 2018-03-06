@@ -70,15 +70,15 @@ public class ManualUpdate extends LinearOpMode {
         relicMotor = hardwareMap.dcMotor.get("RELICMOTOR");
 
 
-        knckSer.setPosition(.5);
-        colSer.setPosition(.2);
+        // knckSer.setPosition(.5);
+        // colSer.setPosition(.2);
 
         waitForStart();
 
 
         while (opModeIsActive()) {
 
-            colSer.setPosition(.2);
+            //   colSer.setPosition(.2);
             // knckSer.setPosition(.5);
             //game pad one cotrls
 
@@ -100,10 +100,10 @@ public class ManualUpdate extends LinearOpMode {
             }
             bButton();
             xButton();
-            if(gamepad1.right_bumper){lDum.setPosition(0.85); rDum.setPosition(.21); sleep(500); cDum.setPosition(0.7); lBelt.setPower(1); rBelt.setPower(-1);}
-            if(gamepad1.y){lDum.setPosition(0.79); rDum.setPosition(0.27); sleep(500); cDum.setPosition(0.7);}
-            if(gamepad1.left_bumper){cDum.setPosition(0.25); lDum.setPosition(0.3); rDum.setPosition(0.77);}
-            if(gamepad1.a){lDum.setPosition(0.65); rDum.setPosition(0.4); cDum.setPosition(0.7); lBelt.setPower(0); rBelt.setPower(0);}
+            if(gamepad1.right_bumper){lDum.setPosition(0.73); rDum.setPosition(.21); sleep(500); cDum.setPosition(0.25); lBelt.setPower(1); rBelt.setPower(-1);}
+            if(gamepad1.y){lDum.setPosition(0.61); rDum.setPosition(0.27); sleep(500); cDum.setPosition(0.25);}
+            if(gamepad1.left_bumper){cDum.setPosition(0.74); lDum.setPosition(0.15); rDum.setPosition(0.77);}
+            if(gamepad1.a){lDum.setPosition(0.45); rDum.setPosition(0.4); cDum.setPosition(0.25); lBelt.setPower(0); rBelt.setPower(0);}
 ////            TARGET DOESNT WORK IF MOTOR IS STUCK AND PRESSED IN WRONG DIRECTION FIX IT
 ////            if (gamepad1.x){
 ////                motorWithEncoder(liftMotor,.5,8);

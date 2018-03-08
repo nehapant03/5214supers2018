@@ -796,6 +796,18 @@ public class SAFE_Red_Relic extends LinearOpMode{
         //setting the color servo to an input value
         colorServo.setPosition(position);
     }
+    private void rampDown(){
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
+
+        leftDump.setPosition(.8);
+        rightDump.setPosition(.4);
+
+        sleep(3000);
+
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
+    }
     private void sleep(int i) {
         //initial time takes the current hardware time in milliseconds
         long initial_time = System.currentTimeMillis();

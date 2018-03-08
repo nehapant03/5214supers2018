@@ -805,6 +805,18 @@ public class SAFE_Blue_Relic extends LinearOpMode{
         flickServo.setPosition(0.5);
 
     }
+    private void rampDown(){
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
+
+        leftDump.setPosition(.8);
+        rightDump.setPosition(.4);
+
+        sleep(3000);
+
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
+    }
     private void arm(double position) {
         //setting the color servo to an input value
         colorServo.setPosition(position);

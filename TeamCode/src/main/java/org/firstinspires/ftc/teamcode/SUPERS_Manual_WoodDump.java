@@ -327,7 +327,7 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
 
 
     }
-
+    //THIS ONE IS UP MY BRO!
     private void bButton(){
         if (gamepad1.b){
             startTime = System.currentTimeMillis();
@@ -336,7 +336,7 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
         setSpe(750,700,0,startTime, liftMotor);
 
     }
-
+//THIS ONE IS DOWN YOU GRACIOUSLY PROFESSIONAL TEAMMATE OF MINE!!!
     private void xButton(){
         if (gamepad1.x){
             startTime = System.currentTimeMillis();

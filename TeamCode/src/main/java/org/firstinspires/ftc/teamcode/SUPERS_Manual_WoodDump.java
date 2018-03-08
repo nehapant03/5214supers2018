@@ -204,26 +204,25 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
 
             if(gamepad2.b){wrist.setPosition(.9);}
             if(gamepad2.x){wrist.setPosition(.07);}
-            //if(gamepad2.a){finger.setPosition(.78);}
-            if(gamepad2.a){relicRELEASE();}
-            if(gamepad2.y){finger.setPosition(.2);}
+            if(gamepad2.a){finger.setPosition(.78);}
+            relicRELEASE();
 
             if(gamepad2.dpad_right){relicMotor.setPower(-.25); }
-            else if(gamepad2.dpad_left) {relicMotor.setPower(.25);
-                wrist.setPosition(.07);
-                finger.setPosition(.2);
-            }
+
+            else if(gamepad2.dpad_left) {relicMotor.setPower(.25);}
+
             else if(gamepad2.dpad_down){motorWithEncoder(relicMotor,1,27);
             }
 
-            else if(gamepad2.dpad_up){motorWithEncoder(relicMotor,1,-42);
+            else if(gamepad2.dpad_up){
                 wrist.setPosition(.07);
                 finger.setPosition(.2);
+                motorWithEncoder(relicMotor,1,-42);
 
             }
 
             else if(gamepad2.right_bumper) {motorWithEncoder(relicMotor,1,15);}
-            else if(gamepad2.left_bumper) {}
+            else if(gamepad2.left_bumper) {relicMotor.setPower(0);}
             else{relicMotor.setPower(0);}
 
 
@@ -312,7 +311,7 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
             telemetry.update();
             if(gamepad2.left_bumper){
                 motorName.setPower(0);
-                motorName.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                break;
             };
 
         }
@@ -352,15 +351,16 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
 //            if(gamepad2.y){finger.setPosition(.2);}
 
     public void relicRELEASE(){
+        if(gamepad2.y){
+            startTime3 = System.currentTimeMillis();
+        }
 
-        startTime3 = System.currentTimeMillis();
-
-        setPos(1,50,.78,startTime3,lDum);
-        setPos(51,150,.73,startTime3,lDum);
-        setPos(151,250,.65,startTime3,lDum);
-        setPos(251,350,.6,startTime3,lDum);
-        setPos(351,450,.55,startTime3,lDum);
-        setPos(451,600,.2,startTime3,lDum);
+        setPos(1,50,.78,startTime3,finger);
+        setPos(51,150,.73,startTime3,finger);
+        setPos(151,250,.65,startTime3,finger);
+        setPos(251,350,.6,startTime3,finger);
+        setPos(351,450,.55,startTime3,finger);
+        setPos(451,600,.2,startTime3,finger);
     }
 
 //    private void gp2X(){

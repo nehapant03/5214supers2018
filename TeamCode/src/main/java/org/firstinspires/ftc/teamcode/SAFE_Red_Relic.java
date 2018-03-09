@@ -44,7 +44,7 @@ public class SAFE_Red_Relic extends LinearOpMode{
     private DcMotor rBelt;
 
     private Servo colorServo;
-    private Servo flicker;
+    private Servo FLICKSERVO;
 
 
     private String colorid;
@@ -112,7 +112,7 @@ public class SAFE_Red_Relic extends LinearOpMode{
         rightDump = hardwareMap.servo.get("RD");
         leftDump = hardwareMap.servo.get("LD");
         colorServo = hardwareMap.servo.get("COLORSERVO");
-        flicker = hardwareMap.servo.get("flicker");
+        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
         wrist = hardwareMap.servo.get("WRIST");
         finger = hardwareMap.servo.get("FINGER");
 
@@ -140,7 +140,10 @@ public class SAFE_Red_Relic extends LinearOpMode{
         leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
+
+
         imu = hardwareMap.get(BNO055IMU.class, "GYRO");
+        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
         imu.initialize(parameters);
 
         //drive motor directions
@@ -159,8 +162,8 @@ public class SAFE_Red_Relic extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        flicker.setPosition(.49);
-        centerDump.setPosition(.7);
+        FLICKSERVO.setPosition(.49);
+        //centerDump.setPosition(.7);
 
         composeTelemetry();
 
@@ -185,11 +188,11 @@ public class SAFE_Red_Relic extends LinearOpMode{
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){flicker(0);
-            }else if(checkColor(colorFront,.4) == "BLUE"){flicker(1);}
+            if (colorid == "RED"){FLICKSERVO(0);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
 
             sleep(700);
-            flicker.setPosition(.49);
+            FLICKSERVO.setPosition(.49);
             arm(.1); // put arm up
             sleep(500);
 
@@ -198,8 +201,8 @@ public class SAFE_Red_Relic extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-            String keyResult = vuMark.toString();
-//String keyResult = "RIGHT";
+//            String keyResult = vuMark.toString();
+String keyResult = "LEFT";
 
             if(keyResult == "LEFT"){
 
@@ -432,7 +435,11 @@ public class SAFE_Red_Relic extends LinearOpMode{
                 straightWithEncoder(.3,-6);
                 straightWithEncoder(.3,4);
 
-            }else{
+            }
+
+            else
+
+                {
 
                 straightWithEncoder(.3, -24);
                 sleep(200);
@@ -539,6 +546,12 @@ public class SAFE_Red_Relic extends LinearOpMode{
     //always keep strength positive, use negative inches to go backwards
     private void straightWithEncoder(double strength, int straightInches){
 
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -787,14 +800,14 @@ public class SAFE_Red_Relic extends LinearOpMode{
 
     private void dump(double left, double right) {
         //setting the two dump servo to an input value
-        leftDump.setPosition(left);
-        rightDump.setPosition(right);
+        //leftDump.setPosition(left);
+       // rightDump.setPosition(right);
     }
-    private void flicker(double position) {
-        //setting the flicker servo to an input value
-        flicker.setPosition(position);
+    private void FLICKSERVO(double position) {
+        //setting the FLICKSERVO servo to an input value
+        FLICKSERVO.setPosition(position);
         sleep(2000);
-        flicker.setPosition(0.5);
+        FLICKSERVO.setPosition(0.5);
 
     }
     private void arm(double position) {

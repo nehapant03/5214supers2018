@@ -105,15 +105,15 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
 
 //            if(gamepad1.right_bumper){lDum.setPosition(0.73); rDum.setPosition(.21); sleep(500); cDum.setPosition(0.25); lBelt.setPower(1); rBelt.setPower(-1);}
             if(gamepad1.y){
-                lDum.setPosition(0.57);
+                lDum.setPosition(.50);
                 cDum.setPosition(0.33);}
 
             if(gamepad1.left_bumper){
-                lDum.setPosition(0.11);
+                lDum.setPosition(.05);
                 cDum.setPosition(0.8); }
 
             if(gamepad1.a){
-                lDum.setPosition(0.48);
+                lDum.setPosition(.40);
                 cDum.setPosition(0.33);
                 lBelt.setPower(0); rBelt.setPower(0);}
 

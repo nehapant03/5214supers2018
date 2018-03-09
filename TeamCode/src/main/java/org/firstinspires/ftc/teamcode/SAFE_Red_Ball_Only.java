@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -29,6 +30,7 @@ import java.util.Locale;
  * Created by hima on 2/16/18.
  */
 @Autonomous(name="SAFE_Red_Ball_Only", group="safe")
+@Disabled
 
 public class SAFE_Red_Ball_Only extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();

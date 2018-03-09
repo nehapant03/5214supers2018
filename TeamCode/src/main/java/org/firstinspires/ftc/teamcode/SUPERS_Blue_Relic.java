@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -28,34 +29,40 @@ import java.util.Locale;
 /**
  * Created by hima on 2/16/18.
  */
-@Autonomous(name="redRelicFeb27", group="Team5214")
+@Autonomous(name="Supers_Blue_Relic", group="safe")
 
-public class redRelicFeb27 extends LinearOpMode{
-    // Declare OpMode members.
+
+public class SUPERS_Blue_Relic extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
-    //private DcMotor testMotor;
-    private int target;
-    //declare drive motors
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor leftFront;
     private DcMotor rightFront;
-    private int ticks;
-    private int position2move2;
-    private double angel;
-    // The IMU sensor object
-    BNO055IMU imu;
+
+    private DcMotor liftMotor;
+    private DcMotor relicMotor;
+
     private DcMotor lBelt;
     private DcMotor rBelt;
-    private Servo leftDump;
-    private Servo rightDump;
-    private Servo centerDump;
-    // declare color servo
+
     private Servo colorServo;
-    private Servo flickServo;
+    private Servo flicker;
+
+
     private String colorid;
     // declare color sensor
     private ColorSensor colorFront;
+
+    private Servo rightDump;
+    private Servo leftDump;
+    private Servo centerDump;
+    private Servo wrist;
+    private Servo finger;
+
+    private int ticks;
+    private int position2move2;
+    // The IMU sensor object
+    BNO055IMU imu;
     VuforiaLocalizer vuforia;
 
 
@@ -97,26 +104,26 @@ public class redRelicFeb27 extends LinearOpMode{
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
 
-        //mapping drive motors to configuration
-        leftBack  = hardwareMap.get(DcMotor.class, "LB");
+        //hooks up all of these motors with the config file
+        leftBack = hardwareMap.get(DcMotor.class, "LB");
         rightBack = hardwareMap.get(DcMotor.class, "RB");
-        leftFront  = hardwareMap.get(DcMotor.class, "LF");
+        leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
-        //mapping dump servos to configuration
-        leftDump  = hardwareMap.get(Servo.class, "LD");
-        rightDump = hardwareMap.get(Servo.class, "RD");
-        centerDump = hardwareMap.get(Servo.class, "CD");
+        centerDump = hardwareMap.servo.get("CD");
+        rightDump = hardwareMap.servo.get("RD");
+        leftDump = hardwareMap.servo.get("LD");
+        colorServo = hardwareMap.servo.get("COLORSERVO");
+        flicker = hardwareMap.servo.get("flicker");
+        wrist = hardwareMap.servo.get("WRIST");
+        finger = hardwareMap.servo.get("FINGER");
 
         lBelt = hardwareMap.dcMotor.get("LBELT");
         rBelt = hardwareMap.dcMotor.get("RBELT");
 
-        //mapping color servo to configuration
-        colorServo = hardwareMap.get(Servo.class, "COLORSERVO");
-        flickServo = hardwareMap.get(Servo.class, "FLICKSERVO");
+        liftMotor = hardwareMap.dcMotor.get("LIFT");
+        relicMotor = hardwareMap.dcMotor.get("RELICMOTOR");
 
-        //mapping color sensor to configuration
-        colorFront = hardwareMap.get(ColorSensor.class, "CSF");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -154,7 +161,7 @@ public class redRelicFeb27 extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        flickServo.setPosition(.49);
+        flicker.setPosition(.49);
         centerDump.setPosition(.7);
 
         composeTelemetry();
@@ -173,19 +180,19 @@ public class redRelicFeb27 extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.25); // put arm down
+            arm(.19); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){flicker(0);}
-            else if(checkColor(colorFront,.4) == "BLUE"){flicker(1);}
+            if (colorid == "RED"){flicker(1);
+            }else if(checkColor(colorFront,.4) == "BLUE"){flicker(0);}
 
             sleep(700);
-            flickServo.setPosition(.49);
-            arm(.1); // put arm up
+            flicker.setPosition(.49);
+            arm(.7); // put arm up
             sleep(500);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -193,131 +200,130 @@ public class redRelicFeb27 extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-            //String keyResult = vuMark.toString();
-            String keyResult = "LEFT";
+            String keyResult = vuMark.toString();
+//String keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
                 telemetry.addLine("I'm going left");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(300);
-                straightWithEncoder(.3, 6);
-                sleep(300);
-                straightWithEncoder(.3, -11);
-                sleep(300);
-                turnWithGyro("right", .5, 69, parameters);
-                sleep(300);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-
+                straightWithEncoder(.3, 24);
                 sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 23);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
 
-                sleep(200);
+                sleep(100);
 
-                dump(.66,.35);
+                turnRightDegrees(45, parameters);
 
-                sleep(400);
+                sleep(100);
 
-                dump(.59,.42);
+                dump(.61,.40);
 
-                sleep(400);
+                sleep(300);
 
-                dump(.55,.46);
+                dump(.56,.45);
 
-                sleep(400);
+                sleep(700);
+
+                dump(.54,.47);
+
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
-
-                dump(.49,.52);
-
-                sleep(500);
-
+                sleep(700);
 
                 centerDump.setPosition(.25);
 
                 sleep(600);
 
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(500);
+
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-14);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,4);
 
             }else if(keyResult == "CENTER"){
 
                 telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.3, -8);
-                sleep(200);
-                turnWithGyro("right", .5, 69, parameters);
-                sleep(200);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
+                straightWithEncoder(.3, 24);
+                sleep(100);
+                straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 11);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
 
                 sleep(100);
 
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
+                turnRightDegrees(100, parameters);
                 sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 dump(.66,.35);
 
-                sleep(400);
+                sleep(200);
 
                 dump(.59,.42);
 
@@ -325,15 +331,21 @@ public class redRelicFeb27 extends LinearOpMode{
 
                 dump(.55,.46);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.49,.52);
 
-                sleep(500);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
                 centerDump.setPosition(.25);
@@ -342,75 +354,79 @@ public class redRelicFeb27 extends LinearOpMode{
 
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-10);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
 
             }else if (keyResult == "RIGHT"){
 
                 telemetry.addLine("I'm going right");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.5, -16);
-                sleep(200);
-                turnWithGyro("right", .5, 120, parameters);
-                sleep(200);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
+                straightWithEncoder(.3, 24);
                 sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 12);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+
+                sleep(100);
+
+                turnRightDegrees(120, parameters);
+                sleep(100);
+                dump(.61,.40);
 
                 sleep(200);
 
-                dump(.66,.35);
+                dump(.56,.45);
 
                 sleep(400);
 
-                dump(.59,.42);
+                dump(.54,.47);
 
-                sleep(400);
-
-                dump(.55,.46);
-
-                sleep(400);
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.49,.52);
 
-                sleep(500);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
                 centerDump.setPosition(.25);
@@ -419,54 +435,54 @@ public class redRelicFeb27 extends LinearOpMode{
 
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-16);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,4);
 
             }else{
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.3, -8);
-                sleep(200);
-                turnWithGyro("right", .5, 69, parameters);
-                sleep(200);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
+                straightWithEncoder(.3, 24);
+                sleep(100);
+                straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 11);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
 
                 sleep(100);
 
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
+                turnRightDegrees(100, parameters);
                 sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 dump(.66,.35);
 
-                sleep(400);
+                sleep(200);
 
                 dump(.59,.42);
 
@@ -474,15 +490,21 @@ public class redRelicFeb27 extends LinearOpMode{
 
                 dump(.55,.46);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.49,.52);
 
-                sleep(500);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
                 centerDump.setPosition(.25);
@@ -491,13 +513,13 @@ public class redRelicFeb27 extends LinearOpMode{
 
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-10);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
             }
 
 
@@ -675,7 +697,9 @@ public class redRelicFeb27 extends LinearOpMode{
 
     }
 
-    private void turnWithGyro(String direction, double power, double deg, BNO055IMU.Parameters parametersMeth) {
+    private void turnLeftDegress(double deg, BNO055IMU.Parameters parametersMeth){
+
+
 
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -683,49 +707,28 @@ public class redRelicFeb27 extends LinearOpMode{
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         Orientation agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-        double start = current;
-        double target = current + deg;
-        double delta = 1.5;
-        //sleep(3000);
-        telemetry.addLine("start: " + Double.toString(start));
-        telemetry.addLine("target: " + Double.toString(target));
-        telemetry.addLine("deg: " + Double.toString(deg));
-        telemetry.update();
+        double curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
+        double start = curent;
+        double stDeg = curent+deg;
 
-        if (direction == "left") {
-            while (current < target + delta) {
-                telemetry.update();
-                //prints all the variables
-                telemetry.addLine("IM IN THE WHILE");
-                telemetry.addLine("current: " + Double.toString(current));
-                double ratio = current / target;
-                turn(sCurve(power, 4.1, 3.1, ratio));
+        //this loop runs until the robot has turned the correct amount
+        while (((curent) < (stDeg-2)) || (curent > (stDeg+2) )){
+            telemetry.update();
 
-                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-                telemetry.update();
-            }
+            //prints all the variables
+            telemetry.addLine("IM IN THE WHILE");
+            telemetry.addLine("start: " + Double.toString(start));
+            telemetry.addLine("stDeg: " + Double.toString(stDeg));
+            telemetry.addLine("deg: " + Double.toString(deg));
+            telemetry.addLine("current: " + Double.toString(curent));
 
+            turn(.28);
+
+            agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
+            telemetry.update();
         }
 
-        else if (direction == "right") {
-            target = -target;
-            while (current > target + delta) {
-                telemetry.update();
-                //prints all the variables
-                telemetry.addLine("IM IN THE WHILE");
-                telemetry.addLine("current: " + Double.toString(current));
-                double ratio = Math.abs(current) / Math.abs(target);
-                turn(sCurve(-power, 4.1, 3.1, ratio));
-
-                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-                telemetry.update();
-            }
-        }
-
-        telemetry.addLine(Double.toString(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))));
         telemetry.addLine("I LEFT THE WHILE");
         telemetry.update();
 
@@ -745,15 +748,56 @@ public class redRelicFeb27 extends LinearOpMode{
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
     }
 
-    public double sCurve(double p, double o, double v, double ratio){
-        double out = 0;
-        out = p*(1.2-(1/(1+(Math.pow(Math.E, (-o*((v*ratio)-2.1) ) )  ) ) ) );
-        telemetry.addLine(Double.toString(out));
+    private void turnRightDegrees(double deg, BNO055IMU.Parameters parametersMeth){
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        Orientation agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
+        double start = curent;
+        double stDeg = curent+deg;
+
+        //this loop runs until the robot has turned the correct amount
+        while (((-curent) < (stDeg-2)) || (-curent > (stDeg+2) )){
+            telemetry.update();
+
+            //prints all the variables
+            telemetry.addLine("IM IN THE WHILE");
+            telemetry.addLine("start: " + Double.toString(start));
+            telemetry.addLine("stDeg: " + Double.toString(stDeg));
+            telemetry.addLine("deg: " + Double.toString(deg));
+            telemetry.addLine("current: " + Double.toString(curent));
+
+            turn(-.28);
+
+            agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
+            telemetry.update();
+        }
+
+        telemetry.addLine("I LEFT THE WHILE");
         telemetry.update();
-        return out;
+
+        leftBack.setPower(0);
+        rightBack.setPower(0);
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        imu.initialize(parametersMeth);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     private void dump(double left, double right) {
@@ -763,10 +807,22 @@ public class redRelicFeb27 extends LinearOpMode{
     }
     private void flicker(double position) {
         //setting the flicker servo to an input value
-        flickServo.setPosition(position);
+        flicker.setPosition(position);
         sleep(2000);
-        flickServo.setPosition(0.5);
+        flicker.setPosition(0.5);
 
+    }
+    private void rampDown(){
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
+
+        leftDump.setPosition(.8);
+        rightDump.setPosition(.4);
+
+        sleep(3000);
+
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
     }
     private void arm(double position) {
         //setting the color servo to an input value

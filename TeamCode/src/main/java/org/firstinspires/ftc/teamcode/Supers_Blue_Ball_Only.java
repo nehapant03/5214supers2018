@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -29,33 +28,39 @@ import java.util.Locale;
 /**
  * Created by hima on 2/16/18.
  */
-@Autonomous(name="EXTRA_RedRelic", group="extra")
-@Disabled
-public class EXTRA_RedRelic extends LinearOpMode{
-    // Declare OpMode members.
+@Autonomous(name="SUPERS_Blue_Ball_Only", group="safe")
+
+public class Supers_Blue_Ball_Only extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
-    //private DcMotor testMotor;
-    private int target;
-    //declare drive motors
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor leftFront;
     private DcMotor rightFront;
-    private int ticks;
-    private int position2move2;
-    private double angel;
-    // The IMU sensor object
-    BNO055IMU imu;
+
+    private DcMotor liftMotor;
+    private DcMotor relicMotor;
+
     private DcMotor lBelt;
     private DcMotor rBelt;
-    private Servo leftDump;
-    private Servo rightDump;
-    // declare color servo
+
     private Servo colorServo;
-    private Servo flickServo;
+    private Servo FLICKSERVO;
+
+
     private String colorid;
     // declare color sensor
     private ColorSensor colorFront;
+
+    private Servo rightDump;
+    private Servo leftDump;
+    private Servo centerDump;
+    private Servo wrist;
+    private Servo finger;
+
+    private int ticks;
+    private int position2move2;
+    // The IMU sensor object
+    BNO055IMU imu;
     VuforiaLocalizer vuforia;
 
 
@@ -97,25 +102,26 @@ public class EXTRA_RedRelic extends LinearOpMode{
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
 
-        //mapping drive motors to configuration
-        leftBack  = hardwareMap.get(DcMotor.class, "LB");
+        //hooks up all of these motors with the config file
+        leftBack = hardwareMap.get(DcMotor.class, "LB");
         rightBack = hardwareMap.get(DcMotor.class, "RB");
-        leftFront  = hardwareMap.get(DcMotor.class, "LF");
+        leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
-        //mapping dump servos to configuration
-        leftDump  = hardwareMap.get(Servo.class, "LD");
-        rightDump = hardwareMap.get(Servo.class, "RD");
+        centerDump = hardwareMap.servo.get("CD");
+        rightDump = hardwareMap.servo.get("RD");
+        leftDump = hardwareMap.servo.get("LD");
+        colorServo = hardwareMap.servo.get("COLORSERVO");
+        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
+        wrist = hardwareMap.servo.get("WRIST");
+        finger = hardwareMap.servo.get("FINGER");
 
         lBelt = hardwareMap.dcMotor.get("LBELT");
         rBelt = hardwareMap.dcMotor.get("RBELT");
 
-        //mapping color servo to configuration
-        colorServo = hardwareMap.get(Servo.class, "COLORSERVO");
-        flickServo = hardwareMap.get(Servo.class, "FLICKSERVO");
+        liftMotor = hardwareMap.dcMotor.get("LIFT");
+        relicMotor = hardwareMap.dcMotor.get("RELICMOTOR");
 
-        //mapping color sensor to configuration
-        colorFront = hardwareMap.get(ColorSensor.class, "CSF");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -134,7 +140,10 @@ public class EXTRA_RedRelic extends LinearOpMode{
         leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
+
+
         imu = hardwareMap.get(BNO055IMU.class, "GYRO");
+        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
         imu.initialize(parameters);
 
         //drive motor directions
@@ -153,6 +162,9 @@ public class EXTRA_RedRelic extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        FLICKSERVO.setPosition(.49);
+        centerDump.setPosition(.7);
+
         composeTelemetry();
 
         //testMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -168,119 +180,297 @@ public class EXTRA_RedRelic extends LinearOpMode{
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-//            sleep(200);
-//
-//            arm(.2); // put arm down
-//            sleep(1500);
 
-//            colorid = checkColor(colorFront, currentRatio);
-//
-//            telemetry.addLine(colorid);
-//            telemetry.update();
-//
-//            sleep(200);
+            arm(.19); // put arm down
+            sleep(1000);
+            colorid = checkColor(colorFront, currentRatio);
+
+            telemetry.addLine(colorid);
+            telemetry.update();
+
+            if (colorid == "RED"){FLICKSERVO(1);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(0);}
+
+            sleep(700);
+            FLICKSERVO.setPosition(.49);
+            arm(.7); // put arm up
+            sleep(500);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             sleep(100);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-//            if (colorid == "RED"){flicker(0);
-//            }else if(checkColor(colorFront,.4) == "BLUE"){flicker(1);}
+            String keyResult = vuMark.toString();
+//String keyResult = "CENTER";
 //
-//            sleep(300);
-//            arm(.8); // put arm up
-//            sleep(1500);
-
-//keyresult
-
-//            String keyResult = vuMark.toString();
-
-            telemetry.addData("Left Front: ", leftFront.getCurrentPosition());
-            telemetry.addData("Left Back: ", leftBack.getCurrentPosition());
-            telemetry.addData("Right Front: ", rightFront.getCurrentPosition());
-            telemetry.addData("Right Back: ", rightBack.getCurrentPosition());
-            telemetry.update();
-
-            String keyResult = "LEFT";
-
-
-            if(keyResult == "LEFT"){
-
-                straightWithEncoder(.3, -22);
-                straightWithEncoder(.3, 3);
-                straightWithEncoder(.5, -23);
-
-                turnRightDegrees(60, parameters);
-
-                //   DUMP HERE
-
-                straightWithEncoder(.6,-10);
-
-                straightWithEncoder(.6,5);
-                straightWithEncoder(.6,-6);
-                straightWithEncoder(.6,5);
-
-                Orientation agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                double TurnAmount = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle)) + 30;
-
-                if (TurnAmount < 0) {
-                     turnLeftDegress(-TurnAmount, parameters);
-                    }
-                    else if(TurnAmount>0){
-                    turnRightDegrees(TurnAmount, parameters);
-                }
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-                sleep(300);
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(300);
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                lBelt.setPower(1);
-                rBelt.setPower(-1);
-
-                straightWithEncoder(.6,30);
-                //INTAKE THOSE CUBES AND GO BACKWARDS
-                straightWithEncoder(.6,-17);
-                turnRightDegrees(15, parameters);
-                //DUMP THE CUBE
-                straightWithEncoder(.6,-15);
-                straightWithEncoder(.6,6);
-                straightWithEncoder(.6,-9);
-                straightWithEncoder(.6,4);
-
-            }else if(keyResult == "CENTER"){
-
-            }else if (keyResult == "RIGHT"){
-
-            }else{
-                straightWithEncoder(.5, -25);
-
-                turnRightDegrees(60, parameters);
-
-                //   DUMP HERE
-
-                straightWithEncoder(.5,-20);
-
-                straightWithEncoder(.5,10);
-                straightWithEncoder(.5,-14);
-            }
+//            if(keyResult == "LEFT"){
+//
+//                telemetry.addLine("I'm going left");
+//                telemetry.update();
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(300);
+//                straightWithEncoder(.3, 6);
+//                sleep(300);
+//                straightWithEncoder(.3, -11);
+//                sleep(300);
+//                turnRightDegrees(65, parameters);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(300);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(320);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//
+//            }else if(keyResult == "CENTER"){
+//
+//                telemetry.addLine("I'm going in the middle");
+//                telemetry.update();
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(200);
+//                straightWithEncoder(.3, 6);
+//                sleep(200);
+//                straightWithEncoder(.3, -6);
+//                sleep(200);
+//                turnRightDegrees(72, parameters);
+//                sleep(200);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(300);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(320);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//
+//            }else if (keyResult == "RIGHT"){
+//
+//                telemetry.addLine("I'm going right");
+//                telemetry.update();
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(200);
+//                straightWithEncoder(.3, 6);
+//                sleep(200);
+//                straightWithEncoder(.5, -17);
+//                sleep(200);
+//                turnRightDegrees(125, parameters);
+//                sleep(200);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//                sleep(350);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(300);
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//
+//            }else{
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(300);
+//                straightWithEncoder(.3, 6);
+//                sleep(300);
+//                straightWithEncoder(.3, -11);
+//                sleep(300);
+//                turnRightDegrees(65, parameters);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(300);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(320);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//            }
 
 
             telemetry.update();
@@ -295,6 +485,8 @@ public class EXTRA_RedRelic extends LinearOpMode{
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
+            idle();
             break;
         }
     }
@@ -480,7 +672,7 @@ public class EXTRA_RedRelic extends LinearOpMode{
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.25);
+            turn(.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -530,7 +722,7 @@ public class EXTRA_RedRelic extends LinearOpMode{
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(-.25);
+            turn(-.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -563,11 +755,11 @@ public class EXTRA_RedRelic extends LinearOpMode{
         leftDump.setPosition(left);
         rightDump.setPosition(right);
     }
-    private void flicker(double position) {
-        //setting the flicker servo to an input value
-        flickServo.setPosition(position);
+    private void FLICKSERVO(double position) {
+        //setting the FLICKSERVO servo to an input value
+        FLICKSERVO.setPosition(position);
         sleep(2000);
-        flickServo.setPosition(0.5);
+        FLICKSERVO.setPosition(0.5);
 
     }
     private void arm(double position) {

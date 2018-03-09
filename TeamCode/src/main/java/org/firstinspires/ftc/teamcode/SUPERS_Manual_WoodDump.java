@@ -113,7 +113,7 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
                 cDum.setPosition(0.8); }
 
             if(gamepad1.a){
-                lDum.setPosition(.40);
+                lDum.setPosition(.37);
                 cDum.setPosition(0.33);
                 lBelt.setPower(0); rBelt.setPower(0);}
 
@@ -376,11 +376,11 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
             startTime2 = System.currentTimeMillis();
         }
         setPos(1,50,.35,startTime2,lDum);
-        setPos(51,150,.45,startTime2,lDum);
-        setPos(151,250,.50,startTime2,lDum);
-        setPos(251,350,.55,startTime2,lDum);
-        setPos(351,450,.6,startTime2,lDum);
-        setPos(451,600,.66,startTime2,lDum);
+        setPos(51,150,.4,startTime2,lDum);
+        setPos(151,250,.45,startTime2,lDum);
+        setPos(251,350,.5,startTime2,lDum);
+        setPos(351,450,.53,startTime2,lDum);
+        setPos(451,600,.59,startTime2,lDum);
         setPos(401,600,.33,startTime2,cDum);
         setSpe(401, 600, 1,startTime2,lBelt);
         setSpe(401, 600, -1,startTime2,rBelt);

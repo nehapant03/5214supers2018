@@ -1,42 +1,15 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -44,40 +17,58 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
 /**
- * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
- * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
- * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
- * class is instantiated on the Robot Controller and executed.
- *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ * Created by hima on 2/16/18.
  */
+@Autonomous(name="SUPERS_Red_Ball_Only", group="safe")
 
-@TeleOp(name="drivingFeb16", group="Team5214")
-@Disabled public class drivingFeb16 extends LinearOpMode {
-
-    // Declare OpMode members.
+public class Supers_Red_Ball_Only extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
-    //private DcMotor testMotor;
-    private int target;
-    //declare drive motors
     private DcMotor leftBack;
     private DcMotor rightBack;
     private DcMotor leftFront;
     private DcMotor rightFront;
+
+    private DcMotor liftMotor;
+    private DcMotor relicMotor;
+
+    private DcMotor lBelt;
+    private DcMotor rBelt;
+
+    private Servo colorServo;
+    private Servo FLICKSERVO;
+
+
+    private String colorid;
+    // declare color sensor
+    private ColorSensor colorFront;
+
+    private Servo rightDump;
+    private Servo leftDump;
+    private Servo centerDump;
+    private Servo wrist;
+    private Servo finger;
+
     private int ticks;
     private int position2move2;
-    private double angel;
     // The IMU sensor object
     BNO055IMU imu;
+    VuforiaLocalizer vuforia;
+
+
+    //use the two variables in two color sensors situation
+//    ColorSensor colorFront;
+//    ColorSensor colorBack;
+
+    final double currentRatio = 1.3; //ratio set for red/blue, for color id function
 
     // State used for updating telemetry
     Orientation angles;
@@ -86,8 +77,51 @@ import java.util.Locale;
 
     @Override
     public void runOpMode() {
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+
+        //using phone camera for image recognition
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parametersVu = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        //License key, do not change
+        parametersVu.vuforiaLicenseKey = "AVOFXuz/////AAAAGf45mZPfQEQBt1NyBSqlPuYQkVhLXgkSQpOqQqWb/FoWqJ" +
+                "WqG7KKeaIVeJzCSsLJ58FGWwE0Z/vvzSHrZBeZN9jN7c+gru1h0T3k0wLaoN1b6bFIHn93evRQ0DcFcgy4uMHZ1" +
+                "T87fT4WrKldfG6XT7PyThP2Fk5C8SbASqna7IKl26eb+zdOFXRKG+U1pZyV9yGgMsmBVZCxDZiT/G6JUpg4DMGrZVT" +
+                "8BXdVvs+mpDLQ4tH/XL5ikYp1++1fbYhJtA3naS5/laHiPiHONGAdLbHkE4s8EOxpB8+lqpJN6hlcqtMegarTOuwWYXXP" +
+                "jSnNnkUWBKuW6nWqtF3k1CIUoSTBuFpbwAvf+T6i1CkL6IoB";
+        //using back camera for recognizing
+        parametersVu.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+
+        //importing the three image asset and hook up to vuforia engine
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parametersVu);
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+
+        //hooks up all of these motors with the config file
+        leftBack = hardwareMap.get(DcMotor.class, "LB");
+        rightBack = hardwareMap.get(DcMotor.class, "RB");
+        leftFront = hardwareMap.get(DcMotor.class, "LF");
+        rightFront = hardwareMap.get(DcMotor.class, "RF");
+
+        centerDump = hardwareMap.servo.get("CD");
+        rightDump = hardwareMap.servo.get("RD");
+        leftDump = hardwareMap.servo.get("LD");
+        colorServo = hardwareMap.servo.get("COLORSERVO");
+        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
+        wrist = hardwareMap.servo.get("WRIST");
+        finger = hardwareMap.servo.get("FINGER");
+
+        lBelt = hardwareMap.dcMotor.get("LBELT");
+        rBelt = hardwareMap.dcMotor.get("RBELT");
+
+        liftMotor = hardwareMap.dcMotor.get("LIFT");
+        relicMotor = hardwareMap.dcMotor.get("RELICMOTOR");
+
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -106,7 +140,10 @@ import java.util.Locale;
         leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
+
+
         imu = hardwareMap.get(BNO055IMU.class, "GYRO");
+        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
         imu.initialize(parameters);
 
         //drive motor directions
@@ -125,13 +162,16 @@ import java.util.Locale;
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        FLICKSERVO.setPosition(.49);
+        centerDump.setPosition(.7);
+
         composeTelemetry();
 
         //testMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // Wait for the game to start (driver presses PLAY)
 
         waitForStart();
-
+        relicTrackables.activate();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         angles2   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -141,42 +181,299 @@ import java.util.Locale;
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            telemetry.addData("Left Front: ", leftFront.getCurrentPosition());
-            telemetry.addData("Left Back: ", leftBack.getCurrentPosition());
-            telemetry.addData("Right Front: ", rightFront.getCurrentPosition());
-            telemetry.addData("Right Back: ", rightBack.getCurrentPosition());
+            arm(.19); // put arm down
+            sleep(1000);
+            colorid = checkColor(colorFront, currentRatio);
+
+            telemetry.addLine(colorid);
             telemetry.update();
 
-           // straightWithEncoder(.5,15);
+            if (colorid == "RED"){FLICKSERVO(0);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
 
-            sleep(2000);
-
-            straightWithEncoder(.5,24);
-
+            sleep(700);
+            FLICKSERVO.setPosition(.49);
+            arm(.7); // put arm up
             sleep(500);
 
-            turnLeftDegress(90, parameters);
-
-            sleep(500);
-
-            straightWithEncoder(0.25, -15);
-
-            turnRightDegrees(90, parameters);
-
-            sleep(2000);
-
-            strafeWithEncoder(.4, 15);
-
-            sleep(2000);
-
-
-            //straightWithEncoder(.5,15);
-
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            sleep(100);
+            telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-            sleep(1500);
+            String keyResult = vuMark.toString();
+//String keyResult = "CENTER";
+//
+//            if(keyResult == "LEFT"){
+//
+//                telemetry.addLine("I'm going left");
+//                telemetry.update();
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(300);
+//                straightWithEncoder(.3, 6);
+//                sleep(300);
+//                straightWithEncoder(.3, -11);
+//                sleep(300);
+//                turnRightDegrees(65, parameters);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(300);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(320);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//
+//            }else if(keyResult == "CENTER"){
+//
+//                telemetry.addLine("I'm going in the middle");
+//                telemetry.update();
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(200);
+//                straightWithEncoder(.3, 6);
+//                sleep(200);
+//                straightWithEncoder(.3, -6);
+//                sleep(200);
+//                turnRightDegrees(72, parameters);
+//                sleep(200);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(300);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(320);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//
+//            }else if (keyResult == "RIGHT"){
+//
+//                telemetry.addLine("I'm going right");
+//                telemetry.update();
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(200);
+//                straightWithEncoder(.3, 6);
+//                sleep(200);
+//                straightWithEncoder(.5, -17);
+//                sleep(200);
+//                turnRightDegrees(125, parameters);
+//                sleep(200);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//                sleep(350);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(300);
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//
+//            }else{
+//
+//                straightWithEncoder(.3, -24);
+//                sleep(300);
+//                straightWithEncoder(.3, 6);
+//                sleep(300);
+//                straightWithEncoder(.3, -11);
+//                sleep(300);
+//                turnRightDegrees(65, parameters);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(300);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(320);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+//
+//                sleep(100);
+//
+//                dump(.61,.40);
+//
+//                sleep(500);
+//
+//                dump(.51,.5);
+//
+//                sleep(800);
+//
+//                centerDump.setPosition(.25);
+//
+//                sleep(800);
+//
+//                dump(.46,.55);
+//                //   DUMP HERE
+//                //dump(.26,.74);
+//
+//                sleep(500);
+//
+//                dump(.26,.74);
+//
+//                sleep(500);
+//
+//                straightWithEncoder(.3,-9);
+//
+//                straightWithEncoder(.3,5);
+//                straightWithEncoder(.3,-6);
+//                straightWithEncoder(.3,4);
+//            }
 
 
+            telemetry.update();
 
             leftBack.setPower(0);
             rightBack.setPower(0);
@@ -188,8 +485,8 @@ import java.util.Locale;
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            sleep(15000);
 
+            idle();
             break;
         }
     }
@@ -204,9 +501,9 @@ import java.util.Locale;
         motorName.setTargetPosition(position2move2);
         motorName.setPower(power);
 
-        }
+    }
 
-//always keep strength positive, use negative inches to go backwards
+    //always keep strength positive, use negative inches to go backwards
     private void straightWithEncoder(double strength, int straightInches){
 
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -219,8 +516,8 @@ import java.util.Locale;
         motorWithEncoder(rightBack, strength, straightInches);
         motorWithEncoder(rightFront, strength, straightInches);
 
-      while(leftBack.isBusy() && leftFront.isBusy() && rightBack.isBusy() && rightFront.isBusy()) {
-      }
+        while(leftBack.isBusy() && leftFront.isBusy() && rightBack.isBusy() && rightFront.isBusy()) {
+        }
 
         leftBack.setPower(0);
         rightBack.setPower(0);
@@ -240,7 +537,7 @@ import java.util.Locale;
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-//defined so that power is positive always, right is positive inches, left is negative inches
+    //defined so that power is positive always, right is positive inches, left is negative inches
     private void strafeWithEncoder(double unlimitedpower, int strafeInches){
 
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -338,93 +635,6 @@ import java.util.Locale;
                 });
     }
 
-//    private double convertTo0to360(double angle1){
-//
-//        if(angle1 >= 0){
-//            angel = angle1;
-//        }
-//        else{
-//            angel = angle1 + 360;
-//        }
-//
-//        angel = angel % 360;
-//
-//        return angel;
-//
-//    }
-
-//    private void correctTurnFunction(String direction, double power, int targetAngle){
-//        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//        Orientation agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//
-//        double current = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
-//        current = convertTo0to360(current);
-//        double start = current;
-//        targetAngle += start;
-//        targetAngle = targetAngle % 360;
-//        telemetry.addLine(Double.toString(targetAngle));
-//        telemetry.update();
-//
-//        if(direction == "clockwise"){
-//            while (((current) < (targetAngle-2)) || (current > (targetAngle+2) )){
-//                double whereiam;
-//                telemetry.addLine("raw encoder values: " + Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle)));
-//
-//                //telemetry.addLine("modified encoder value: " + current);
-//                //telemetry.update();
-//
-//                leftBack.setPower(power); //sets left wheels to move backward
-//                leftFront.setPower(power);
-//                rightBack.setPower(-power); // makes right hand wheels to move forward
-//                rightFront.setPower(-power);
-//
-//                agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//
-//                whereiam = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
-//                whereiam = whereiam * -1;
-//                current = convertTo0to360(whereiam);
-//            }
-//        }
-//
-//        if(direction == "counterclockwise"){
-//            while (((current) < (targetAngle-2)) || (current > (targetAngle+2) )){
-//                double whereiam;
-//                telemetry.addLine("raw encoder values: " + Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle)));
-//
-//                //telemetry.addLine("modified encoder value: " + current);
-//                //telemetry.update();
-//
-//                leftBack.setPower(-power); //sets left wheels to move backward
-//                leftFront.setPower(-power);
-//                rightBack.setPower(power); // makes right hand wheels to move forward
-//                rightFront.setPower(power);
-//
-//                agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-//
-//                whereiam = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
-//                current = convertTo0to360(whereiam);
-//        }
-//
-//        leftBack.setPower(0);
-//        rightBack.setPower(0);
-//        leftFront.setPower(0);
-//        rightFront.setPower(0);
-//
-//        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//
-//    }
 
     private void turn(double power){
         //left turn is positive power
@@ -462,7 +672,7 @@ import java.util.Locale;
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.25);
+            turn(.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -512,7 +722,7 @@ import java.util.Locale;
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(-.25);
+            turn(-.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -540,10 +750,46 @@ import java.util.Locale;
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    //----------------------------------------------------------------------------------------------
-    // Formatting
-    //----------------------------------------------------------------------------------------------
+    private void dump(double left, double right) {
+        //setting the two dump servo to an input value
+        leftDump.setPosition(left);
+        rightDump.setPosition(right);
+    }
+    private void FLICKSERVO(double position) {
+        //setting the FLICKSERVO servo to an input value
+        FLICKSERVO.setPosition(position);
+        sleep(2000);
+        FLICKSERVO.setPosition(0.5);
 
+    }
+    private void arm(double position) {
+        //setting the color servo to an input value
+        colorServo.setPosition(position);
+    }
+    private void sleep(int i) {
+        //initial time takes the current hardware time in milliseconds
+        long initial_time = System.currentTimeMillis();
+        //inside the while loop cpu will stop working when the input time is more than the time passed in this loop
+        //cpu will be back working when the loop reaches the target time
+        while (System.currentTimeMillis() - initial_time < i) {
+
+        }
+    }
+    private String checkColor(ColorSensor sensor, double ratio) {
+        double redOverBlue = (sensor.red()+1) / (sensor.blue() + 1);
+        if (redOverBlue >= ratio) {
+            //if it is greater than ratio, it is red
+            return "RED";
+        }
+        else if (redOverBlue <= ratio) {
+            //if it is less than ratio, it is blue
+            return "BLUE";
+        }
+        else {
+            //if nothing is detected, return not defined
+            return "UNDEF";
+        }
+    }
 
     public String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
@@ -556,4 +802,4 @@ import java.util.Locale;
     public String valueHead() {
         return formatAngle(angles.angleUnit, angles.firstAngle);
     }
-    }
+}

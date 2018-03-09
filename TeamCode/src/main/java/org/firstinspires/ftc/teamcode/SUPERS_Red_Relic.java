@@ -163,7 +163,8 @@ public class SUPERS_Red_Relic extends LinearOpMode{
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         FLICKSERVO.setPosition(.49);
-        //centerDump.setPosition(.7);
+        centerDump.setPosition(.7);
+        colorServo.setPosition(.69);
 
         composeTelemetry();
 
@@ -193,7 +194,7 @@ public class SUPERS_Red_Relic extends LinearOpMode{
 
             sleep(700);
             FLICKSERVO.setPosition(.49);
-            arm(.7); // put arm up
+            arm(.69); // put arm up
             sleep(500);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -201,8 +202,8 @@ public class SUPERS_Red_Relic extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-//            String keyResult = vuMark.toString();
-String keyResult = "LEFT";
+            String keyResult = vuMark.toString();
+            keyResult = "LEFT";
 
             if(keyResult == "LEFT"){
 

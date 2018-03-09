@@ -46,7 +46,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
     private DcMotor rBelt;
 
     private Servo colorServo;
-    private Servo flicker;
+    private Servo FLICKSERVO;
 
 
     private String colorid;
@@ -114,7 +114,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         rightDump = hardwareMap.servo.get("RD");
         leftDump = hardwareMap.servo.get("LD");
         colorServo = hardwareMap.servo.get("COLORSERVO");
-        flicker = hardwareMap.servo.get("flicker");
+        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
         wrist = hardwareMap.servo.get("WRIST");
         finger = hardwareMap.servo.get("FINGER");
 
@@ -161,8 +161,9 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        flicker.setPosition(.49);
+        FLICKSERVO.setPosition(.49);
         centerDump.setPosition(.7);
+        colorServo.setPosition(.69);
 
         composeTelemetry();
 
@@ -187,12 +188,12 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){flicker(1);
-            }else if(checkColor(colorFront,.4) == "BLUE"){flicker(0);}
+            if (colorid == "RED"){FLICKSERVO(1);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(0);}
 
             sleep(700);
-            flicker.setPosition(.49);
-            arm(.7); // put arm up
+            FLICKSERVO.setPosition(.49);
+            arm(.69); // put arm up
             sleep(500);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -805,11 +806,11 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         leftDump.setPosition(left);
         rightDump.setPosition(right);
     }
-    private void flicker(double position) {
-        //setting the flicker servo to an input value
-        flicker.setPosition(position);
+    private void FLICKSERVO(double position) {
+        //setting the FLICKSERVO servo to an input value
+        FLICKSERVO.setPosition(position);
         sleep(2000);
-        flicker.setPosition(0.5);
+        FLICKSERVO.setPosition(0.5);
 
     }
     private void rampDown(){

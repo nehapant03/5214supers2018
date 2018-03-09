@@ -39,8 +39,10 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
 
 
     long startTime = 0;
+    long startTime1 = 0;
     long startTime2 = 0;
     long startTime3 = 0;
+    long startTime4 = 0;
 
 
     @Override
@@ -109,7 +111,7 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
                 cDum.setPosition(0.33);}
 
             if(gamepad1.left_bumper){
-                lDum.setPosition(.05);
+                lDum.setPosition(.03);
                 cDum.setPosition(0.8); }
 
             if(gamepad1.a){
@@ -330,10 +332,10 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
     //THIS ONE IS UP MY BRO!
     private void bButton(){
         if (gamepad1.b){
-            startTime = System.currentTimeMillis();
+            startTime1 = System.currentTimeMillis();
             liftMotor.setPower(.5);
         }
-        setSpe(750,700,0,startTime, liftMotor);
+        setSpe(700,750,0,startTime1, liftMotor);
 
     }
 //THIS ONE IS DOWN YOU GRACIOUSLY PROFESSIONAL TEAMMATE OF MINE!!!
@@ -384,6 +386,33 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
         setPos(401,600,.33,startTime2,cDum);
         setSpe(401, 600, 1,startTime2,lBelt);
         setSpe(401, 600, -1,startTime2,rBelt);
+    }
+
+
+    public void gp2x(){//moves it from .9 to .07
+        if(gamepad2.x){
+            startTime4 = System.currentTimeMillis();
+        }
+        setPos(1,50,.9,startTime4,wrist);
+        setPos(51,100,.85,startTime4,wrist);
+        setPos(101,150,.80,startTime4,wrist);
+        setPos(151,200,.75,startTime4,wrist);
+        setPos(201,250,.70,startTime4,wrist);
+        setPos(251,300,.65,startTime4,wrist);
+        setPos(301,350,.60,startTime4,wrist);
+        setPos(351,400,.55,startTime4,wrist);
+        setPos(401,450,.50,startTime4,wrist);
+        setPos(451,500,.45,startTime4,wrist);
+        setPos(501,550,.4,startTime4,wrist);
+        setPos(551,600,.35,startTime4,wrist);
+        setPos(601,650,.3,startTime4,wrist);
+        setPos(651,700,.25,startTime4,wrist);
+        setPos(701,750,.2,startTime4,wrist);
+        setPos(751,800,.15,startTime4,wrist);
+        setPos(801,850,.1,startTime4,wrist);
+        setPos(851,900,.08,startTime4,wrist);
+
+
     }
 
     // if(gamepad1.right_bumper)

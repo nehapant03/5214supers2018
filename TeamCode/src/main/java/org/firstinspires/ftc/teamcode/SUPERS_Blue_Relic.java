@@ -182,7 +182,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.16); // put arm down
+            arm(.15); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
@@ -202,8 +202,8 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-           // String keyResult = vuMark.toString();
-            String keyResult = "RIGHT";
+            String keyResult = vuMark.toString();
+//            String keyResult = "CENTER";
 
             if(keyResult == "LEFT"){
 
@@ -243,7 +243,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                turnRightDegrees(45, parameters);
+                turnRightDegrees(54, parameters);
 
                 sleep(100);
 
@@ -292,13 +292,13 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.3, -7);
+                straightWithEncoder(.3, -12);
                 sleep(300);
-                straightWithEncoder(.3, 3);
+                straightWithEncoder(.3, 4);
                 sleep(200);
-                straightWithEncoder(.3,-4);
+                straightWithEncoder(.3,-5);
                 sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.3,5);
 
             }else if(keyResult == "CENTER"){
 
@@ -338,7 +338,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                turnRightDegrees(105, parameters);
+                turnRightDegrees(108, parameters);
                 sleep(200);
 
                 //DROP THE INTAKE RAMP
@@ -480,13 +480,13 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.3, -7);
+                straightWithEncoder(.3, -12);
                 sleep(300);
-                straightWithEncoder(.3, 3);
+                straightWithEncoder(.3, 4);
                 sleep(200);
-                straightWithEncoder(.3,-4);
+                straightWithEncoder(.3,-5);
                 sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.3,5);
             }else {
 
                 telemetry.addLine("I'm going in the middle");
@@ -525,7 +525,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                turnRightDegrees(105, parameters);
+                turnRightDegrees(108, parameters);
                 sleep(200);
 
                 //DROP THE INTAKE RAMP

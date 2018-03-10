@@ -182,7 +182,7 @@ public class Supers_Blue_Ball_Only extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.16); // put arm down
+            arm(.15); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 

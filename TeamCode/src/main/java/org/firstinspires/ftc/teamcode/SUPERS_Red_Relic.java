@@ -183,7 +183,7 @@ public class SUPERS_Red_Relic extends LinearOpMode{
         while (opModeIsActive()) {
             centerDump.setPosition(.33);
 
-            arm(.16); // put arm down
+            arm(.15); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 

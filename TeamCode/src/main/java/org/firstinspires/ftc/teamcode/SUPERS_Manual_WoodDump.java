@@ -334,7 +334,7 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
             startTime1 = System.currentTimeMillis();
             liftMotor.setPower(-.5);
         }
-        setSpe(1100,1200,0,startTime1, liftMotor);
+        setSpe(1300,1400,0,startTime1, liftMotor);
 
     }
 //THIS ONE IS up YOU GRACIOUSLY PROFESSIONAL TEAMMATE OF MINE!!!

@@ -182,7 +182,7 @@ public class Supers_Blue_Ball_Only extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.19); // put arm down
+            arm(.16); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
@@ -193,7 +193,7 @@ public class Supers_Blue_Ball_Only extends LinearOpMode{
             }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(0);}
 
             sleep(700);
-            FLICKSERVO.setPosition(.49);
+            FLICKSERVO.setPosition(.5);
             arm(.69); // put arm up
             sleep(500);
 

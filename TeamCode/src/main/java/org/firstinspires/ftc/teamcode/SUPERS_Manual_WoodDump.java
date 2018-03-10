@@ -70,17 +70,16 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
         liftMotor = hardwareMap.dcMotor.get("LIFT");
         relicMotor = hardwareMap.dcMotor.get("RELICMOTOR");
 
-
-        // knckSer.setPosition(.5);
-        // colSer.setPosition(.2);
+        knckSer.setPosition(.5);
+        colSer.setPosition(.69);
 
         waitForStart();
 
 
         while (opModeIsActive()) {
 
-            //   colSer.setPosition(.2);
-            // knckSer.setPosition(.5);
+            colSer.setPosition(.7);
+            knckSer.setPosition(.5);
             //game pad one cotrls
 
             if (gamepad1.dpad_up) {
@@ -329,20 +328,20 @@ public class SUPERS_Manual_WoodDump extends LinearOpMode {
 
 
     }
-    //THIS ONE IS UP MY BRO!
-    private void bButton(){
-        if (gamepad1.b){
-            startTime1 = System.currentTimeMillis();
-            liftMotor.setPower(.5);
-        }
-        setSpe(700,750,0,startTime1, liftMotor);
-
-    }
-//THIS ONE IS DOWN YOU GRACIOUSLY PROFESSIONAL TEAMMATE OF MINE!!!
+    //THIS ONE IS down MY BRO!
     private void xButton(){
         if (gamepad1.x){
-            startTime = System.currentTimeMillis();
+            startTime1 = System.currentTimeMillis();
             liftMotor.setPower(-.5);
+        }
+        setSpe(1100,1200,0,startTime1, liftMotor);
+
+    }
+//THIS ONE IS up YOU GRACIOUSLY PROFESSIONAL TEAMMATE OF MINE!!!
+    private void bButton(){
+        if (gamepad1.b){
+            startTime = System.currentTimeMillis();
+            liftMotor.setPower(.5);
         }
         setSpe(1800,1900,0,startTime, liftMotor);
 

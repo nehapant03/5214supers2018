@@ -114,6 +114,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         rightDump = hardwareMap.servo.get("RD");
         leftDump = hardwareMap.servo.get("LD");
         colorServo = hardwareMap.servo.get("COLORSERVO");
+        colorFront = hardwareMap.get(ColorSensor.class, "CSF");
         FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
         wrist = hardwareMap.servo.get("WRIST");
         finger = hardwareMap.servo.get("FINGER");
@@ -162,7 +163,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         FLICKSERVO.setPosition(.49);
-        centerDump.setPosition(.7);
+        centerDump.setPosition(.33);
         colorServo.setPosition(.69);
 
         composeTelemetry();
@@ -181,7 +182,7 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.19); // put arm down
+            arm(.16); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
@@ -201,8 +202,8 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-            String keyResult = vuMark.toString();
-//String keyResult = "RIGHT";
+           // String keyResult = vuMark.toString();
+            String keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
@@ -246,41 +247,58 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                dump(.61,.40);
+                //DROP THE INTAKE RAMP
 
-                sleep(300);
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                dump(.56,.45);
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
+
+                sleep(100);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+
+                sleep(200);
+
+                leftDump.setPosition(.47);
+                straightWithEncoder(.3, -1);
 
                 sleep(700);
 
-                dump(.54,.47);
-
-                sleep(300);
-
-                dump(.52,.49);
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
 
                 sleep(700);
 
-                centerDump.setPosition(.25);
-
-                sleep(600);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(500);
-
-                dump(.8,.2);
-
+                leftDump.setPosition(0.45);
                 sleep(300);
 
-                straightWithEncoder(.4,-14);
+                //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,4);
+                straightWithEncoder(.3, -7);
+                sleep(300);
+                straightWithEncoder(.3, 3);
+                sleep(200);
+                straightWithEncoder(.3,-4);
+                sleep(100);
+                straightWithEncoder(.3,3);
 
             }else if(keyResult == "CENTER"){
 
@@ -320,48 +338,61 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                turnRightDegrees(100, parameters);
+                turnRightDegrees(105, parameters);
+                sleep(200);
+
+                //DROP THE INTAKE RAMP
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
+
                 sleep(100);
-                dump(.66,.35);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
 
                 sleep(200);
 
-                dump(.59,.42);
+                leftDump.setPosition(.47);
+                straightWithEncoder(.3, -3);
 
-                sleep(400);
+                sleep(700);
 
-                dump(.55,.46);
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
 
+                sleep(700);
+
+                leftDump.setPosition(0.45);
                 sleep(300);
 
-                dump(.52,.49);
+                //PUSHES THE CUBE AND PARKS
 
+                straightWithEncoder(.3, -7);
                 sleep(300);
-
-                dump(.49,.52);
-
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
-
-
-                centerDump.setPosition(.25);
-
-                sleep(600);
-
-                dump(.8,.2);
-
-                sleep(300);
-
-                straightWithEncoder(.4,-10);
-
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,3);
+                straightWithEncoder(.3, 3);
+                sleep(200);
+                straightWithEncoder(.3,-4);
+                sleep(100);
+                straightWithEncoder(.3,3);
 
             }else if (keyResult == "RIGHT"){
 
@@ -401,50 +432,65 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                turnRightDegrees(120, parameters);
+                turnRightDegrees(125, parameters);
+                sleep(200);
+
+                //DROP THE INTAKE RAMP
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
+
                 sleep(100);
-                dump(.61,.40);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
 
                 sleep(200);
 
-                dump(.56,.45);
+                leftDump.setPosition(.47);
+                straightWithEncoder(.3, -3);
 
-                sleep(400);
+                sleep(700);
 
-                dump(.54,.47);
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
 
+                sleep(700);
+
+                leftDump.setPosition(0.45);
                 sleep(300);
 
-                dump(.52,.49);
+                //PUSHES THE CUBE AND PARKS
 
+                straightWithEncoder(.3, -7);
                 sleep(300);
+                straightWithEncoder(.3, 3);
+                sleep(200);
+                straightWithEncoder(.3,-4);
+                sleep(100);
+                straightWithEncoder(.3,3);
+            }else {
 
-                dump(.49,.52);
-
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
-
-
-                centerDump.setPosition(.25);
-
-                sleep(600);
-
-                dump(.8,.2);
-
-                sleep(300);
-
-                straightWithEncoder(.4,-16);
-
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,4);
-
-            }else{
+                telemetry.addLine("I'm going in the middle");
+                telemetry.update();
 
                 straightWithEncoder(.3, 24);
                 sleep(100);
@@ -479,48 +525,61 @@ public class SUPERS_Blue_Relic extends LinearOpMode{
 
                 sleep(100);
 
-                turnRightDegrees(100, parameters);
+                turnRightDegrees(105, parameters);
+                sleep(200);
+
+                //DROP THE INTAKE RAMP
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
+
                 sleep(100);
-                dump(.66,.35);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
 
                 sleep(200);
 
-                dump(.59,.42);
+                leftDump.setPosition(.47);
+                straightWithEncoder(.3, -3);
 
-                sleep(400);
+                sleep(700);
 
-                dump(.55,.46);
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
 
+                sleep(700);
+
+                leftDump.setPosition(0.45);
                 sleep(300);
 
-                dump(.52,.49);
+                //PUSHES THE CUBE AND PARKS
 
+                straightWithEncoder(.3, -7);
                 sleep(300);
-
-                dump(.49,.52);
-
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
-
-
-                centerDump.setPosition(.25);
-
-                sleep(600);
-
-                dump(.8,.2);
-
-                sleep(300);
-
-                straightWithEncoder(.4,-10);
-
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,3);
+                straightWithEncoder(.3, 3);
+                sleep(200);
+                straightWithEncoder(.3,-4);
+                sleep(100);
+                straightWithEncoder(.3,3);
             }
 
 

@@ -30,8 +30,8 @@ import java.util.Locale;
  * Created by hima on 2/17/18.
  */
 
-@Autonomous(name = "SAFE_Blue_Far", group = "safe")
-@Disabled
+@Autonomous(name = "Sates_Blue_Far", group = "safe")
+
 
 public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -47,7 +47,7 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
     private DcMotor rBelt;
 
     private Servo colorServo;
-    private Servo flicker;
+    private Servo FLICKSERVO;
 
 
     private String colorid;
@@ -115,7 +115,9 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         rightDump = hardwareMap.servo.get("RD");
         leftDump = hardwareMap.servo.get("LD");
         colorServo = hardwareMap.servo.get("COLORSERVO");
-        flicker = hardwareMap.servo.get("flicker");
+        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
+        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
+
         wrist = hardwareMap.servo.get("WRIST");
         finger = hardwareMap.servo.get("FINGER");
 
@@ -162,8 +164,9 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        flicker.setPosition(.49);
-        centerDump.setPosition(.7);
+        FLICKSERVO.setPosition(.5);
+        centerDump.setPosition(.33);
+        colorServo.setPosition(.71);
 
         composeTelemetry();
 
@@ -180,31 +183,31 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            sleep(100);
-            arm(.75); // put arm down
-            sleep(1000);
+            centerDump.setPosition(.33);
 
+            arm(.16); // put arm down
+            sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
             telemetry.update();
 
-            sleep(100);
+            if (colorid == "RED"){FLICKSERVO(0);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
 
-            if (colorid == "RED"){flicker(1);}
-            else if(colorid== "BLUE"){flicker(0);}
-
+            sleep(700);
+            FLICKSERVO.setPosition(.5);
+            arm(.71); // put arm up
             sleep(500);
-            flicker.setPosition(.49);
-            arm(.1); // put arm up
-            sleep(200);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             sleep(100);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-           // String keyResult = vuMark.toString();
+
+
+           //String keyResult = vuMark.toString();
 
             String keyResult = "LEFT";
 
@@ -834,14 +837,14 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
 
     private void dump(double left, double right) {
         //setting the two dump servo to an input value
-        leftDump.setPosition(left);
-        rightDump.setPosition(right);
+  //      leftDump.setPosition(left);
+  //      rightDump.setPosition(right);
     }
-    private void flicker(double position) {
-        //setting the flicker servo to an input value
-        flicker.setPosition(position);
+    private void FLICKSERVO(double position) {
+        //setting the FLICKSERVO servo to an input value
+        FLICKSERVO.setPosition(position);
         sleep(2000);
-        flicker.setPosition(0.5);
+        FLICKSERVO.setPosition(0.5);
 
     }
     private void arm(double position) {

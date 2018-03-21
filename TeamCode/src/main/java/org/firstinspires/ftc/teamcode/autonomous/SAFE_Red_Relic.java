@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -27,13 +27,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.Locale;
 
 /**
- * Created by hima on 2/17/18.
+ * Created by hima on 2/16/18.
  */
-
-@Autonomous(name = "Sates_Blue_Far", group = "safe")
-
-
-public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
+@Autonomous(name="SAFE_Red_Relic", group="safe")
+@Disabled
+public class SAFE_Red_Relic extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -116,8 +114,6 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         leftDump = hardwareMap.servo.get("LD");
         colorServo = hardwareMap.servo.get("COLORSERVO");
         FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
-        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
-
         wrist = hardwareMap.servo.get("WRIST");
         finger = hardwareMap.servo.get("FINGER");
 
@@ -145,7 +141,10 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
+
+
         imu = hardwareMap.get(BNO055IMU.class, "GYRO");
+        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
         imu.initialize(parameters);
 
         //drive motor directions
@@ -164,9 +163,8 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        FLICKSERVO.setPosition(.5);
-        centerDump.setPosition(.33);
-        colorServo.setPosition(.71);
+        FLICKSERVO.setPosition(.49);
+        //centerDump.setPosition(.7);
 
         composeTelemetry();
 
@@ -183,9 +181,8 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            centerDump.setPosition(.33);
 
-            arm(.16); // put arm down
+            arm(.75); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
@@ -196,8 +193,8 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
             }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
 
             sleep(700);
-            FLICKSERVO.setPosition(.5);
-            arm(.71); // put arm up
+            FLICKSERVO.setPosition(.49);
+            arm(.1); // put arm up
             sleep(500);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
@@ -205,356 +202,315 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-
-
-           //String keyResult = vuMark.toString();
-
-            String keyResult = "LEFT";
+//            String keyResult = vuMark.toString();
+String keyResult = "LEFT";
 
             if(keyResult == "LEFT"){
-                straightWithEncoder(.3, 24);
+
+                telemetry.addLine("I'm going left");
+                telemetry.update();
+
+                straightWithEncoder(.3, -24);
+                sleep(300);
+                straightWithEncoder(.3, 6);
+                sleep(300);
+                straightWithEncoder(.3, -11);
+                sleep(300);
+                turnRightDegrees(65, parameters);
+                sleep(300);
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
+
                 sleep(100);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+
+                sleep(200);
+
                 straightWithEncoder(.3, -6);
-                sleep(100);
-                straightWithEncoder(.3, 3);
-//                sleep(300);
-//
-//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//                leftBack.setPower(1);
-//                leftFront.setPower(1);
-//                rightBack.setPower(1);
-//                rightFront.setPower(1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(-1);
-//                leftFront.setPower(-1);
-//                rightBack.setPower(-1);
-//                rightFront.setPower(-1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(0);
-//                leftFront.setPower(0);
-//                rightBack.setPower(0);
-//                rightFront.setPower(0);
 
-                sleep(100);
-
-                turnLeftDegress(88, parameters);
-                sleep(100);
-                straightWithEncoder(.4, -4);
-                sleep(100);
-
-                strafeWithEncoder(.4, 4);
-
-                turnLeftDegress(70, parameters);
-                sleep(100);
+                sleep(200);
 
                 dump(.66,.35);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.59,.42);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.55,.46);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.52,.49);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.49,.52);
 
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
+                sleep(500);
 
 
                 centerDump.setPosition(.25);
 
-                sleep(500);
+                sleep(600);
 
                 dump(.8,.2);
 
-                sleep(100);
-                straightWithEncoder(.4,3);
-                straightWithEncoder(.4,-9);
+                sleep(200);
 
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,3);
+                straightWithEncoder(.3,-9);
+
+                straightWithEncoder(.3,5);
+                straightWithEncoder(.3,-6);
+                straightWithEncoder(.3,4);
 
             }else if(keyResult == "CENTER"){
-
 
                 telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 
-                straightWithEncoder(.3, 24);
-                sleep(100);
-                straightWithEncoder(.3, -6);
-                sleep(100);
-                straightWithEncoder(.3, 3);
-//                sleep(300);
-//
-//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//                leftBack.setPower(1);
-//                leftFront.setPower(1);
-//                rightBack.setPower(1);
-//                rightFront.setPower(1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(-1);
-//                leftFront.setPower(-1);
-//                rightBack.setPower(-1);
-//                rightFront.setPower(-1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(0);
-//                leftFront.setPower(0);
-//                rightBack.setPower(0);
-//                rightFront.setPower(0);
+                straightWithEncoder(.3, -24);
+                sleep(200);
+                straightWithEncoder(.3, 6);
+                sleep(200);
+                straightWithEncoder(.3, -8);
+                sleep(200);
+                turnRightDegrees(69, parameters);
+                sleep(200);
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
 
                 sleep(100);
 
-                turnLeftDegress(88, parameters);
-                sleep(100);
-                straightWithEncoder(.4, -4);
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
                 sleep(100);
 
-                strafeWithEncoder(.4, 4);
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
 
-                turnLeftDegress(55, parameters);
-                sleep(100);
+                sleep(200);
 
                 dump(.66,.35);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.59,.42);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.55,.46);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.52,.49);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.49,.52);
 
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
+                sleep(500);
 
 
                 centerDump.setPosition(.25);
 
-                sleep(500);
+                sleep(600);
 
                 dump(.8,.2);
 
-                sleep(100);
+                sleep(200);
 
-                straightWithEncoder(.4,-10);
+                straightWithEncoder(.3,-9);
 
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,3);
-
+                straightWithEncoder(.3,5);
+                straightWithEncoder(.3,-6);
+                straightWithEncoder(.3,4);
 
             }else if (keyResult == "RIGHT"){
-                straightWithEncoder(.3, 24);
+
+                telemetry.addLine("I'm going right");
+                telemetry.update();
+
+                straightWithEncoder(.3, -24);
+                sleep(200);
+                straightWithEncoder(.3, 6);
+                sleep(200);
+                straightWithEncoder(.5, -16);
+                sleep(200);
+                turnRightDegrees(120, parameters);
+                sleep(200);
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
                 sleep(100);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+
+                sleep(200);
+
                 straightWithEncoder(.3, -6);
-                sleep(100);
-                straightWithEncoder(.3, 3);
-//                sleep(300);
-//
-//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//                leftBack.setPower(1);
-//                leftFront.setPower(1);
-//                rightBack.setPower(1);
-//                rightFront.setPower(1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(-1);
-//                leftFront.setPower(-1);
-//                rightBack.setPower(-1);
-//                rightFront.setPower(-1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(0);
-//                leftFront.setPower(0);
-//                rightBack.setPower(0);
-//                rightFront.setPower(0);
 
-                sleep(100);
-
-                turnLeftDegress(88, parameters);
-                sleep(100);
-                straightWithEncoder(.4, -4);
-                sleep(100);
-
-                strafeWithEncoder(.4, 4);
-
-                turnLeftDegress(55, parameters);
-                sleep(100);
+                sleep(200);
 
                 dump(.66,.35);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.59,.42);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.55,.46);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.52,.49);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.49,.52);
 
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
+                sleep(500);
 
 
                 centerDump.setPosition(.25);
 
-                sleep(500);
+                sleep(600);
 
                 dump(.8,.2);
 
-                sleep(100);
+                sleep(200);
 
-                straightWithEncoder(.4,-10);
+                straightWithEncoder(.3,-9);
 
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,3);
-            }else{
-                straightWithEncoder(.3, 24);
-                sleep(100);
-                straightWithEncoder(.3, -6);
-                sleep(100);
-                straightWithEncoder(.3, 3);
-//                sleep(300);
-//
-//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//                leftBack.setPower(1);
-//                leftFront.setPower(1);
-//                rightBack.setPower(1);
-//                rightFront.setPower(1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(-1);
-//                leftFront.setPower(-1);
-//                rightBack.setPower(-1);
-//                rightFront.setPower(-1);
-//
-//                sleep(100);
-//
-//                leftBack.setPower(0);
-//                leftFront.setPower(0);
-//                rightBack.setPower(0);
-//                rightFront.setPower(0);
+                straightWithEncoder(.3,5);
+                straightWithEncoder(.3,-6);
+                straightWithEncoder(.3,4);
+
+            }
+
+            else
+
+                {
+
+                straightWithEncoder(.3, -24);
+                sleep(200);
+                straightWithEncoder(.3, 6);
+                sleep(200);
+                straightWithEncoder(.3, -8);
+                sleep(200);
+                turnRightDegrees(69, parameters);
+                sleep(200);
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
 
                 sleep(100);
 
-                turnLeftDegress(88, parameters);
-                sleep(100);
-                straightWithEncoder(.4, -4);
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
                 sleep(100);
 
-                strafeWithEncoder(.4, 4);
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
 
-                turnLeftDegress(55, parameters);
-                sleep(100);
+                sleep(200);
 
                 dump(.66,.35);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.59,.42);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.55,.46);
 
-                sleep(200);
+                sleep(400);
 
                 dump(.52,.49);
 
-                sleep(300);
+                sleep(400);
 
                 dump(.49,.52);
 
-                sleep(300);
-
-                dump(.46,.55);
-                //   DUMP HERE
-                //dump(.26,.74);
-
-                sleep(300);
+                sleep(500);
 
 
                 centerDump.setPosition(.25);
 
-                sleep(500);
+                sleep(600);
 
                 dump(.8,.2);
 
-                sleep(100);
+                sleep(200);
 
-                straightWithEncoder(.4,-10);
+                straightWithEncoder(.3,-9);
 
-                straightWithEncoder(.4,5);
-                straightWithEncoder(.4,-6);
-                straightWithEncoder(.4,3);
+                straightWithEncoder(.3,5);
+                straightWithEncoder(.3,-6);
+                straightWithEncoder(.3,4);
             }
 
 
@@ -591,6 +547,7 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
     //always keep strength positive, use negative inches to go backwards
     private void straightWithEncoder(double strength, int straightInches){
 
+
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -621,6 +578,8 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+
+
 
     //defined so that power is positive always, right is positive inches, left is negative inches
     private void strafeWithEncoder(double unlimitedpower, int strafeInches){
@@ -747,7 +706,7 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((curent) < (stDeg-2)) || (curent > (stDeg+2) )){
+        while (((curent) < (stDeg-1.5)) || (curent > (stDeg+1.5) )){
             telemetry.update();
 
             //prints all the variables
@@ -757,7 +716,7 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.28);
+            turn(.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -797,7 +756,7 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((-curent) < (stDeg-2)) || (-curent > (stDeg+2) )){
+        while (((-curent) < (stDeg-1.5)) || (-curent > (stDeg+1.5) )){
             telemetry.update();
 
             //prints all the variables
@@ -807,7 +766,7 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(-.28);
+            turn(-.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -837,8 +796,8 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
 
     private void dump(double left, double right) {
         //setting the two dump servo to an input value
-  //      leftDump.setPosition(left);
-  //      rightDump.setPosition(right);
+        //leftDump.setPosition(left);
+       // rightDump.setPosition(right);
     }
     private void FLICKSERVO(double position) {
         //setting the FLICKSERVO servo to an input value
@@ -850,6 +809,18 @@ public class SAFE_BLUE_FAR extends LinearOpMode {    // Declare OpMode members.
     private void arm(double position) {
         //setting the color servo to an input value
         colorServo.setPosition(position);
+    }
+    private void rampDown(){
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
+
+        leftDump.setPosition(.8);
+        rightDump.setPosition(.4);
+
+        sleep(3000);
+
+        leftDump.setPosition(.5);
+        rightDump.setPosition(.5);
     }
     private void sleep(int i) {
         //initial time takes the current hardware time in milliseconds

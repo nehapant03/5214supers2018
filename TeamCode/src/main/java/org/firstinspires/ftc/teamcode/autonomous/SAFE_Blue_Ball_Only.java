@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -29,10 +29,10 @@ import java.util.Locale;
 /**
  * Created by hima on 2/16/18.
  */
-@Autonomous(name="SAFE_Red_Ball_Only", group="safe")
+@Autonomous(name="SAFE_Blue_Ball_Only", group="safe")
 @Disabled
 
-public class SAFE_Red_Ball_Only extends LinearOpMode{
+public class SAFE_Blue_Ball_Only extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -190,8 +190,8 @@ public class SAFE_Red_Ball_Only extends LinearOpMode{
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){FLICKSERVO(0);
-            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
+            if (colorid == "RED"){FLICKSERVO(1);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(0);}
 
             sleep(700);
             FLICKSERVO.setPosition(.49);
@@ -205,7 +205,7 @@ public class SAFE_Red_Ball_Only extends LinearOpMode{
 
             String keyResult = vuMark.toString();
 //String keyResult = "CENTER";
-//
+
 //            if(keyResult == "LEFT"){
 //
 //                telemetry.addLine("I'm going left");

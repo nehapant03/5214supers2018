@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -179,6 +179,7 @@ public class SUPERS_Red_Relic extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             centerDump.setPosition(.33);
+
 
             arm(.15); // put arm down
             sleep(1000);

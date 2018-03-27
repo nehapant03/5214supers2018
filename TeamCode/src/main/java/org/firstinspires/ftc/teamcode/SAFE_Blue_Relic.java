@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -26,12 +26,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-/**
- * Created by hima on 2/16/18.
- */
-@Autonomous(name="SAFE_Red_Relic", group="safe")
+@Autonomous(name="SAFE_Blue_Relic", group="safe")
 @Disabled
-public class SAFE_Red_Relic extends LinearOpMode{
+
+public class SAFE_Blue_Relic extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -45,7 +43,7 @@ public class SAFE_Red_Relic extends LinearOpMode{
     private DcMotor rBelt;
 
     private Servo colorServo;
-    private Servo FLICKSERVO;
+    private Servo flicker;
 
 
     private String colorid;
@@ -113,7 +111,7 @@ public class SAFE_Red_Relic extends LinearOpMode{
         rightDump = hardwareMap.servo.get("RD");
         leftDump = hardwareMap.servo.get("LD");
         colorServo = hardwareMap.servo.get("COLORSERVO");
-        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
+        flicker = hardwareMap.servo.get("flicker");
         wrist = hardwareMap.servo.get("WRIST");
         finger = hardwareMap.servo.get("FINGER");
 
@@ -141,10 +139,7 @@ public class SAFE_Red_Relic extends LinearOpMode{
         leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
 
-
-
         imu = hardwareMap.get(BNO055IMU.class, "GYRO");
-        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
         imu.initialize(parameters);
 
         //drive motor directions
@@ -163,8 +158,8 @@ public class SAFE_Red_Relic extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        FLICKSERVO.setPosition(.49);
-        //centerDump.setPosition(.7);
+        flicker.setPosition(.49);
+        centerDump.setPosition(.7);
 
         composeTelemetry();
 
@@ -189,11 +184,11 @@ public class SAFE_Red_Relic extends LinearOpMode{
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){FLICKSERVO(0);
-            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
+            if (colorid == "RED"){flicker(1);
+            }else if(checkColor(colorFront,.4) == "BLUE"){flicker(0);}
 
             sleep(700);
-            FLICKSERVO.setPosition(.49);
+            flicker.setPosition(.49);
             arm(.1); // put arm up
             sleep(500);
 
@@ -202,131 +197,130 @@ public class SAFE_Red_Relic extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-//            String keyResult = vuMark.toString();
-String keyResult = "LEFT";
+            String keyResult = vuMark.toString();
+//String keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
                 telemetry.addLine("I'm going left");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(300);
-                straightWithEncoder(.3, 6);
-                sleep(300);
-                straightWithEncoder(.3, -11);
-                sleep(300);
-                turnRightDegrees(65, parameters);
-                sleep(300);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-
+                straightWithEncoder(.3, 24);
                 sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 23);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
 
-                sleep(200);
+                sleep(100);
 
-                dump(.66,.35);
+                turnRightDegrees(45, parameters);
 
-                sleep(400);
+                sleep(100);
 
-                dump(.59,.42);
+                dump(.61,.40);
 
-                sleep(400);
+                sleep(300);
 
-                dump(.55,.46);
+                dump(.56,.45);
 
-                sleep(400);
+                sleep(700);
+
+                dump(.54,.47);
+
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
-
-                dump(.49,.52);
-
-                sleep(500);
-
+                sleep(700);
 
                 centerDump.setPosition(.25);
 
                 sleep(600);
 
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(500);
+
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-14);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,4);
 
             }else if(keyResult == "CENTER"){
 
                 telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.3, -8);
-                sleep(200);
-                turnRightDegrees(69, parameters);
-                sleep(200);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
+                straightWithEncoder(.3, 24);
+                sleep(100);
+                straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 11);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
 
                 sleep(100);
 
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
+                turnRightDegrees(100, parameters);
                 sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 dump(.66,.35);
 
-                sleep(400);
+                sleep(200);
 
                 dump(.59,.42);
 
@@ -334,15 +328,21 @@ String keyResult = "LEFT";
 
                 dump(.55,.46);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.49,.52);
 
-                sleep(500);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
                 centerDump.setPosition(.25);
@@ -351,75 +351,79 @@ String keyResult = "LEFT";
 
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-10);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
 
             }else if (keyResult == "RIGHT"){
 
                 telemetry.addLine("I'm going right");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.5, -16);
-                sleep(200);
-                turnRightDegrees(120, parameters);
-                sleep(200);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
+                straightWithEncoder(.3, 24);
                 sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 12);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
+
+                sleep(100);
+
+                turnRightDegrees(120, parameters);
+                sleep(100);
+                dump(.61,.40);
 
                 sleep(200);
 
-                dump(.66,.35);
+                dump(.56,.45);
 
                 sleep(400);
 
-                dump(.59,.42);
+                dump(.54,.47);
 
-                sleep(400);
-
-                dump(.55,.46);
-
-                sleep(400);
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.49,.52);
 
-                sleep(500);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
                 centerDump.setPosition(.25);
@@ -428,58 +432,54 @@ String keyResult = "LEFT";
 
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-16);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,4);
 
-            }
+            }else{
 
-            else
-
-                {
-
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.3, -8);
-                sleep(200);
-                turnRightDegrees(69, parameters);
-                sleep(200);
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
+                straightWithEncoder(.3, 24);
+                sleep(100);
+                straightWithEncoder(.3, -6);
+                sleep(100);
+                straightWithEncoder(.3, 11);
+//                sleep(300);
+//
+//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//                leftBack.setPower(1);
+//                leftFront.setPower(1);
+//                rightBack.setPower(1);
+//                rightFront.setPower(1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(-1);
+//                leftFront.setPower(-1);
+//                rightBack.setPower(-1);
+//                rightFront.setPower(-1);
+//
+//                sleep(100);
+//
+//                leftBack.setPower(0);
+//                leftFront.setPower(0);
+//                rightBack.setPower(0);
+//                rightFront.setPower(0);
 
                 sleep(100);
 
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
+                turnRightDegrees(100, parameters);
                 sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                sleep(200);
-
                 dump(.66,.35);
 
-                sleep(400);
+                sleep(200);
 
                 dump(.59,.42);
 
@@ -487,15 +487,21 @@ String keyResult = "LEFT";
 
                 dump(.55,.46);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.52,.49);
 
-                sleep(400);
+                sleep(300);
 
                 dump(.49,.52);
 
-                sleep(500);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
                 centerDump.setPosition(.25);
@@ -504,13 +510,13 @@ String keyResult = "LEFT";
 
                 dump(.8,.2);
 
-                sleep(200);
+                sleep(300);
 
-                straightWithEncoder(.3,-9);
+                straightWithEncoder(.4,-10);
 
-                straightWithEncoder(.3,5);
-                straightWithEncoder(.3,-6);
-                straightWithEncoder(.3,4);
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
             }
 
 
@@ -547,7 +553,6 @@ String keyResult = "LEFT";
     //always keep strength positive, use negative inches to go backwards
     private void straightWithEncoder(double strength, int straightInches){
 
-
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -578,8 +583,6 @@ String keyResult = "LEFT";
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-
-
 
     //defined so that power is positive always, right is positive inches, left is negative inches
     private void strafeWithEncoder(double unlimitedpower, int strafeInches){
@@ -706,7 +709,7 @@ String keyResult = "LEFT";
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((curent) < (stDeg-1.5)) || (curent > (stDeg+1.5) )){
+        while (((curent) < (stDeg-2)) || (curent > (stDeg+2) )){
             telemetry.update();
 
             //prints all the variables
@@ -716,7 +719,7 @@ String keyResult = "LEFT";
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.3);
+            turn(.28);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -756,7 +759,7 @@ String keyResult = "LEFT";
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((-curent) < (stDeg-1.5)) || (-curent > (stDeg+1.5) )){
+        while (((-curent) < (stDeg-2)) || (-curent > (stDeg+2) )){
             telemetry.update();
 
             //prints all the variables
@@ -766,7 +769,7 @@ String keyResult = "LEFT";
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(-.3);
+            turn(-.28);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -796,19 +799,15 @@ String keyResult = "LEFT";
 
     private void dump(double left, double right) {
         //setting the two dump servo to an input value
-        //leftDump.setPosition(left);
-       // rightDump.setPosition(right);
+        leftDump.setPosition(left);
+        rightDump.setPosition(right);
     }
-    private void FLICKSERVO(double position) {
-        //setting the FLICKSERVO servo to an input value
-        FLICKSERVO.setPosition(position);
+    private void flicker(double position) {
+        //setting the flicker servo to an input value
+        flicker.setPosition(position);
         sleep(2000);
-        FLICKSERVO.setPosition(0.5);
+        flicker.setPosition(0.5);
 
-    }
-    private void arm(double position) {
-        //setting the color servo to an input value
-        colorServo.setPosition(position);
     }
     private void rampDown(){
         leftDump.setPosition(.5);
@@ -821,6 +820,10 @@ String keyResult = "LEFT";
 
         leftDump.setPosition(.5);
         rightDump.setPosition(.5);
+    }
+    private void arm(double position) {
+        //setting the color servo to an input value
+        colorServo.setPosition(position);
     }
     private void sleep(int i) {
         //initial time takes the current hardware time in milliseconds

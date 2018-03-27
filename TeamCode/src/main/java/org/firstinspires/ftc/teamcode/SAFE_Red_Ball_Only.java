@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,9 +26,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="SUPERS_Blue_Ball_Only", group="safe")
+@Autonomous(name="SAFE_Red_Ball_Only", group="safe")
+@Disabled
 
-public class Supers_Blue_Ball_Only extends LinearOpMode{
+public class SAFE_Red_Ball_Only extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -161,7 +163,6 @@ public class Supers_Blue_Ball_Only extends LinearOpMode{
 
         FLICKSERVO.setPosition(.49);
         centerDump.setPosition(.7);
-        colorServo.setPosition(.69);
 
         composeTelemetry();
 
@@ -179,19 +180,19 @@ public class Supers_Blue_Ball_Only extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.15); // put arm down
+            arm(.75); // put arm down
             sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){FLICKSERVO(1);
-            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(0);}
+            if (colorid == "RED"){FLICKSERVO(0);
+            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(1);}
 
             sleep(700);
-            FLICKSERVO.setPosition(.5);
-            arm(.69); // put arm up
+            FLICKSERVO.setPosition(.49);
+            arm(.1); // put arm up
             sleep(500);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);

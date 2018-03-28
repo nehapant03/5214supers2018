@@ -90,9 +90,12 @@ public class sCurveTurnMarch20 extends LinearOpMode {
         // Loop and update the dashboard
         while (opModeIsActive()) {
 
-            turnWithGyro("left", .8, 45, parameters);
+            //turnWithGyro("left", .7, 45, parameters);
+            //sleep(3000);
+            turnWithGyro("right", .7, 60, parameters);
             sleep(3000);
-            turnWithGyro("right", .8, 90, parameters);
+            turnWithGyro("left", .7, 30, parameters);
+            sleep(3000);
 
             telemetry.update();
             break;
@@ -202,7 +205,7 @@ public class sCurveTurnMarch20 extends LinearOpMode {
         double current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
         double start = current;
         double target = current + deg;
-        double delta = 0;
+        double delta = 2;
         //sleep(3000);
         telemetry.addLine("start: " + Double.toString(start));
         telemetry.addLine("target: " + Double.toString(target));
@@ -233,7 +236,7 @@ public class sCurveTurnMarch20 extends LinearOpMode {
                 telemetry.addLine("IM IN THE WHILE");
                 telemetry.addLine("current: " + Double.toString(current));
                 double ratio = Math.abs(current) / Math.abs(target);
-                sCurve(-.7, 8, ratio);
+                turn(sCurve(-.7, 8, ratio));
 
                 agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
@@ -270,8 +273,9 @@ public class sCurveTurnMarch20 extends LinearOpMode {
 
 
     public double sCurve(double p, double w, double ratio){
+
         double out = 0;
-        out = p*(1.4-(1/(1+(Math.pow(Math.E, (-w*((3*ratio)-2) ) )  ) ) ) );
+        out = p*(1.4-(1/(1+(Math.pow(Math.E, (-w*((3*ratio)-1.7) ) )  ) ) ) );
         telemetry.addLine(Double.toString(out));
         telemetry.update();
         return out;

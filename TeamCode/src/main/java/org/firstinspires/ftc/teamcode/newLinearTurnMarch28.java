@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -23,9 +22,9 @@ import java.util.Locale;
  */
 
 
-@TeleOp(name="sCurveTurnMarch20", group="Team5214")
+@TeleOp(name="newLinearTurnMarch28", group="Team5214")
 //@Disabled
-public class sCurveTurnMarch20 extends LinearOpMode {
+public class newLinearTurnMarch28 extends LinearOpMode {
 
     //----------------------------------------------------------------------------------------------
     // State
@@ -92,9 +91,7 @@ public class sCurveTurnMarch20 extends LinearOpMode {
 
             //turnWithGyro("left", .7, 45, parameters);
             //sleep(3000);
-            turnWithGyro("right", .65, 60, parameters);
-            sleep(3000);
-            turnWithGyro("left", .4, 30, parameters);
+            turnWithGyro("right", .7, 60, parameters);
             sleep(3000);
 
             telemetry.update();
@@ -205,43 +202,28 @@ public class sCurveTurnMarch20 extends LinearOpMode {
         double current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
         double start = current;
         double target = current + deg;
-        double delta = 2;
-        //sleep(3000);
+        double n = 15;
+        double y = (-power/n)*(current - target) + .2;
+
         telemetry.addLine("start: " + Double.toString(start));
         telemetry.addLine("target: " + Double.toString(target));
         telemetry.addLine("deg: " + Double.toString(deg));
         telemetry.update();
 
-        if (direction == "left") {
-            while (current < target + delta) {
-                telemetry.update();
-                //prints all the variables
-                telemetry.addLine("IM IN THE WHILE");
-                telemetry.addLine("current: " + Double.toString(current));
-                double ratio = current / target;
-                turn(sCurve(.7, 8, ratio));
-
-                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-                telemetry.update();
-            }
-
+        while(current < target - n){
+           turn(power);
+           current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
+           telemetry.addLine("current = " + Double.toString(current));
+           telemetry.addLine("I left the target - n loop");
+           telemetry.update();
         }
 
-        else if (direction == "right") {
-            target = -target;
-            while (current > target + delta) {
-                telemetry.update();
-                //prints all the variables
-                telemetry.addLine("IM IN THE WHILE");
-                telemetry.addLine("current: " + Double.toString(current));
-                double ratio = Math.abs(current) / Math.abs(target);
-                turn(sCurve(-.7, 8, ratio));
-
-                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-                telemetry.update();
-            }
+        while(current < target){
+            turn(y);
+            current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
+            telemetry.addLine("current = " + Double.toString(current));
+            telemetry.addLine("Im done turning now.");
+            telemetry.update();
         }
 
         telemetry.addLine(Double.toString(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))));
@@ -265,21 +247,22 @@ public class sCurveTurnMarch20 extends LinearOpMode {
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-    }
+    }             
 
 
 
 
 
 
-    public double sCurve(double p, double w, double ratio){
-
-        double out = 0;
-        out = p*(1.4-(1/(1+(Math.pow(Math.E, (-w*((3*ratio)-1.7) ) )  ) ) ) );
-        telemetry.addLine(Double.toString(out));
-        telemetry.update();
-        return out;
-    }
+//
+//    public double sCurve(double p, double w, double ratio){
+//
+//        double out = 0;
+//        out = p*(1.4-(1/(1+(Math.pow(Math.E, (-w*((3*ratio)-1.7) ) )  ) ) ) );
+//        telemetry.addLine(Double.toString(out));
+//        telemetry.update();
+//        return out;
+//    }
 
     //----------------------------------------------------------------------------------------------
     // Formatting

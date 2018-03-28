@@ -67,6 +67,23 @@ public class Organized_Red_Relic extends LinearOpMode{
         telemetry.update();
 
 
+
+        //HOT! DO NOT TOUCH
+        colorSensor colorSensorWorld = new colorSensor(colorFront);
+        turn_degrees turnWorld = new turn_degrees(leftFront, rightFront, leftBack, rightBack,
+                /*direction here, left is just a place holder*/ "left",
+                /*power is here, 1 is just a place holder*/ 1,
+                /*degress here, 77 is just a place holder*/ 77,
+                imu) {
+            @Override
+            public void runOpMode() throws InterruptedException {
+                telemetry.addLine("boi, why u fuck up the robot");
+                telemetry.update();
+            }
+        };
+
+
+
         //using phone camera for image recognition
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parametersVu = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -151,7 +168,7 @@ public class Organized_Red_Relic extends LinearOpMode{
         centerDump.setPosition(.33);
         colorServo.setPosition(.71);
 
-        composeTelemetry();
+        turnWorld.composeTelemetry();
 
         //testMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         // Wait for the game to start (driver presses PLAY)
@@ -159,24 +176,12 @@ public class Organized_Red_Relic extends LinearOpMode{
         waitForStart();
         relicTrackables.activate();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        angles2   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles2 = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         runtime.reset();
 
-        //HOT! DO NOT TOUCH
-        colorSensor colorSensorWorld = new colorSensor(colorFront);
-        turn_degrees turnWorld = new turn_degrees(leftFront, rightFront, leftBack, rightBack,
-                /*direction here, left is just a place holder*/ "left",
-                /*power is here, 1 is just a place holder*/ 1,
-                /*degress here, 77 is just a place holder*/ 77,
-                imu) {
-            @Override
-            public void runOpMode() throws InterruptedException {
-                telemetry.addLine("boi, why u fuck up the robot");
-                telemetry.update();
-            }
-        };
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -313,14 +318,6 @@ public class Organized_Red_Relic extends LinearOpMode{
         leftDump.setPosition(.5);
         rightDump.setPosition(.5);
     }
-    private void sleep(int i) {
-        //initial time takes the current hardware time in milliseconds
-        long initial_time = System.currentTimeMillis();
-        //inside the while loop cpu will stop working when the input time is more than the time passed in this loop
-        //cpu will be back working when the loop reaches the target time
-        while (System.currentTimeMillis() - initial_time < i) {
 
-        }
-    }
 
 }

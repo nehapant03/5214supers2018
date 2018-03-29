@@ -203,7 +203,7 @@ public class HOUSTON_Manual_v2 extends LinearOpMode {
             //gamepad 2 contrls
 
             if(gamepad2.right_bumper){wrist.setPosition(1);}
-            if(gamepad2.left_bumper){wrist.setPosition(.07);}
+            if(gamepad2.left_bumper){wrist.setPosition(.01);}
             if(gamepad2.x){finger.setPosition(.78);}
             relicRELEASE();
 
@@ -215,7 +215,7 @@ public class HOUSTON_Manual_v2 extends LinearOpMode {
             }
 
             else if(gamepad2.dpad_up){
-                wrist.setPosition(.07);
+                wrist.setPosition(.01);
                 finger.setPosition(.2);
                 motorWithEncoder(relicMotor,1,-41);
 
@@ -309,7 +309,7 @@ public class HOUSTON_Manual_v2 extends LinearOpMode {
                             + (-.75 * (gamepad2.right_trigger)) + .75 * (gamepad2.left_trigger))));
             //prints out the current position of the motor
             telemetry.update();
-            if(gamepad2.left_bumper){
+            if(gamepad2.b){
                 motorName.setPower(0);
                 break;
             };

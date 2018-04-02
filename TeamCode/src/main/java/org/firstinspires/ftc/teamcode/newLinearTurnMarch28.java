@@ -91,8 +91,12 @@ public class newLinearTurnMarch28 extends LinearOpMode {
 
             //turnWithGyro("left", .7, 45, parameters);
             //sleep(3000);
-            turnWithGyro("right", .7, 60, parameters);
+
+            turnWithGyro("left", .7, 50, parameters);
             sleep(3000);
+            turnWithGyro("right", .7, 50, parameters);
+            sleep(3000);
+
 
             telemetry.update();
             break;
@@ -202,8 +206,8 @@ public class newLinearTurnMarch28 extends LinearOpMode {
 
         double current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
         double start = current;
-        double target = current + deg;
-        double n = 15;
+        double target = current + deg - 1;
+        double n = 20;
         double y = (-(power - .2)/n)*(current - target) + .2;
 
         telemetry.addLine("start: " + Double.toString(start));
@@ -211,28 +215,56 @@ public class newLinearTurnMarch28 extends LinearOpMode {
         telemetry.addLine("deg: " + Double.toString(deg));
         telemetry.update();
 
-        //keep the power constant for a certain amount of time (target - n degrees) before decreasing
-        while(current < target - n){
-           telemetry.update();
-           telemetry.addLine("IM IN THE 1ST WHILE");
-           turn(power);
-           current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)); //update current position
-           telemetry.addLine("current = " + Double.toString(current)); //print current
-           telemetry.update();
-        }
-        telemetry.addLine("I left the target - n loop");
-        telemetry.update();
-
-        //have the power decrease until we reach target
-        while(current < target){
+        if(direction == "left") {
+            //keep the power constant for a certain amount of time (target - n degrees) before decreasing
+            while (current < target - n) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 1ST WHILE");
+                turn(power);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)); //update current position
+                telemetry.addLine("current = " + Double.toString(current)); //print current
+                telemetry.update();
+            }
+            telemetry.addLine("I left the target - n loop");
             telemetry.update();
-            telemetry.addLine("IM IN THE 2ND WHILE NOW");
-            turn(y);
-            current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-            telemetry.addLine("current = " + Double.toString(current));
-            telemetry.update();
-        }
 
+            //have the power decrease until we reach target
+            while (current < target) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 2ND WHILE NOW");
+                turn(y);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
+                telemetry.addLine("current = " + Double.toString(current));
+                telemetry.update();
+            }
+        }
+        else{
+            //keep the power constant for a certain amount of time (target - n degrees) before decreasing
+            while (Math.abs(current) < target - n) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 1ST WHILE");
+                turn(-power);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Math.abs(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))); //update current position
+                telemetry.addLine("current = " + Double.toString(current)); //print current
+                telemetry.update();
+            }
+            telemetry.addLine("I left the target - n loop");
+            telemetry.update();
+
+            //have the power decrease until we reach target
+            while (Math.abs(current) < target) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 2ND WHILE NOW");
+                turn(-y);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Math.abs(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+                telemetry.addLine("current = " + Double.toString(current));
+                telemetry.update();
+            }
+        }
         telemetry.addLine(Double.toString(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))));
         telemetry.addLine("I LEFT THE WHILE");
         telemetry.update();

@@ -190,6 +190,7 @@ public abstract class turn_degrees extends LinearOpMode{
         return out;
     }
 
+
     public String formatDegrees(double degrees){
         return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
     }

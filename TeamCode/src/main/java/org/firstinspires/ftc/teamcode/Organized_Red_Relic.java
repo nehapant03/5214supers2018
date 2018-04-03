@@ -68,7 +68,7 @@ public class Organized_Red_Relic extends LinearOpMode{
 
 
 
-        //HOT! DO NOT TOUCH
+        //code that makes the world a better place starts here
         colorSensor colorSensorWorld = new colorSensor(colorFront);
         turn_degrees turnWorld = new turn_degrees(leftFront, rightFront, leftBack, rightBack,
                 /*direction here, left is just a place holder*/ "left",
@@ -81,7 +81,15 @@ public class Organized_Red_Relic extends LinearOpMode{
                 telemetry.update();
             }
         };
+        sleep sleepyBot = new sleep();
+        //you can call "sleepyBot.sleep(888);"
 
+        //servoWorld servo = new servoWorld();
+        //inside the parenthesis u have to put the 4 servos: left dump, right dump, flick and color
+        //motorWorld motor = new motorWorld();
+        //inside the parenthesis u have to put in one motor
+
+        //code that makes the world a better place ends here
 
 
         //using phone camera for image recognition
@@ -176,8 +184,7 @@ public class Organized_Red_Relic extends LinearOpMode{
         waitForStart();
         relicTrackables.activate();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        angles2 = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
 
         runtime.reset();
 
@@ -194,129 +201,6 @@ public class Organized_Red_Relic extends LinearOpMode{
             idle();
             break;
         }
-    }
-
-    private void motorWithEncoder(DcMotor motorName, double power, int inches) {
-        ticks = (int) (inches * 1120 / (4 * 3.14159)); //converts inches to ticks
-//        telemetry.addData("ticks: ", ticks);
-        telemetry.update();
-
-        //modifies moveto position based on starting ticks position, keeps running tally
-        position2move2 = motorName.getCurrentPosition() + ticks;
-        motorName.setTargetPosition(position2move2);
-        motorName.setPower(power);
-
-    }
-
-    //always keep strength positive, use negative inches to go backwards
-    private void straightWithEncoder(double strength, int straightInches){
-
-
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorWithEncoder(leftBack, strength, straightInches);
-        motorWithEncoder(leftFront, strength, straightInches);
-        motorWithEncoder(rightBack, strength, straightInches);
-        motorWithEncoder(rightFront, strength, straightInches);
-
-        while(leftBack.isBusy() && leftFront.isBusy() && rightBack.isBusy() && rightFront.isBusy()) {
-        }
-
-        leftBack.setPower(0);
-        rightBack.setPower(0);
-        leftFront.setPower(0);
-        rightFront.setPower(0);
-
-        //reset encoder values
-        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //put the motors back into a mode where they can run
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-
-
-    //defined so that power is positive always, right is positive inches, left is negative inches
-    private void strafeWithEncoder(double unlimitedpower, int strafeInches){
-
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        motorWithEncoder(leftBack, unlimitedpower, -strafeInches);
-        motorWithEncoder(leftFront, unlimitedpower, strafeInches);
-        motorWithEncoder(rightBack, unlimitedpower, strafeInches);
-        motorWithEncoder(rightFront, unlimitedpower, -strafeInches);
-
-        while(leftBack.isBusy() && leftFront.isBusy() && rightBack.isBusy() && rightFront.isBusy()) {
-        }
-
-
-        leftBack.setPower(0);
-        rightBack.setPower(0);
-        leftFront.setPower(0);
-        rightFront.setPower(0);
-
-        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    private void turn(double power){
-        //left turn is positive power
-        leftBack.setPower(-power); //sets left wheels to move backward
-        leftFront.setPower(-power);
-        rightBack.setPower(power); // makes right hand wheels to move forward
-        rightFront.setPower(power);
-
-        //makes the robot go forward for an indefinite amount of time
-
-    }
-
-    private void dump(double left, double right) {
-        //setting the two dump servo to an input value
-        leftDump.setPosition(left);
-       // rightDump.setPosition(right);
-    }
-    private void FLICKSERVO(double position) {
-        //setting the FLICKSERVO servo to an input value
-        FLICKSERVO.setPosition(position);
-        sleep(2000);
-        FLICKSERVO.setPosition(0.5);
-
-    }
-
-    private void arm(double position) {
-        //setting the color servo to an input value
-        colorServo.setPosition(position);
-    }
-    private void rampDown(){
-        leftDump.setPosition(.5);
-        rightDump.setPosition(.5);
-
-        leftDump.setPosition(.8);
-        rightDump.setPosition(.4);
-
-        sleep(3000);
-
-        leftDump.setPosition(.5);
-        rightDump.setPosition(.5);
     }
 
 

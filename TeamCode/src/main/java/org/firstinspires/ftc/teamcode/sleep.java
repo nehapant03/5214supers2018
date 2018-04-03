@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 public class sleep {
-    private int i;
-    public sleep(int i) {
-        this.i = i;
+
+    public sleep() {
+
     }
     public void robotSleep(int i) {
         //initial time takes the current hardware time in milliseconds

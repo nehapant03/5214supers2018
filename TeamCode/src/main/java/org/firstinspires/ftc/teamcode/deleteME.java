@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,9 +18,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-@Autonomous(name="newLinearTurnMarch28", group="Team5214")
-//@Disabled
-public class newLinearTurnMarch28 extends LinearOpMode {
+
+@TeleOp(name="deleteME", group="Team5214")
+@Disabled
+public class deleteME extends LinearOpMode {
 
     //----------------------------------------------------------------------------------------------
     // State
@@ -87,20 +88,8 @@ public class newLinearTurnMarch28 extends LinearOpMode {
 
             //turnWithGyro("left", .7, 45, parameters);
             //sleep(3000);
-
-            turnWithGyro("left", .6, 15, parameters);
-            sleep(5000);
-
-            turnWithGyro("right", .6, 30, parameters);
+            turnWithGyro("right", .7, 90, parameters);
             sleep(3000);
-
-
-            turnWithGyro("left", .6, 45, parameters);
-            sleep(3000);
-
-            turnWithGyro("right", .6, 25, parameters);
-            sleep(3000);
-
 
             telemetry.update();
             break;
@@ -200,99 +189,64 @@ public class newLinearTurnMarch28 extends LinearOpMode {
     }
 
     private void turnWithGyro(String direction, double power, double deg, BNO055IMU.Parameters parametersMeth) {
-        //so that we can control the motors normally
+
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         Orientation agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
         double current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
         double start = current;
-        double target = current + deg - 2;
-        double n = 0;
-        if(target>=50){
-             n = 25;
-        }else{
-             n = 20;
-        }
-        double y = 0;
-
+        double target = current + deg;
+        double delta = 0;
+        //sleep(3000);
         telemetry.addLine("start: " + Double.toString(start));
         telemetry.addLine("target: " + Double.toString(target));
         telemetry.addLine("deg: " + Double.toString(deg));
         telemetry.update();
 
-        if(direction == "left") {
-            //keep the power constant for a certain amount of time (target - n degrees) before decreasing
-            while (current < target - n) {
+        if (direction == "left") {
+            while (current < target + delta) {
                 telemetry.update();
-                telemetry.addLine("IM IN THE 1ST WHILE");
-                turn(power);
-                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)); //update current position
-                telemetry.addLine("current = " + Double.toString(current)); //print current
-                telemetry.update();
-            }
-            telemetry.addLine("I left the target - n loop");
-            telemetry.update();
+                //prints all the variables
+                telemetry.addLine("IM IN THE WHILE");
+                telemetry.addLine("current: " + Double.toString(current));
+                double ratio = current / target;
+                turn(sCurve(.7, 8, ratio));
 
-            //have the power decrease until we reach target
-            while (current < target) {
-                telemetry.update();
-                telemetry.addLine("IM IN THE 2ND WHILE NOW");
-                y = (-(power - .2)/n)*(current - target) + .22;
-                turn(y);
                 agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
-                telemetry.addLine("current = " + Double.toString(current));
                 telemetry.update();
             }
-
 
         }
-        else{
-            //keep the power constant for a certain amount of time (target - n degrees) before decreasing
-            while (Math.abs(current) < target - n) {
-                telemetry.update();
-                telemetry.addLine("IM IN THE 1ST WHILE");
-                y = (-(power - .2)/n)*(current - target) + .22;
-                turn(-power);
-                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Math.abs(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))); //update current position
-                telemetry.addLine("current = " + Double.toString(current)); //print current
-                telemetry.update();
-            }
-            telemetry.addLine("I left the target - n loop");
-            telemetry.update();
 
-            //have the power decrease until we reach target
-            while (Math.abs(current) < target) {
+        else if (direction == "right") {
+            target = -target;
+            while (current > target + delta) {
                 telemetry.update();
-                telemetry.addLine("IM IN THE 2ND WHILE NOW");
-                turn(-y);
+                //prints all the variables
+                telemetry.addLine("IM IN THE WHILE");
+                telemetry.addLine("current: " + Double.toString(current));
+                double ratio = Math.abs(current) / Math.abs(target);
+                turn(sCurve(-.7, 8, ratio));
+
                 agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                current = Math.abs(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
-                telemetry.addLine("current = " + Double.toString(current));
+                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
                 telemetry.update();
             }
         }
+
         telemetry.addLine(Double.toString(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))));
         telemetry.addLine("I LEFT THE WHILE");
         telemetry.update();
 
-        //kill the power
         leftBack.setPower(0);
         rightBack.setPower(0);
         leftFront.setPower(0);
         rightFront.setPower(0);
 
-        sleep(1000);
-        telemetry.addLine("final reading = " + formatAngle(agl.angleUnit, agl.firstAngle));
-        telemetry.update();
-
-        //reset encoders and reset the mode and other stuff that just needs to be there
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -308,6 +262,17 @@ public class newLinearTurnMarch28 extends LinearOpMode {
     }
 
 
+
+
+
+
+    public double sCurve(double p, double w, double ratio){
+        double out = 0;
+        out = p*(1.4-(1/(1+(Math.pow(Math.E, (-w*((3*ratio)-2) ) )  ) ) ) );
+        telemetry.addLine(Double.toString(out));
+        telemetry.update();
+        return out;
+    }
 
     //----------------------------------------------------------------------------------------------
     // Formatting

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,8 +26,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="HOUSTON_Red_Relic_85pts_0405", group="safe")
-public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
+/**
+ * Created by hima on 2/16/18.
+ */
+@Autonomous(name="SAFE_Red_Far", group="safe")
+@Disabled
+
+public class SAFE_Red_Far extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -40,7 +46,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
     private DcMotor rBelt;
 
     private Servo colorServo;
-    private Servo FLICKSERVO;
+    private Servo flicker;
 
 
     private String colorid;
@@ -52,9 +58,6 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
     private Servo centerDump;
     private Servo wrist;
     private Servo finger;
-
-    private Servo leftPush;
-    private Servo rightPush;
 
     private int ticks;
     private int position2move2;
@@ -101,14 +104,19 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-
+        //hooks up all of these motors with the config file
         leftBack = hardwareMap.get(DcMotor.class, "LB");
         rightBack = hardwareMap.get(DcMotor.class, "RB");
         leftFront = hardwareMap.get(DcMotor.class, "LF");
         rightFront = hardwareMap.get(DcMotor.class, "RF");
+
+        centerDump = hardwareMap.servo.get("CD");
+        rightDump = hardwareMap.servo.get("RD");
+        leftDump = hardwareMap.servo.get("LD");
+        colorServo = hardwareMap.servo.get("COLORSERVO");
+        flicker = hardwareMap.servo.get("flicker");
+        wrist = hardwareMap.servo.get("WRIST");
+        finger = hardwareMap.servo.get("FINGER");
 
         lBelt = hardwareMap.dcMotor.get("LBELT");
         rBelt = hardwareMap.dcMotor.get("RBELT");
@@ -116,16 +124,6 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         liftMotor = hardwareMap.dcMotor.get("LIFT");
         relicMotor = hardwareMap.dcMotor.get("RELICMOTOR");
 
-        centerDump = hardwareMap.servo.get("CD");
-        rightDump = hardwareMap.servo.get("RD");
-        leftDump = hardwareMap.servo.get("LD");
-        colorServo = hardwareMap.servo.get("COLORSERVO");
-        FLICKSERVO = hardwareMap.servo.get("FLICKSERVO");
-        wrist = hardwareMap.servo.get("WRIST");
-        finger = hardwareMap.servo.get("FINGER");
-
-        leftPush = hardwareMap.servo.get("LPUSH");
-        rightPush = hardwareMap.servo.get("RPUSH");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -135,10 +133,16 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
 
+        leftBack = hardwareMap.get(DcMotor.class, "LB");
+        rightBack = hardwareMap.get(DcMotor.class, "RB");
+        leftFront = hardwareMap.get(DcMotor.class, "LF");
+        rightFront = hardwareMap.get(DcMotor.class, "RF");
 
         imu = hardwareMap.get(BNO055IMU.class, "GYRO");
-        colorFront = hardwareMap.get(ColorSensor.class,"CSF");
         imu.initialize(parameters);
 
         //drive motor directions
@@ -157,13 +161,8 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        FLICKSERVO.setPosition(.5);
-        centerDump.setPosition(.33);
-        colorServo.setPosition(.67);
-       // leftDump.setPosition(.61);
-
-        leftPush.setPosition(.5);
-        rightPush.setPosition(.5);
+        flicker.setPosition(.49);
+        centerDump.setPosition(.7);
 
         composeTelemetry();
 
@@ -171,134 +170,210 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
 
         waitForStart();
-        double start = System.currentTimeMillis();
         relicTrackables.activate();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         angles2   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double end = System.currentTimeMillis();
-        Double result = (end - start)/1000;
-        telemetry.addData("here is the time guysssssss: ", result);
 
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.13); // put arm down
-
+            arm(.75); // put arm down
             sleep(700);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid == "RED"){FLICKSERVO(0.2);
-            }else if(checkColor(colorFront,.4) == "BLUE"){FLICKSERVO(.8);}
+            if (colorid == "RED"){flicker(0);
+            }else if(checkColor(colorFront,.4) == "BLUE"){flicker(1);}
 
-            sleep(300);
-            FLICKSERVO.setPosition(.5);
-            arm(.67); // put arm up
-            wrist.setPosition(1);
-            leftPush.setPosition(.55);
-            rightPush.setPosition(.55);
+            sleep(500);
+            flicker.setPosition(.49);
+            arm(.1); // put arm up
+            sleep(200);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(200);
-//            leftPush.setPosition(.5);
-//            rightPush.setPosition(.5);
+            sleep(100);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
+            colorServo.setPosition(.5);
+            flicker.setPosition(.5);
+
             String keyResult = vuMark.toString();
-            keyResult = "LEFT";
+//String keyResult = "LEFT";
 
             if(keyResult == "LEFT"){
 
                 telemetry.addLine("I'm going left");
                 telemetry.update();
 
-                straightWithEncoder(.55, -31);
-                leftDump.setPosition(.61);
-                turnRightDegrees(52, parameters);
-
-                //DROP THE INTAKE RAMP
+                straightWithEncoder(.3, -24);
+                sleep(100);
+                straightWithEncoder(.3, 6);
+                sleep(100);
+                straightWithEncoder(.4, -4);
+                sleep(100);
+                turnLeftDegress(88, parameters);
+                sleep(100);
 
                 leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-                leftPush.setPosition(.5);
-                rightPush.setPosition(.5);
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
 
-                straightWithEncoder(.5, -1);
+                sleep(110);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+                sleep(100);
+
+                turnRightDegrees(33, parameters);
+
+                sleep(100);
+
+                dump(.66,.35);
 
                 sleep(200);
 
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
+                dump(.59,.42);
 
-                sleep(700);
+                sleep(300);
 
-                leftDump.setPosition(0.71);
+                dump(.55,.46);
 
-                //PUSHES THE CUBE AND PARKS
+                sleep(200);
 
-                straightWithEncoder(.5, -10);
+                dump(.52,.49);
 
-                straightWithEncoder(.45, 3);
+                sleep(300);
 
-                straightWithEncoder(.45,-4);
+                dump(.49,.52);
 
-                straightWithEncoder(.45,3);
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
+
+
+                centerDump.setPosition(.25);
+
+                sleep(500);
+
+                dump(.8,.2);
+
+                sleep(100);
+
+                straightWithEncoder(.4,-16);
+
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
+
 
             }else if(keyResult == "CENTER"){
 
                 telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 
-
-                telemetry.addLine("I'm going left");
-                telemetry.update();
-
-                straightWithEncoder(.5, -24);
-                leftDump.setPosition(.61);
-                turnRightDegrees(50, parameters);
-
-                //DROP THE INTAKE RAMP
+                straightWithEncoder(.3, -24);
+                sleep(100);
+                straightWithEncoder(.3, 6);
+                sleep(100);
+                straightWithEncoder(.4, -4);
+                sleep(100);
+                turnLeftDegress(88, parameters);
+                sleep(100);
 
                 leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-                leftPush.setPosition(.5);
-                rightPush.setPosition(.5);
+                leftBack.setPower(1);
+                leftFront.setPower(1);
+                rightBack.setPower(1);
+                rightFront.setPower(1);
 
-                straightWithEncoder(.5, -1);
+                sleep(110);
+
+                leftBack.setPower(-1);
+                leftFront.setPower(-1);
+                rightBack.setPower(-1);
+                rightFront.setPower(-1);
+
+                sleep(100);
+
+                leftBack.setPower(0);
+                leftFront.setPower(0);
+                rightBack.setPower(0);
+                rightFront.setPower(0);
+                sleep(100);
+
+                turnRightDegrees(40, parameters);
+
+                sleep(100);
+
+                dump(.66,.35);
 
                 sleep(200);
 
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
+                dump(.59,.42);
 
-                sleep(700);
+                sleep(300);
 
-                leftDump.setPosition(0.71);
+                dump(.55,.46);
 
-                //PUSHES THE CUBE AND PARKS
+                sleep(200);
 
-                straightWithEncoder(.5, -10);
+                dump(.52,.49);
 
-                straightWithEncoder(.45, 3);
+                sleep(300);
 
-                straightWithEncoder(.45,-4);
+                dump(.49,.52);
 
-                straightWithEncoder(.45,3);
+                sleep(300);
 
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
+
+
+                centerDump.setPosition(.25);
+
+                sleep(500);
+
+                dump(.8,.2);
+
+                sleep(100);
+
+                straightWithEncoder(.4,-13);
+
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
 
             }else if (keyResult == "RIGHT"){
 
@@ -306,15 +381,13 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
                 telemetry.update();
 
                 straightWithEncoder(.3, -24);
-                sleep(200);
+                sleep(100);
                 straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.5, -20);
-                sleep(200);
-                turnRightDegrees(114, parameters);
-                sleep(200);
-
-                //DROP THE INTAKE RAMP
+                sleep(100);
+                straightWithEncoder(.4, -4);
+                sleep(100);
+                turnLeftDegress(88, parameters);
+                sleep(100);
 
                 leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -326,7 +399,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
                 rightBack.setPower(1);
                 rightFront.setPower(1);
 
-                sleep(100);
+                sleep(110);
 
                 leftBack.setPower(-1);
                 leftFront.setPower(-1);
@@ -339,52 +412,64 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
                 leftFront.setPower(0);
                 rightBack.setPower(0);
                 rightFront.setPower(0);
-
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-
-                sleep(200);
-                leftDump.setPosition(.47);
-                straightWithEncoder(.3, -7);
-
-                sleep(700);
-
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
-
-                sleep(700);
-
-                leftDump.setPosition(0.45);
-                sleep(300);
-
-                //PUSHES THE CUBE AND PARKS
-
-                straightWithEncoder(.3, -10);
-                sleep(300);
-                straightWithEncoder(.3, 3);
-                sleep(200);
-                straightWithEncoder(.3,-4);
                 sleep(100);
-                straightWithEncoder(.3,3);
+
+                turnRightDegrees(52, parameters);
+
+                sleep(100);
+
+                dump(.66,.35);
+
+                sleep(200);
+
+                dump(.59,.42);
+
+                sleep(300);
+
+                dump(.55,.46);
+
+                sleep(200);
+
+                dump(.52,.49);
+
+                sleep(300);
+
+                dump(.49,.52);
+
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
 
 
-            }
+                centerDump.setPosition(.25);
 
-            else
+                sleep(500);
 
-            {
+                dump(.8,.2);
 
-                //POSITION TO DUMP
+                sleep(100);
+
+
+                straightWithEncoder(.4,-16);
+
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
+
+            }else{
 
                 straightWithEncoder(.3, -24);
-                sleep(300);
+                sleep(100);
                 straightWithEncoder(.3, 6);
-                sleep(300);
-                straightWithEncoder(.3, -11);
-                sleep(300);
-                turnRightDegrees(60, parameters);
-                sleep(300);
-
-                //DROP THE INTAKE RAMP
+                sleep(100);
+                straightWithEncoder(.4, -4);
+                sleep(100);
+                turnLeftDegress(88, parameters);
+                sleep(100);
 
                 leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -396,7 +481,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
                 rightBack.setPower(1);
                 rightFront.setPower(1);
 
-                sleep(100);
+                sleep(110);
 
                 leftBack.setPower(-1);
                 leftFront.setPower(-1);
@@ -409,32 +494,53 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
                 leftFront.setPower(0);
                 rightBack.setPower(0);
                 rightFront.setPower(0);
-
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-
-                sleep(200);
-                leftDump.setPosition(.47);
-                straightWithEncoder(.3, -7);
-
-                sleep(700);
-
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
-
-                sleep(700);
-
-                leftDump.setPosition(0.45);
-                sleep(300);
-
-                //PUSHES THE CUBE AND PARKS
-
-                straightWithEncoder(.3, -6);
-                sleep(300);
-                straightWithEncoder(.3, 3);
-                sleep(200);
-                straightWithEncoder(.3,-4);
                 sleep(100);
-                straightWithEncoder(.3,3);
+
+                turnRightDegrees(40, parameters);
+
+                sleep(100);
+
+                dump(.66,.35);
+
+                sleep(200);
+
+                dump(.59,.42);
+
+                sleep(300);
+
+                dump(.55,.46);
+
+                sleep(200);
+
+                dump(.52,.49);
+
+                sleep(300);
+
+                dump(.49,.52);
+
+                sleep(300);
+
+                dump(.46,.55);
+                //   DUMP HERE
+                //dump(.26,.74);
+
+                sleep(300);
+
+
+                centerDump.setPosition(.25);
+
+                sleep(500);
+
+                dump(.8,.2);
+
+                sleep(100);
+
+                straightWithEncoder(.4,-13);
+
+                straightWithEncoder(.4,5);
+                straightWithEncoder(.4,-6);
+                straightWithEncoder(.4,3);
+
             }
 
 
@@ -471,7 +577,6 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
     //always keep strength positive, use negative inches to go backwards
     private void straightWithEncoder(double strength, int straightInches){
 
-
         leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -502,8 +607,6 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-
-
 
     //defined so that power is positive always, right is positive inches, left is negative inches
     private void strafeWithEncoder(double unlimitedpower, int strafeInches){
@@ -630,7 +733,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((curent) < (stDeg-1.5)) || (curent > (stDeg+1.5) )){
+        while (((curent) < (stDeg-2)) || (curent > (stDeg+2) )){
             telemetry.update();
 
             //prints all the variables
@@ -640,7 +743,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.3);
+            turn(.28);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -680,7 +783,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((-curent) < (stDeg-1.5)) || (-curent > (stDeg+1.5) )){
+        while (((-curent) < (stDeg-2)) || (-curent > (stDeg+2) )){
             telemetry.update();
 
             //prints all the variables
@@ -721,37 +824,18 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
     private void dump(double left, double right) {
         //setting the two dump servo to an input value
         leftDump.setPosition(left);
-        // rightDump.setPosition(right);
+        rightDump.setPosition(right);
     }
-    private void FLICKSERVO(double position) {
-        //setting the FLICKSERVO servo to an input value
-        FLICKSERVO.setPosition(position);
+    private void flicker(double position) {
+        //setting the flicker servo to an input value
+        flicker.setPosition(position);
         sleep(2000);
-        FLICKSERVO.setPosition(0.5);
+        flicker.setPosition(0.5);
 
     }
-
-    private void FullDump() {
-
-
-    }
-
-
     private void arm(double position) {
         //setting the color servo to an input value
         colorServo.setPosition(position);
-    }
-    private void rampDown(){
-        leftDump.setPosition(.5);
-        rightDump.setPosition(.5);
-
-        leftDump.setPosition(.8);
-        rightDump.setPosition(.4);
-
-        sleep(3000);
-
-        leftDump.setPosition(.5);
-        rightDump.setPosition(.5);
     }
     private void sleep(int i) {
         //initial time takes the current hardware time in milliseconds

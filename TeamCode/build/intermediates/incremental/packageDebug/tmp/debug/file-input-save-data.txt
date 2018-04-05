@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Apr 05 16:04:59 PDT 2018
+#Thu Apr 05 16:35:58 PDT 2018
 20.base=/Users/William/Developer/AndroidApplication/5214supers2018/TeamCode/build/intermediates/assets/debug
 143.base=/Users/William/Developer/AndroidApplication/5214supers2018/TeamCode/build/intermediates/assets/debug
 237.path=TextureTeapotBrass.png

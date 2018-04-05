@@ -25,8 +25,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="April5_RedRelic_v1", group="safe")
-public class April5_RedRelic_v1 extends LinearOpMode{
+@Autonomous(name="april5th_Red_Relic_multiglyph_v1", group="safe")
+public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;

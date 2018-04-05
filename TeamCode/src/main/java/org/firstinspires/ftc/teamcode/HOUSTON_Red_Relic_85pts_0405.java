@@ -25,11 +25,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-/**
- * Created by hima on 2/16/18.
- */
-@Autonomous(name="April5_RedRelic_v1", group="safe")
-public class April5_RedRelic_v1 extends LinearOpMode{
+@Autonomous(name="HOUSTON_Red_Relic_85pts_0405", group="safe")
+public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;

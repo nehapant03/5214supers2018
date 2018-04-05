@@ -9,3 +9,6 @@
 *.json
 *.flat
 *.json
+*.dex
+*.class
+*.jar

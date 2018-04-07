@@ -220,7 +220,7 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
                 telemetry.addLine("I'm going left");
                 telemetry.update();
 
-                straightWithEncoder(.55, -31);
+                straightWithEncoder(.5, -33);
                 leftDump.setPosition(.61);
                 turnRightDegrees(52, parameters);
 
@@ -235,9 +235,9 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
                 leftPush.setPosition(.5);
                 rightPush.setPosition(.5);
 
-                straightWithEncoder(.5, -1);
+                straightWithEncoder(.6, -1);
 
-                sleep(200);
+//                sleep(200);
 
                 centerDump.setPosition(.8);
                 leftDump.setPosition(.18);
@@ -248,13 +248,56 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.5, -10);
+                straightWithEncoder(.65, -10);
 
-                straightWithEncoder(.45, 3);
+                straightWithEncoder(.65, 3);
 
-                straightWithEncoder(.45,-4);
+                straightWithEncoder(.65,-4);
 
-                straightWithEncoder(.45,3);
+                straightWithEncoder(.65,3);
+
+
+                //multiglyph start here
+                turnRightDegrees(19, parameters);
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+                //go in the piles
+                straightWithEncoder(0.7, 19
+                );
+
+//                //go out and in the piles again
+//                straightWithEncoder(0.7, -5);
+//                straightWithEncoder(0.7, 6);
+//
+//                //turn the intake reverse
+//
+
+                //leave the piles and dump
+                straightWithEncoder(0.8, -8);
+                intake(lBelt, rBelt, "OFF");
+                turnRightDegrees(25, parameters);
+                leftDump.setPosition(.61);
+                straightWithEncoder(0.8, -7);
+//                sleep(500);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(1000);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.7, -5);
+
+                straightWithEncoder(.7, 3);
+//
+//                straightWithEncoder(.45,-4);
+//
+//                straightWithEncoder(.45,3);
+
 
             }else if(keyResult == "CENTER"){
 
@@ -262,7 +305,7 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
                 telemetry.update();
 
 
-                telemetry.addLine("I'm going left");
+                telemetry.addLine("I dont rly know what i am doing i am having an existentialist crisis");
                 telemetry.update();
 
                 straightWithEncoder(.5, -24);
@@ -616,6 +659,113 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
         //makes the robot go forward for an indefinite amount of time
 
     }
+    private void turnWithGyro(String direction, double power, double deg, BNO055IMU.Parameters parametersMeth) {
+        //so that we can control the motors normally
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        Orientation agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
+        double start = current;
+        double target = current + deg - 2;
+        double n = 0;
+        if(target>=50){
+            n = 25;
+        }else{
+            n = 20;
+        }
+        double y = 0;
+
+        telemetry.addLine("start: " + Double.toString(start));
+        telemetry.addLine("target: " + Double.toString(target));
+        telemetry.addLine("deg: " + Double.toString(deg));
+        telemetry.update();
+
+        if(direction == "left") {
+            //keep the power constant for a certain amount of time (target - n degrees) before decreasing
+            while (current < target - n) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 1ST WHILE");
+                turn(power);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)); //update current position
+                telemetry.addLine("current = " + Double.toString(current)); //print current
+                telemetry.update();
+            }
+            telemetry.addLine("I left the target - n loop");
+            telemetry.update();
+
+            //have the power decrease until we reach target
+            while (current < target) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 2ND WHILE NOW");
+                y = (-(power - .2)/n)*(current - target) + .22;
+                turn(y);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle));
+                telemetry.addLine("current = " + Double.toString(current));
+                telemetry.update();
+            }
+
+
+        }
+        else{
+            //keep the power constant for a certain amount of time (target - n degrees) before decreasing
+            while (Math.abs(current) < target - n) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 1ST WHILE");
+                y = (-(power - .2)/n)*(current - target) + .22;
+                turn(-power);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Math.abs(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))); //update current position
+                telemetry.addLine("current = " + Double.toString(current)); //print current
+                telemetry.update();
+            }
+            telemetry.addLine("I left the target - n loop");
+            telemetry.update();
+
+            //have the power decrease until we reach target
+            while (Math.abs(current) < target) {
+                telemetry.update();
+                telemetry.addLine("IM IN THE 2ND WHILE NOW");
+                turn(-y);
+                agl = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                current = Math.abs(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle)));
+                telemetry.addLine("current = " + Double.toString(current));
+                telemetry.update();
+            }
+        }
+        telemetry.addLine(Double.toString(Double.parseDouble(formatAngle(agl.angleUnit, agl.firstAngle))));
+        telemetry.addLine("I LEFT THE WHILE");
+        telemetry.update();
+
+        //kill the power
+        leftBack.setPower(0);
+        rightBack.setPower(0);
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+
+        sleep(1000);
+        telemetry.addLine("final reading = " + formatAngle(agl.angleUnit, agl.firstAngle));
+        telemetry.update();
+
+        //reset encoders and reset the mode and other stuff that just needs to be there
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        imu.initialize(parametersMeth);
+
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+    }
 
     private void turnLeftDegress(double deg, BNO055IMU.Parameters parametersMeth){
 
@@ -632,7 +782,7 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((curent) < (stDeg-1.5)) || (curent > (stDeg+1.5) )){
+        while (((curent) < (stDeg-1.5)) ){
             telemetry.update();
 
             //prints all the variables
@@ -682,7 +832,7 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
         double stDeg = curent+deg;
 
         //this loop runs until the robot has turned the correct amount
-        while (((-curent) < (stDeg-1.5)) || (-curent > (stDeg+1.5) )){
+        while (((-curent) < (stDeg-1.5)) ){
             telemetry.update();
 
             //prints all the variables
@@ -692,7 +842,7 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(-.28);
+            turn(-.3);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -733,12 +883,6 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
 
     }
 
-    private void FullDump() {
-
-
-    }
-
-
     private void arm(double position) {
         //setting the color servo to an input value
         colorServo.setPosition(position);
@@ -764,6 +908,29 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
 
         }
     }
+    private void intake(DcMotor leftIntake, DcMotor rightIntake, String status) {
+        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        switch (status) {
+            case "IN":
+                leftIntake.setPower(1);
+                rightIntake.setPower(-1);
+                break;
+            case "OUT":
+                leftIntake.setPower(-1);
+                rightIntake.setPower(1);
+                break;
+            case "OFF":
+                leftIntake.setPower(0);
+                rightIntake.setPower(0);
+                break;
+            default:
+                telemetry.addLine("ehhhhh i think you didnt write the correct status");
+                break;
+        }
+    }
+
+
     private String checkColor(ColorSensor sensor, double ratio) {
         double redOverBlue = (sensor.red()+1) / (sensor.blue() + 1);
         if (redOverBlue >= ratio) {

@@ -263,8 +263,7 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
 
                 centerDump.setPosition(0.33);
                 //go in the piles
-                straightWithEncoder(0.7, 19
-                );
+                straightWithEncoder(0.7, 19);
 
 //                //go out and in the piles again
 //                straightWithEncoder(0.7, -5);

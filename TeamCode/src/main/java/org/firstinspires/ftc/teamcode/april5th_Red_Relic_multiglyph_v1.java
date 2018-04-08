@@ -160,9 +160,10 @@ public class april5th_Red_Relic_multiglyph_v1 extends LinearOpMode{
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         FLICKSERVO.setPosition(.5);
-        centerDump.setPosition(.33);
         colorServo.setPosition(.67);
-       // leftDump.setPosition(.61);
+        centerDump.setPosition(.33);
+
+        // leftDump.setPosition(.61);
 
         leftPush.setPosition(.5);
         rightPush.setPosition(.5);

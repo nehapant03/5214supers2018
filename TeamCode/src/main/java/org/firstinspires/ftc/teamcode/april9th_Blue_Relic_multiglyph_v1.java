@@ -187,6 +187,8 @@ public class april9th_Blue_Relic_multiglyph_v1 extends LinearOpMode{
         while (opModeIsActive()) {
 
             arm(.13); // put arm down
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
 
             sleep(700);
             colorid = checkColor(colorFront, currentRatio);
@@ -204,7 +206,6 @@ public class april9th_Blue_Relic_multiglyph_v1 extends LinearOpMode{
             leftPush.setPosition(.55);
             rightPush.setPosition(.55);
 
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             sleep(200);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
@@ -212,7 +213,7 @@ public class april9th_Blue_Relic_multiglyph_v1 extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "RIGHT";
+
 
             if(keyResult == "LEFT"){
 
@@ -356,7 +357,12 @@ public class april9th_Blue_Relic_multiglyph_v1 extends LinearOpMode{
                 sleep(200);
                 turnRightDegrees(120, parameters);
                 sleep(200);
+                strafeWithEncoder(.3,-7);
+                sleep(200);
 
+
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
 
 
                 //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
@@ -393,18 +399,24 @@ public class april9th_Blue_Relic_multiglyph_v1 extends LinearOpMode{
             {
 
                 telemetry.addLine("I'm going center");
+
                 telemetry.update();
 
                 straightWithEncoder(.3, 24);
                 sleep(200);
-                turnRightDegrees(130, parameters);
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
+                strafeWithEncoder(.3,10);
+                sleep(200);
+                turnRightDegrees(120, parameters);
+                sleep(200);
 
 
 
                 //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
 
                 sleep(200);
-                leftDump.setPosition(.47);
+                leftDump.setPosition(.61);
                 straightWithEncoder(.3, -7);
 
                 sleep(700);

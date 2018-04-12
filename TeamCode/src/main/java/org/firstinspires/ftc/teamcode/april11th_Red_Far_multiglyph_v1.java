@@ -212,7 +212,7 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "RIGHT";
+            keyResult = "LEFT";
 
             if(keyResult == "CENTER"){
 
@@ -255,6 +255,14 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 straightWithEncoder(.45,3);
 
+                turnRightDegrees(35, parameters);
+
+                straightWithEncoder(.5, -30);
+
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+
             }else if(keyResult == "LEFT"){
 
                 telemetry.addLine("i'm going left");
@@ -293,6 +301,14 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 straightWithEncoder(.45, 3);
 
+                turnRightDegrees(45, parameters);
+
+                straightWithEncoder(.5, -25);
+
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+
 //                straightWithEncoder(.45,-4);
 //
 //                straightWithEncoder(.45,3);
@@ -300,7 +316,7 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
             }else if (keyResult == "RIGHT"){
 
-                telemetry.addLine("i'm going left");
+                telemetry.addLine("i'm going right");
                 telemetry.update();
 
                 straightWithEncoder(.5, -24);
@@ -335,6 +351,16 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
                 straightWithEncoder(.5, -14);
 
                 straightWithEncoder(.45, 3);
+
+                turnRightDegrees(20, parameters);
+
+                strafeWithEncoder(.5, -5);
+               
+                straightWithEncoder(.5, -31);
+
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
 
 //                straightWithEncoder(.45,-4);
 //
@@ -704,10 +730,6 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
     }
 
-    private void FullDump() {
-
-
-    }
 
 
     private void arm(double position) {
@@ -734,7 +756,29 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
         while (System.currentTimeMillis() - initial_time < i) {
 
         }
+    }private void intake(DcMotor leftIntake, DcMotor rightIntake, String status) {
+        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        switch (status) {
+            case "IN":
+                leftIntake.setPower(1);
+                rightIntake.setPower(-1);
+                break;
+            case "OUT":
+                leftIntake.setPower(-1);
+                rightIntake.setPower(1);
+                break;
+            case "OFF":
+                leftIntake.setPower(0);
+                rightIntake.setPower(0);
+                break;
+            default:
+                telemetry.addLine("ehhhhh i think you didnt write the correct status");
+                break;
+        }
     }
+
+
     private String checkColor(ColorSensor sensor, double ratio) {
         double redOverBlue = (sensor.red()+1) / (sensor.blue() + 1);
         if (redOverBlue >= ratio) {
@@ -762,4 +806,5 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
     public String valueHead() {
         return formatAngle(angles.angleUnit, angles.firstAngle);
     }
+
 }

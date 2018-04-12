@@ -25,13 +25,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="april6th_Blue_Relic_v1", group="Team5214")
+@Autonomous(name="april6th_Blue_Relic_multiglyph_v2", group="Team5214")
 //@Disabled
-
-//I lied this is 85 everytime, i just messed up the copy paste this isnt mulitglphy
-//on the phone it does show up as blue relic so its not called multiglhy
-
-public class april9th_Blue_Relic_multiglyph_v1 /* THIS IS SINGLE GLYPH*/ extends LinearOpMode{
+public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -261,93 +257,93 @@ public class april9th_Blue_Relic_multiglyph_v1 /* THIS IS SINGLE GLYPH*/ extends
                 straightWithEncoder(.65,3);
 
 
-//                //multiglyph start here
-//                turnRightDegrees(19, parameters);
-//                intake(lBelt, rBelt, "IN");
-//
-//                centerDump.setPosition(0.33);
-//                //go in the piles
-//                straightWithEncoder(0.7, 18
-//                );
-//
-//                //go out and in the piles again
-//                straightWithEncoder(0.7, -5);
-////                turnLeftDegress(6, parameters);
+                //multiglyph start here
+                turnRightDegrees(19, parameters);
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+                //go in the piles
+                straightWithEncoder(0.7, 18
+                );
+
+                //go out and in the piles again
+                straightWithEncoder(0.7, -5);
+//                turnLeftDegress(6, parameters);
+                turnRightDegrees(25, parameters);
+                straightWithEncoder(0.7, 7);
+//                turnRightDegrees(6, parameters);
+
+
+                //leave the piles and dump
+                straightWithEncoder(0.8, -8);
+                intake(lBelt, rBelt, "OFF");
 //                turnRightDegrees(25, parameters);
-//                straightWithEncoder(0.7, 7);
-////                turnRightDegrees(6, parameters);
-//
-//
-//                //leave the piles and dump
-//                straightWithEncoder(0.8, -8);
-//                intake(lBelt, rBelt, "OFF");
-////                turnRightDegrees(25, parameters);
-//                leftDump.setPosition(.61);
-//                straightWithEncoder(0.8, -7);
-////                sleep(500);
-//
-//                centerDump.setPosition(.8);
-//                leftDump.setPosition(.18);
-//
-//                sleep(1100);
-//
-//                leftDump.setPosition(0.71);
-//
-//                //PUSHES THE CUBE AND PARKS
-//
-//                straightWithEncoder(.7, -6);
-//
-//                straightWithEncoder(.7, 3);
-//
-//                straightWithEncoder(.7,-4);
-//
-//                straightWithEncoder(.7,3);
-//
-//
-//            }else if(keyResult == "CENTER"){
-//
-//                telemetry.addLine("I'm going in the middle");
-//                telemetry.update();
-//
-//
-//                telemetry.addLine("I dont rly know what i am doing i am having an existentialist crisis");
-//                telemetry.update();
-//
-//                straightWithEncoder(.5, -24);
-//                leftDump.setPosition(.61);
-//                turnRightDegrees(50, parameters);
-//
-//                //DROP THE INTAKE RAMP
-//
-//                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-//                leftPush.setPosition(.5);
-//                rightPush.setPosition(.5);
-//
-//                straightWithEncoder(.5, -1);
-//
-//                sleep(200);
-//
-//                centerDump.setPosition(.8);
-//                leftDump.setPosition(.18);
-//
-//                sleep(700);
-//
-//                leftDump.setPosition(0.71);
-//
-//                //PUSHES THE CUBE AND PARKS
-//
-//                straightWithEncoder(.5, -10);
-//
-//                straightWithEncoder(.45, 3);
-//
-//                straightWithEncoder(.45,-4);
-//
-//                straightWithEncoder(.45,3);
+                leftDump.setPosition(.61);
+                straightWithEncoder(0.8, -7);
+//                sleep(500);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(1100);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.7, -6);
+
+                straightWithEncoder(.7, 3);
+
+                straightWithEncoder(.7,-4);
+
+                straightWithEncoder(.7,3);
+
+
+            }else if(keyResult == "CENTER"){
+
+                telemetry.addLine("I'm going in the middle");
+                telemetry.update();
+
+
+                telemetry.addLine("I dont rly know what i am doing i am having an existentialist crisis");
+                telemetry.update();
+
+                straightWithEncoder(.5, -24);
+                leftDump.setPosition(.61);
+                turnRightDegrees(50, parameters);
+
+                //DROP THE INTAKE RAMP
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
+
+                straightWithEncoder(.5, -1);
+
+                sleep(200);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(700);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.5, -10);
+
+                straightWithEncoder(.45, 3);
+
+                straightWithEncoder(.45,-4);
+
+                straightWithEncoder(.45,3);
 
 
             }else if (keyResult == "RIGHT"){

@@ -206,14 +206,14 @@ public class Red_Far_85_0410 extends LinearOpMode{
             rightPush.setPosition(.55);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(200);
+            sleep(1200);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "RIGHT";
+            //keyResult = "LEFT";
 
             if(keyResult == "CENTER"){
 
@@ -292,7 +292,7 @@ public class Red_Far_85_0410 extends LinearOpMode{
 
                 straightWithEncoder(.5, -14);
 
-                straightWithEncoder(.45, 3);
+                straightWithEncoder(.45, 4);
 
 //                straightWithEncoder(.45,-4);
 //
@@ -301,13 +301,59 @@ public class Red_Far_85_0410 extends LinearOpMode{
 
             }else if (keyResult == "RIGHT"){
 
-                telemetry.addLine("i'm going left");
+                telemetry.addLine("i'm going right");
                 telemetry.update();
 
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
                 turnLeftDegress(15, parameters);
-                strafeWithEncoder(.5, -4);
+                strafeWithEncoder(.5, -3);
+
+                //DROP THE INTAKE RAMP
+
+                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
+
+                straightWithEncoder(.5, -1);
+
+                sleep(200);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(700);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.5, -10);
+
+                straightWithEncoder(.45, 3);
+
+//                straightWithEncoder(.45,-4);
+//
+//                straightWithEncoder(.45,3);
+
+            }
+
+            else
+
+            {
+
+                telemetry.addLine("no reading but going left");
+                telemetry.update();
+
+                straightWithEncoder(.5, -24);
+                leftDump.setPosition(.61);
+                strafeWithEncoder(.5, 7);
+                turnLeftDegress(38, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -335,80 +381,7 @@ public class Red_Far_85_0410 extends LinearOpMode{
 
                 straightWithEncoder(.5, -14);
 
-                straightWithEncoder(.45, 3);
-
-//                straightWithEncoder(.45,-4);
-//
-//                straightWithEncoder(.45,3);
-
-            }
-
-            else
-
-            {
-
-                //POSITION TO DUMP
-
-                straightWithEncoder(.3, -24);
-                sleep(300);
-                straightWithEncoder(.3, 6);
-                sleep(300);
-                straightWithEncoder(.3, -11);
-                sleep(300);
-                turnRightDegrees(60, parameters);
-                sleep(300);
-
-                //DROP THE INTAKE RAMP
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-
-                sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-
-                sleep(200);
-                leftDump.setPosition(.47);
-                straightWithEncoder(.3, -7);
-
-                sleep(700);
-
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
-
-                sleep(700);
-
-                leftDump.setPosition(0.45);
-                sleep(300);
-
-                //PUSHES THE CUBE AND PARKS
-
-                straightWithEncoder(.3, -6);
-                sleep(300);
-                straightWithEncoder(.3, 3);
-                sleep(200);
-                straightWithEncoder(.3,-4);
-                sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.45, 4);
             }
 
 

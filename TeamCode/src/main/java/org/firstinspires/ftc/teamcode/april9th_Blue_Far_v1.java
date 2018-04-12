@@ -187,27 +187,26 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.13); // put arm down
-
-            sleep(700);
-            colorid = checkColor(colorFront, currentRatio);
-
-            telemetry.addLine(colorid);
-            telemetry.update();
-
-            if (colorid.equals("RED")){
-                FLICKSERVO(0.2);
-            }
-            else if(checkColor(colorFront,.4).equals("BLUE")){
-                FLICKSERVO(.8);
-            }
+//            arm(.13); // put arm down
+//
+//            sleep(700);
+//            colorid = checkColor(colorFront, currentRatio);
+//
+//            telemetry.addLine(colorid);
+//            telemetry.update();
+//
+//            if (colorid.equals("RED")){
+//                FLICKSERVO(0.2);
+//            }
+//            else if(checkColor(colorFront,.4).equals("BLUE")){
+//                FLICKSERVO(.8);
+//            }
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
             arm(.67); // put arm up
             wrist.setPosition(1);
-            leftPush.setPosition(.55);
-            rightPush.setPosition(.55);
+
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             sleep(200);
@@ -223,15 +222,63 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
                     telemetry.addLine("robot headed to left position");
                     telemetry.update();
 
-                    strafeWithEncoder(0.5, 25);
-                    turnRightDegrees(180, parameters);
+                    strafeWithEncoder(0.6, 34);
+                    turnRightDegrees(179.5, parameters);
+                    //put down intake here
+                    leftPush.setPosition(.55);
+                    rightPush.setPosition(.55);
+
                     straightWithEncoder(0.5, -15);
-                    turnLeftDegress(50, parameters);
-                    straightWithEncoder(0.5, -10);
+                    turnLeftDegress(34, parameters);
+                    leftDump.setPosition(.61);
+                    straightWithEncoder(0.6, -19);
+                    sleep(300);
+
+                    //dump
+                    centerDump.setPosition(.8);
+                    leftDump.setPosition(.18);
+
+
+                    sleep(700);
+
+                    leftDump.setPosition(0.71);
+
+                    //push cube
+                    straightWithEncoder(0.65, -7);
+                    straightWithEncoder(0.65, 4);
+                    straightWithEncoder(0.65, -5);
+                    straightWithEncoder(0.65, 5);
                     break;
                 case "CENTER":
                     telemetry.addLine("robot headed to centre position");
                     telemetry.update();
+
+                    strafeWithEncoder(0.6, 34);
+                    turnRightDegrees(179.5, parameters);
+                    //put down intake here
+                    leftPush.setPosition(.55);
+                    rightPush.setPosition(.55);
+
+                    straightWithEncoder(0.5, -15);
+                    turnLeftDegress(21, parameters);
+                    leftDump.setPosition(.61);
+                    straightWithEncoder(0.6, -17);
+                    sleep(300);
+
+
+                    centerDump.setPosition(.8);
+                    leftDump.setPosition(.18);
+
+
+                    sleep(700);
+
+                    leftDump.setPosition(0.71);
+
+                    //push cube
+                    straightWithEncoder(0.6, -7);
+                    straightWithEncoder(0.6, 4);
+                    straightWithEncoder(0.6, -5);
+                    straightWithEncoder(0.6, 5);
                     break;
                 case "RIGHT":
                     telemetry.addLine("robot headed to right position");

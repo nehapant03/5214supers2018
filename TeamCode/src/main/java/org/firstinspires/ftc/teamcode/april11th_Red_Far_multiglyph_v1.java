@@ -355,7 +355,7 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
                 turnRightDegrees(20, parameters);
 
                 strafeWithEncoder(.5, -5);
-               
+
                 straightWithEncoder(.5, -31);
 
                 intake(lBelt, rBelt, "IN");

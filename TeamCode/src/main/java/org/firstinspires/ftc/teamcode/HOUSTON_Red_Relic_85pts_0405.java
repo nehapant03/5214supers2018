@@ -256,6 +256,7 @@ public class HOUSTON_Red_Relic_85pts_0405 extends LinearOpMode{
 
                 straightWithEncoder(.45,3);
 
+
             }else if(keyResult == "CENTER"){
 
                 telemetry.addLine("I'm going in the middle");

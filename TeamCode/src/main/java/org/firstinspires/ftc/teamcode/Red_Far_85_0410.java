@@ -307,7 +307,7 @@ public class Red_Far_85_0410 extends LinearOpMode{
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
                 turnLeftDegress(15, parameters);
-                strafeWithEncoder(.5, -3);
+                //strafeWithEncoder(.5, -2);
 
                 //DROP THE INTAKE RAMP
 

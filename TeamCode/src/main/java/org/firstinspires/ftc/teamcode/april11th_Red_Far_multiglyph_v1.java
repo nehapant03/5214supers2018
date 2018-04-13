@@ -251,17 +251,20 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 straightWithEncoder(.45, 3);
 
-                straightWithEncoder(.45,-4);
+                straightWithEncoder(.45,-3);
 
-                straightWithEncoder(.45,3);
+                //multiglyph starts
 
-                turnRightDegrees(35, parameters);
+                straightWithEncoder(.45,5);
 
-                straightWithEncoder(.5, -30);
+                turnRightDegrees(65, parameters);
+
+                straightWithEncoder(.5, 30);
 
                 intake(lBelt, rBelt, "IN");
 
                 centerDump.setPosition(0.33);
+
 
             }else if(keyResult == "LEFT"){
 
@@ -303,7 +306,7 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 turnRightDegrees(45, parameters);
 
-                straightWithEncoder(.5, -25);
+                straightWithEncoder(.5, 25);
 
                 intake(lBelt, rBelt, "IN");
 

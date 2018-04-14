@@ -306,11 +306,13 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 //MULTIGLYPH STARTS HERE
 
-                turnRightDegrees(75, parameters); //turn towards glyphs
+                strafeWithEncoder(.5, -3);
 
-                straightWithEncoder(.5, 30); //drive straight towards glyphs
+                turnRightDegrees(79, parameters); //turn towards glyphs
 
                 intake(lBelt, rBelt, "IN"); //turn on intake + intake glyphs
+
+                straightWithEncoder(.5, 34); //drive straight towards glyphs
 
                 straightWithEncoder(.5, -3); //pull out of glyphs
 

@@ -301,7 +301,6 @@ public class april13th_Blue_Far_v2 extends LinearOpMode{
                     straightWithEncoder(0.5, -15);
                     leftDump.setPosition(.61);
 
-                    //test this number
                     turnLeftDegress(11, parameters);
 
                     leftPush.setPosition(.5);

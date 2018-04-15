@@ -31,7 +31,7 @@ import java.util.Locale;
 //I lied this is 85 everytime, i just messed up the copy paste this isnt mulitglphy
 //on the phone it does show up as blue relic so its not called multiglhy
 
-public class april9th_Blue_Relic_multiglyph_v1 /* THIS IS SINGLE GLYPH*/ extends LinearOpMode{
+public class april6th_Blue_Relic_85_v1 /* THIS IS SINGLE GLYPH*/ extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;

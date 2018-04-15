@@ -25,7 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="april6th_Blue_Relic_v1", group="Team5214")
+@Autonomous(name="april6th_Blue_Relic_85_v1", group="Team5214")
 //@Disabled
 
 //I lied this is 85 everytime, i just messed up the copy paste this isnt mulitglphy

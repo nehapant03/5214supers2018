@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="HOUSTON_Manual_v3", group="Team5214")
 //@Disabled
-public class HOUSTON_Manual_v3 extends LinearOpMode {
+public class HOUSTON_Manual_v4 extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     //declares motors
@@ -269,7 +269,7 @@ public class HOUSTON_Manual_v3 extends LinearOpMode {
         motorName.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         ticks = (int) (inches *
-                /*Output counts per revolution of Output Shaft (cpr)*/1680 /
+                /*Output counts per revolution of Output Shaft (cpr)*/537.6 /
                 /*circumference*/(1.4 * 3.14159)); //converts inches to ticks
         telemetry.addData("target position: ", ticks);
         telemetry.addData("motor current position: ", motorName.getCurrentPosition());

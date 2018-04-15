@@ -212,7 +212,9 @@ public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-            String keyResult = vuMark.toString();
+            String keyResult;
+            keyResult = vuMark.toString();
+            keyResult = "RIGHT";
 
 
             if(keyResult == "LEFT"){
@@ -220,7 +222,7 @@ public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
                 telemetry.addLine("I'm going left");
                 telemetry.update();
 
-                straightWithEncoder(.55, 36);
+                straightWithEncoder(.6, 40);
                 leftDump.setPosition(.61);
                 turnRightDegrees(52, parameters);
 
@@ -257,93 +259,48 @@ public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
                 straightWithEncoder(.65,3);
 
 
-                //multiglyph start here
-                turnRightDegrees(19, parameters);
-                intake(lBelt, rBelt, "IN");
-
-                centerDump.setPosition(0.33);
-                //go in the piles
-                straightWithEncoder(0.7, 18
-                );
-
-                //go out and in the piles again
-                straightWithEncoder(0.7, -5);
-//                turnLeftDegress(6, parameters);
-                turnRightDegrees(25, parameters);
-                straightWithEncoder(0.7, 7);
-//                turnRightDegrees(6, parameters);
-
-
-                //leave the piles and dump
-                straightWithEncoder(0.8, -8);
-                intake(lBelt, rBelt, "OFF");
+//                //multiglyph start here
+//                turnRightDegrees(19, parameters);
+//                intake(lBelt, rBelt, "IN");
+//
+//                centerDump.setPosition(0.33);
+//                //go in the piles
+//                straightWithEncoder(0.7, 18
+//                );
+//
+//                //go out and in the piles again
+//                straightWithEncoder(0.7, -5);
+////                turnLeftDegress(6, parameters);
 //                turnRightDegrees(25, parameters);
-                leftDump.setPosition(.61);
-                straightWithEncoder(0.8, -7);
-//                sleep(500);
-
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
-
-                sleep(1100);
-
-                leftDump.setPosition(0.71);
-
-                //PUSHES THE CUBE AND PARKS
-
-                straightWithEncoder(.7, -6);
-
-                straightWithEncoder(.7, 3);
-
-                straightWithEncoder(.7,-4);
-
-                straightWithEncoder(.7,3);
-
-
-            }else if(keyResult == "CENTER"){
-
-                telemetry.addLine("I'm going in the middle");
-                telemetry.update();
-
-
-                telemetry.addLine("I dont rly know what i am doing i am having an existentialist crisis");
-                telemetry.update();
-
-                straightWithEncoder(.5, -24);
-                leftDump.setPosition(.61);
-                turnRightDegrees(50, parameters);
-
-                //DROP THE INTAKE RAMP
-
-                leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-                leftPush.setPosition(.5);
-                rightPush.setPosition(.5);
-
-                straightWithEncoder(.5, -1);
-
-                sleep(200);
-
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
-
-                sleep(700);
-
-                leftDump.setPosition(0.71);
-
-                //PUSHES THE CUBE AND PARKS
-
-                straightWithEncoder(.5, -10);
-
-                straightWithEncoder(.45, 3);
-
-                straightWithEncoder(.45,-4);
-
-                straightWithEncoder(.45,3);
+//                straightWithEncoder(0.7, 7);
+////                turnRightDegrees(6, parameters);
+//
+//
+//                //leave the piles and dump
+//                straightWithEncoder(0.8, -8);
+//                intake(lBelt, rBelt, "OFF");
+////                turnRightDegrees(25, parameters);
+//                leftDump.setPosition(.61);
+//                straightWithEncoder(0.8, -7);
+////                sleep(500);
+//
+//                centerDump.setPosition(.8);
+//                leftDump.setPosition(.18);
+//
+//                sleep(1100);
+//
+//                leftDump.setPosition(0.71);
+//
+//                //PUSHES THE CUBE AND PARKS
+//
+//                straightWithEncoder(.7, -6);
+//
+//                straightWithEncoder(.7, 3);
+//
+//                straightWithEncoder(.7,-4);
+//
+//                straightWithEncoder(.7,3);
+//
 
 
             }else if (keyResult == "RIGHT"){
@@ -351,13 +308,13 @@ public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
                 telemetry.addLine("I'm going right");
                 telemetry.update();
 
-                straightWithEncoder(.3, 24);
+                straightWithEncoder(.6, 24);
                 sleep(200);
-                strafeWithEncoder(.3,10);
+                strafeWithEncoder(.6,10);
                 sleep(200);
                 turnRightDegrees(120, parameters);
                 sleep(200);
-                strafeWithEncoder(.3,-7);
+                strafeWithEncoder(.6,-7);
                 sleep(200);
 
 
@@ -369,7 +326,7 @@ public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
 
                 sleep(200);
                 leftDump.setPosition(.61);
-                straightWithEncoder(.3, -7);
+                straightWithEncoder(.6, -7);
 
                 sleep(700);
 
@@ -383,14 +340,58 @@ public class april9th_Blue_Relic_multiglyph_v2 extends LinearOpMode{
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.3, -10);
+                straightWithEncoder(.6, -10);
                 sleep(300);
-                straightWithEncoder(.3, 3);
+                straightWithEncoder(.6, 3);
                 sleep(200);
-                straightWithEncoder(.3,-4);
+                straightWithEncoder(.6,-4);
                 sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.6,3);
 
+                leftDump.setPosition(.71);
+                centerDump.setPosition(.33);
+
+
+                //multiglyphh
+
+                //turns to face the pile
+                turnLeftDegress(20,parameters);
+                //turns on intake
+                intake(lBelt,rBelt,"IN");
+                //goes into pile
+                straightWithEncoder(.6,15);
+                //tries to not get a 3rd cube
+                intake(lBelt,rBelt,"OUT");
+                //turns to face the box, the left coloum
+                turnLeftDegress(45,parameters);
+                //goes to the box
+                straightWithEncoder(.6,15);
+
+                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+
+                sleep(200);
+                leftDump.setPosition(.61);
+                straightWithEncoder(.6, -7);
+
+                sleep(700);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(700);
+
+                leftDump.setPosition(0.45);
+                sleep(300);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.6, -10);
+                sleep(300);
+                straightWithEncoder(.6, 3);
+                sleep(200);
+                straightWithEncoder(.6,-4);
+                sleep(100);
+                straightWithEncoder(.6,3);
 
             }
 

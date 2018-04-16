@@ -301,13 +301,13 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
 
             }else if (keyResult == "RIGHT"){
 
-                telemetry.addLine("I'm going in the middle");
+                telemetry.addLine("I'm going right");
                 telemetry.update();
 
 
                 straightWithEncoder(.5, -17);
                 leftDump.setPosition(.61);
-                turnRightDegrees(53, parameters);
+                turnRightDegrees(70, parameters);
 
                 //DROP THE INTAKE RAMP
 

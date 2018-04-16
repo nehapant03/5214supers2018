@@ -212,7 +212,7 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "CENTER";
+            keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
@@ -221,7 +221,7 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
 
                 straightWithEncoder(.55, -31);
                 leftDump.setPosition(.61);
-                turnRightDegrees(52, parameters);
+                turnRightDegrees(53, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -262,12 +262,9 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
                 telemetry.update();
 
 
-                telemetry.addLine("I'm going left");
-                telemetry.update();
-
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
-                turnRightDegrees(50, parameters);
+                turnRightDegrees(53, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -304,17 +301,13 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
 
             }else if (keyResult == "RIGHT"){
 
-                telemetry.addLine("I'm going right");
+                telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.5, -20);
-                sleep(200);
-                turnRightDegrees(114, parameters);
-                sleep(200);
+
+                straightWithEncoder(.5, -17);
+                leftDump.setPosition(.61);
+                turnRightDegrees(53, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -323,51 +316,30 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
                 rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-
-                sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
                 //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
+
+                straightWithEncoder(.5, -1);
 
                 sleep(200);
-                leftDump.setPosition(.47);
-                straightWithEncoder(.3, -7);
-
-                sleep(700);
 
                 centerDump.setPosition(.8);
                 leftDump.setPosition(.18);
 
                 sleep(700);
 
-                leftDump.setPosition(0.45);
-                sleep(300);
+                leftDump.setPosition(0.71);
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.3, -10);
-                sleep(300);
-                straightWithEncoder(.3, 3);
-                sleep(200);
-                straightWithEncoder(.3,-4);
-                sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.5, -10);
 
+                straightWithEncoder(.45, 3);
+
+                straightWithEncoder(.45,-4);
+
+                straightWithEncoder(.45,3);
 
             }
 

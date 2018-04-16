@@ -273,8 +273,8 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
-                strafeWithEncoder(.5, 7);
-                turnLeftDegress(38, parameters);
+                strafeWithEncoder(.5, 8);
+                turnLeftDegress(39, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -300,25 +300,54 @@ public class april11th_Red_Far_multiglyph_v1 extends LinearOpMode{
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.5, -14);
+                straightWithEncoder(.5, -12);
 
                 straightWithEncoder(.45, 3);
 
                 //MULTIGLYPH STARTS HERE
 
-                strafeWithEncoder(.5, -3);
+                strafeWithEncoder(.5, 6);
 
-                turnRightDegrees(79, parameters); //turn towards glyphs
+                turnRightDegrees(77, parameters); //turn towards glyphs
 
                 intake(lBelt, rBelt, "IN"); //turn on intake + intake glyphs
 
-                straightWithEncoder(.5, 34); //drive straight towards glyphs
+                straightWithEncoder(.6, 38); //drive straight towards glyphs
 
-                straightWithEncoder(.5, -3); //pull out of glyphs
+                straightWithEncoder(.6, -3); //pull out of glyphs
 
-                straightWithEncoder(.5,5); //go back in + intake glyphs
+                straightWithEncoder(.6,9); //go back in + intake glyphs
+
+                straightWithEncoder(.6, -20);
+
+                strafeWithEncoder(.5,8);
+
+                straightWithEncoder(.6, -20);
 
                 centerDump.setPosition(0.33);
+
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
+
+                straightWithEncoder(.5, -1);
+
+                sleep(200);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(700);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.5, -12);
+
+                straightWithEncoder(.45, 3);
+
+
+
 
 //                straightWithEncoder(.45,-4);
 //

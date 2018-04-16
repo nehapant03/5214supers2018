@@ -212,7 +212,7 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "LEFT";
+            keyResult = "CENTER";
 
             if(keyResult == "LEFT"){
 

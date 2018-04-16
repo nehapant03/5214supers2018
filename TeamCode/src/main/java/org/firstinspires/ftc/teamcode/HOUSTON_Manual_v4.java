@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="HOUSTON_Manual_v3", group="Team5214")
+@TeleOp(name="HOUSTON_Manual_v4", group="Team5214")
 //@Disabled
 public class HOUSTON_Manual_v4 extends LinearOpMode {
 

@@ -187,20 +187,20 @@ public class april13th_Blue_Far_v2 extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-//            arm(.13); // put arm down
-//
-//            sleep(700);
-//            colorid = checkColor(colorFront, currentRatio);
-//
-//            telemetry.addLine(colorid);
-//            telemetry.update();
-//
-//            if (colorid.equals("RED")){
-//                FLICKSERVO(0.2);
-//            }
-//            else if(checkColor(colorFront,.4).equals("BLUE")){
-//                FLICKSERVO(.8);
-//            }
+            arm(.13); // put arm down
+
+            sleep(700);
+            colorid = checkColor(colorFront, currentRatio);
+
+            telemetry.addLine(colorid);
+            telemetry.update();
+
+            if (colorid.equals("RED")){
+                FLICKSERVO(0.8);
+            }
+            else if(checkColor(colorFront,.4).equals("BLUE")){
+                FLICKSERVO(0.2);
+            }
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
@@ -215,14 +215,14 @@ public class april13th_Blue_Far_v2 extends LinearOpMode{
 
             String keyResult = vuMark.toString();
             //hard coded to left
-            keyResult = "LEFT";
+            keyResult = "CENTER";
 
             switch (keyResult) {
                 case "LEFT":
                     telemetry.addLine("robot headed to left position");
                     telemetry.update();
 
-                    strafeWithEncoder(0.6, 34);
+                    strafeWithEncoder(0.5, 50);
                     turnRightDegrees(179.5, parameters);
                     //put down intake here
                     leftPush.setPosition(.55);

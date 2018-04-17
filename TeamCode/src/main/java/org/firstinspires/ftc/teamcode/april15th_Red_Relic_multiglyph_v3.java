@@ -212,7 +212,7 @@ public class april15th_Red_Relic_multiglyph_v3 extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "LEFT";
+            keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
@@ -304,10 +304,6 @@ public class april15th_Red_Relic_multiglyph_v3 extends LinearOpMode{
                 telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 
-
-                telemetry.addLine("I dont rly know what i am doing i am having an existentialist crisis");
-                telemetry.update();
-
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
                 turnRightDegrees(50, parameters);
@@ -344,20 +340,57 @@ public class april15th_Red_Relic_multiglyph_v3 extends LinearOpMode{
 
                 straightWithEncoder(.45,3);
 
+                //multiglyph starts here
 
-            }else if (keyResult == "RIGHT"){
+                turnRightDegrees(25, parameters);
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+                //go in the piles
+                straightWithEncoder(0.7, 18);
+
+                //go out and in the piles again
+                straightWithEncoder(0.7, -5);
+//                turnLeftDegress(6, parameters);
+                turnRightDegrees(25, parameters);
+                straightWithEncoder(0.7, 7);
+               turnLeftDegress(15, parameters);
+                straightWithEncoder(.7, -10);
+
+                intake(lBelt, rBelt, "OFF");
+//                turnRightDegrees(25, parameters);
+                leftDump.setPosition(.61);
+                straightWithEncoder(0.8, -7);
+//                sleep(500);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(1100);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.7, -6);
+
+                straightWithEncoder(.7, 3);
+
+                straightWithEncoder(.7,-4);
+
+                straightWithEncoder(.7,3);
+
+
+
+            }else if (keyResult == "RIGHT") {
 
                 telemetry.addLine("I'm going right");
                 telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(200);
-                straightWithEncoder(.3, 6);
-                sleep(200);
-                straightWithEncoder(.5, -20);
-                sleep(200);
-                turnRightDegrees(114, parameters);
-                sleep(200);
+
+                straightWithEncoder(.55, -40);
+                leftDump.setPosition(.61);
+                turnRightDegrees(100, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -366,52 +399,74 @@ public class april15th_Red_Relic_multiglyph_v3 extends LinearOpMode{
                 rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-
-                sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
                 //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
 
-                sleep(200);
-                leftDump.setPosition(.47);
-                straightWithEncoder(.3, -7);
+                straightWithEncoder(.6, -1);
 
-                sleep(700);
+//                sleep(200);
 
                 centerDump.setPosition(.8);
                 leftDump.setPosition(.18);
 
                 sleep(700);
 
-                leftDump.setPosition(0.45);
-                sleep(300);
+                leftDump.setPosition(0.71);
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.3, -10);
-                sleep(300);
-                straightWithEncoder(.3, 3);
-                sleep(200);
-                straightWithEncoder(.3,-4);
-                sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.65, -10);
+
+                straightWithEncoder(.65, 3);
+
+                straightWithEncoder(.65, -4);
+
+                straightWithEncoder(.65, 3);
 
 
+                //multiglyph start here
+                straightWithEncoder(.65, 2);
+                turnLeftDegress(19, parameters);
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+                //go in the piles
+                straightWithEncoder(0.7, 18
+                );
+
+                //go out and in the piles again
+                straightWithEncoder(0.7, -5);
+//                turnLeftDegress(6, parameters);
+                turnLeftDegress(25, parameters);
+                straightWithEncoder(0.7, 7);
+//                turnRightDegrees(6, parameters);
+
+
+                //leave the piles and dump
+                straightWithEncoder(0.8, -8);
+                intake(lBelt, rBelt, "OFF");
+//                turnRightDegrees(25, parameters);
+                leftDump.setPosition(.61);
+                straightWithEncoder(0.8, -9);
+//                sleep(500);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(1100);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.7, -6);
+
+                straightWithEncoder(.7, 3);
+
+                straightWithEncoder(.7, -4);
+
+                straightWithEncoder(.7, 3);
             }
 
             else

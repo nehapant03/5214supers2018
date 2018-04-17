@@ -161,7 +161,7 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
         FLICKSERVO.setPosition(.5);
         centerDump.setPosition(.33);
         colorServo.setPosition(.67);
-       // leftDump.setPosition(.61);
+        // leftDump.setPosition(.61);
 
         leftPush.setPosition(.5);
         rightPush.setPosition(.5);
@@ -347,16 +347,13 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
 
             {
 
-                //POSITION TO DUMP
+                telemetry.addLine("I'm going in the middle");
+                telemetry.update();
 
-                straightWithEncoder(.3, -24);
-                sleep(300);
-                straightWithEncoder(.3, 6);
-                sleep(300);
-                straightWithEncoder(.3, -11);
-                sleep(300);
-                turnRightDegrees(60, parameters);
-                sleep(300);
+
+                straightWithEncoder(.5, -24);
+                leftDump.setPosition(.61);
+                turnRightDegrees(53, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -365,50 +362,30 @@ public class HOUSTON_Red_Relic_85pts_0415 extends LinearOpMode{
                 rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                leftBack.setPower(1);
-                leftFront.setPower(1);
-                rightBack.setPower(1);
-                rightFront.setPower(1);
-
-                sleep(100);
-
-                leftBack.setPower(-1);
-                leftFront.setPower(-1);
-                rightBack.setPower(-1);
-                rightFront.setPower(-1);
-
-                sleep(100);
-
-                leftBack.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                rightFront.setPower(0);
-
                 //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+                leftPush.setPosition(.5);
+                rightPush.setPosition(.5);
+
+                straightWithEncoder(.5, -1);
 
                 sleep(200);
-                leftDump.setPosition(.47);
-                straightWithEncoder(.3, -7);
-
-                sleep(700);
 
                 centerDump.setPosition(.8);
                 leftDump.setPosition(.18);
 
                 sleep(700);
 
-                leftDump.setPosition(0.45);
-                sleep(300);
+                leftDump.setPosition(0.71);
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.3, -6);
-                sleep(300);
-                straightWithEncoder(.3, 3);
-                sleep(200);
-                straightWithEncoder(.3,-4);
-                sleep(100);
-                straightWithEncoder(.3,3);
+                straightWithEncoder(.5, -10);
+
+                straightWithEncoder(.45, 3);
+
+                straightWithEncoder(.45,-4);
+
+                straightWithEncoder(.45,3);
             }
 
 

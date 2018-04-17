@@ -1,4 +1,4 @@
-#Sun Apr 15 19:36:01 PDT 2018
+#Mon Apr 16 19:13:35 PDT 2018
 base.0=/Users/William/Developer/AndroidApplication/5214supers2018/TeamCode/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

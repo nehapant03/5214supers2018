@@ -71,7 +71,9 @@ public class HOUSTON_Manual_v5 extends LinearOpMode {
 
 
         FLICKSERVO.setPosition(.5);
-        colorServo.setPosition(.67);
+        //
+        colorServo.setPosition(.68);
+        //
 
         waitForStart();
 

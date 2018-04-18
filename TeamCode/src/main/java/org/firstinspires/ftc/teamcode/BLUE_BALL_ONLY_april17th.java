@@ -161,7 +161,8 @@ public class BLUE_BALL_ONLY_april17th extends LinearOpMode{
 
         FLICKSERVO.setPosition(.5);
         centerDump.setPosition(.33);
-        colorServo.setPosition(.67);
+
+        colorServo.setPosition(.68);
         // leftDump.setPosition(.61);
 
         leftPush.setPosition(.5);
@@ -187,11 +188,11 @@ public class BLUE_BALL_ONLY_april17th extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.13); // put arm down
+            arm(.15); // put arm down
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
 
-            sleep(700);
+            sleep(2700);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
@@ -202,12 +203,12 @@ public class BLUE_BALL_ONLY_april17th extends LinearOpMode{
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
-            arm(.67); // put arm up
+            arm(.68); // put arm up
             wrist.setPosition(1);
             leftPush.setPosition(.55);
             rightPush.setPosition(.55);
 
-            sleep(200);
+            sleep(5000);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());

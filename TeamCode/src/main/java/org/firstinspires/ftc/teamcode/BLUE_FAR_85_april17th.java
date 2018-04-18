@@ -159,7 +159,11 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         FLICKSERVO.setPosition(.5);
-        colorServo.setPosition(.67);
+
+        //
+        colorServo.setPosition(.68);
+        //
+
         centerDump.setPosition(.33);
 
         // leftDump.setPosition(.61);
@@ -192,9 +196,11 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            arm(.13); // put arm down
+            //
+            arm(.15); // put arm down
+            //
 
-            sleep(700);
+            sleep(1100);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
@@ -209,7 +215,9 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
-            arm(.67); // put arm up
+            //
+            arm(.68); // put arm up
+            //
             wrist.setPosition(1);
 
 

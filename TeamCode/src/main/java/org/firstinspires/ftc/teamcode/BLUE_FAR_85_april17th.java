@@ -25,9 +25,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="april9th_Blue_Far_v1", group="Team5214")
+@Autonomous(name="BLUE_FAR_85_april17th", group="Team5214")
 //@Disabled
-public class april9th_Blue_Far_v1 extends LinearOpMode{
+public class BLUE_FAR_85_april17th extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -167,6 +167,11 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
         leftPush.setPosition(.5);
         rightPush.setPosition(.5);
 
+        //preview program
+//        RelicRecoveryVuMark vuMarkPreview = RelicRecoveryVuMark.from(relicTemplate);
+//        telemetry.addLine(vuMarkPreview.toString());
+//        telemetry.update();
+
         composeTelemetry();
 
         //testMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -187,20 +192,20 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-//            arm(.13); // put arm down
-//
-//            sleep(700);
-//            colorid = checkColor(colorFront, currentRatio);
-//
-//            telemetry.addLine(colorid);
-//            telemetry.update();
-//
-//            if (colorid.equals("RED")){
-//                FLICKSERVO(0.2);
-//            }
-//            else if(checkColor(colorFront,.4).equals("BLUE")){
-//                FLICKSERVO(.8);
-//            }
+            arm(.13); // put arm down
+
+            sleep(700);
+            colorid = checkColor(colorFront, currentRatio);
+
+            telemetry.addLine(colorid);
+            telemetry.update();
+
+            if (colorid.equals("RED")){
+                FLICKSERVO(0.8);
+            }
+            else if(checkColor(colorFront,.4).equals("BLUE")){
+                FLICKSERVO(0.2);
+            }
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
@@ -215,26 +220,34 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
 
             String keyResult = vuMark.toString();
             //hard coded to left
-            keyResult = "LEFT";
+             keyResult = "RIGHT";
 
             switch (keyResult) {
                 case "LEFT":
                     telemetry.addLine("robot headed to left position");
                     telemetry.update();
 
-                    strafeWithEncoder(0.6, 34);
-                    turnRightDegrees(179.5, parameters);
-                    //put down intake here
+                    straightWithEncoder(0.5, 20);
+                    straightWithEncoder(0.4, -3);
+                    straightWithEncoder(0.4, 2);
+
+                    turnRightDegrees(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.5, -15);
+                    straightWithEncoder(0.6, 25);
+
+                    turnRightDegrees(90, parameters);
+                    //put down intake here
+
+
+                    straightWithEncoder(0.5, 10);
                     leftDump.setPosition(.61);
-                    turnLeftDegress(34, parameters);
+                    turnLeftDegress(37, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -19);
+                    straightWithEncoder(0.6, -16);
                     sleep(300);
 
                     //dump
@@ -255,24 +268,29 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
                 case "CENTER":
                     telemetry.addLine("robot headed to centre position");
                     telemetry.update();
+                    straightWithEncoder(0.5, 20);
+                    straightWithEncoder(0.4, -3);
+                    straightWithEncoder(0.4, 2);
 
-                    strafeWithEncoder(0.6, 34);
-                    turnRightDegrees(179.5, parameters);
-                    //put down intake here
+                    turnRightDegrees(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.5, -15);
+                    straightWithEncoder(0.6, 28);
+
+                    turnRightDegrees(90, parameters);
+                    //put down intake here
+
+                    straightWithEncoder(0.5, 2);
                     leftDump.setPosition(.61);
-                    turnLeftDegress(21, parameters);
+                    turnLeftDegress(38, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-
-                    straightWithEncoder(0.6, -17);
+                    straightWithEncoder(0.6, -10);
                     sleep(300);
 
-
+                    //dump
                     centerDump.setPosition(.8);
                     leftDump.setPosition(.18);
 
@@ -282,35 +300,38 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
                     leftDump.setPosition(0.71);
 
                     //push cube
-                    straightWithEncoder(0.6, -7);
-                    straightWithEncoder(0.6, 4);
-                    straightWithEncoder(0.6, -5);
-                    straightWithEncoder(0.6, 5);
+                    straightWithEncoder(0.65, -7);
+                    straightWithEncoder(0.65, 4);
+                    straightWithEncoder(0.65, -5);
+                    straightWithEncoder(0.65, 5);
                     break;
                 case "RIGHT":
                     telemetry.addLine("robot headed to right position");
                     telemetry.update();
 
+                    straightWithEncoder(0.5, 20);
+                    straightWithEncoder(0.4, -3);
+                    straightWithEncoder(0.4, 2);
 
-                    strafeWithEncoder(0.6, 34);
-                    turnRightDegrees(179.5, parameters);
-                    //put down intake here
+                    turnRightDegrees(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.5, -15);
-                    leftDump.setPosition(.61);
+                    straightWithEncoder(0.6, 28);
 
-                    //test this number
-                    turnLeftDegress(11, parameters);
+                    turnRightDegrees(90, parameters);
+                    //put down intake here
+
+                    straightWithEncoder(0.5, 5);
+                    leftDump.setPosition(.61);
+                    turnLeftDegress(18, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-
-                    straightWithEncoder(0.6, -17);
+                    straightWithEncoder(0.6, -6);
                     sleep(300);
 
-
+                    //dump
                     centerDump.setPosition(.8);
                     leftDump.setPosition(.18);
 
@@ -320,32 +341,39 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
                     leftDump.setPosition(0.71);
 
                     //push cube
-                    straightWithEncoder(0.6, -7);
-                    straightWithEncoder(0.6, 4);
-                    straightWithEncoder(0.6, -5);
-                    straightWithEncoder(0.6, 5);
+                    straightWithEncoder(0.65, -7);
+                    straightWithEncoder(0.65, 4);
+                    straightWithEncoder(0.65, -5);
+                    straightWithEncoder(0.65, 6);
                     break;
                 default:
-                    telemetry.addLine("boi i dont get a reading so i guess i am going to the centre position");
+                    telemetry.addLine("boi i dont get a reading so i guess i am going to the left position");
                     telemetry.update();
 
-                    strafeWithEncoder(0.6, 34);
-                    turnRightDegrees(179.5, parameters);
-                    //put down intake here
+                    straightWithEncoder(0.5, 20);
+                    straightWithEncoder(0.4, -3);
+                    straightWithEncoder(0.4, 2);
+
+                    turnRightDegrees(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.5, -15);
+                    straightWithEncoder(0.6, 25);
+
+                    turnRightDegrees(90, parameters);
+                    //put down intake here
+
+
+                    straightWithEncoder(0.5, 10);
                     leftDump.setPosition(.61);
-                    turnLeftDegress(21, parameters);
+                    turnLeftDegress(37, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-
-                    straightWithEncoder(0.6, -17);
+                    straightWithEncoder(0.6, -16);
                     sleep(300);
 
-
+                    //dump
                     centerDump.setPosition(.8);
                     leftDump.setPosition(.18);
 
@@ -355,10 +383,10 @@ public class april9th_Blue_Far_v1 extends LinearOpMode{
                     leftDump.setPosition(0.71);
 
                     //push cube
-                    straightWithEncoder(0.6, -7);
-                    straightWithEncoder(0.6, 4);
-                    straightWithEncoder(0.6, -5);
-                    straightWithEncoder(0.6, 5);
+                    straightWithEncoder(0.65, -7);
+                    straightWithEncoder(0.65, 4);
+                    straightWithEncoder(0.65, -5);
+                    straightWithEncoder(0.65, 5);
             }
 
             telemetry.update();

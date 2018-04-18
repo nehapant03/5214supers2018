@@ -401,7 +401,7 @@ public class BLUE_RELIC_85_april17th extends LinearOpMode{
 
             }
 
-            else //this is the centere but its also the else if we cant get a reading
+            else //this is the centre but its also the else if we cant get a reading
 
             {
 

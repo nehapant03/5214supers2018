@@ -228,7 +228,7 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
 
             String keyResult = vuMark.toString();
             //hard coded to left
-             keyResult = "RIGHT";
+            // keyResult = "RIGHT";
 
             switch (keyResult) {
                 case "LEFT":
@@ -271,7 +271,7 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     straightWithEncoder(0.65, -7);
                     straightWithEncoder(0.65, 4);
                     straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 5);
+                    straightWithEncoder(0.65, 3);
                     break;
                 case "CENTER":
                     telemetry.addLine("robot headed to centre position");
@@ -311,7 +311,7 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     straightWithEncoder(0.65, -7);
                     straightWithEncoder(0.65, 4);
                     straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 5);
+                    straightWithEncoder(0.65, 3);
                     break;
                 case "RIGHT":
                     telemetry.addLine("robot headed to right position");
@@ -332,7 +332,7 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
 
                     straightWithEncoder(0.5, 5);
                     leftDump.setPosition(.61);
-                    turnLeftDegress(18, parameters);
+                    turnLeftDegress(13, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
@@ -352,10 +352,10 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     straightWithEncoder(0.65, -7);
                     straightWithEncoder(0.65, 4);
                     straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 6);
+                    straightWithEncoder(0.65, 3);
                     break;
                 default:
-                    telemetry.addLine("boi i dont get a reading so i guess i am going to the left position");
+                    telemetry.addLine("boi i don't get a reading so i guess i am going to the left position");
                     telemetry.update();
 
                     straightWithEncoder(0.5, 20);
@@ -394,7 +394,8 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     straightWithEncoder(0.65, -7);
                     straightWithEncoder(0.65, 4);
                     straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 5);
+                    straightWithEncoder(0.65, 3);
+                    break;
             }
 
             telemetry.update();

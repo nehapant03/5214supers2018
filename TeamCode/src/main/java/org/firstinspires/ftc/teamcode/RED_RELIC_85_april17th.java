@@ -212,7 +212,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "RIGHT";
+//            keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
@@ -346,7 +346,6 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
             else
 
             {
-
                 telemetry.addLine("I'm going in the middle");
                 telemetry.update();
 

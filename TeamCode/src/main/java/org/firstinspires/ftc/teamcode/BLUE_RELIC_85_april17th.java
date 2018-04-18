@@ -207,7 +207,7 @@ public class BLUE_RELIC_85_april17th extends LinearOpMode{
             leftPush.setPosition(.55);
             rightPush.setPosition(.55);
 
-            sleep(200);
+            sleep(1500);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());

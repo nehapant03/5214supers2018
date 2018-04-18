@@ -205,7 +205,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
             rightPush.setPosition(.55);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(200);
+            sleep(1500);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());

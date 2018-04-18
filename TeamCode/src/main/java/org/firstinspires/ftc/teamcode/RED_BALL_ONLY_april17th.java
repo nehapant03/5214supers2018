@@ -25,9 +25,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="BLUE_FAR_85_april17th", group="Team5214")
+@Autonomous(name="RED_BALL_ONLY_april17th", group="Team5214")
 //@Disabled
-public class BLUE_FAR_85_april17th extends LinearOpMode{
+
+public class RED_BALL_ONLY_april17th extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -159,18 +160,12 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         FLICKSERVO.setPosition(.5);
-        colorServo.setPosition(.67);
         centerDump.setPosition(.33);
-
+        colorServo.setPosition(.67);
         // leftDump.setPosition(.61);
 
         leftPush.setPosition(.5);
         rightPush.setPosition(.5);
-
-        //preview program
-//        RelicRecoveryVuMark vuMarkPreview = RelicRecoveryVuMark.from(relicTemplate);
-//        telemetry.addLine(vuMarkPreview.toString());
-//        telemetry.update();
 
         composeTelemetry();
 
@@ -193,6 +188,8 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
         while (opModeIsActive()) {
 
             arm(.13); // put arm down
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
 
             sleep(700);
             colorid = checkColor(colorFront, currentRatio);
@@ -200,207 +197,27 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
             telemetry.addLine(colorid);
             telemetry.update();
 
-            if (colorid.equals("RED")){
-                FLICKSERVO(0.8);
-            }
-            else if(checkColor(colorFront,.4).equals("BLUE")){
-                FLICKSERVO(0.2);
-            }
+            if (colorid == "BLUE"){FLICKSERVO(0.8);
+            }else if(checkColor(colorFront,.4) == "RED"){FLICKSERVO(.2);}
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
             arm(.67); // put arm up
             wrist.setPosition(1);
+            leftPush.setPosition(.55);
+            rightPush.setPosition(.55);
 
-
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(1500);
+            sleep(200);
+//            leftPush.setPosition(.5);
+//            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
-            String keyResult = vuMark.toString();
-            //hard coded to left
-             keyResult = "RIGHT";
-
-            switch (keyResult) {
-                case "LEFT":
-                    telemetry.addLine("robot headed to left position");
-                    telemetry.update();
-
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
-
-                    turnRightDegrees(90, parameters);
-                    leftPush.setPosition(.55);
-                    rightPush.setPosition(.55);
-
-                    straightWithEncoder(0.6, 25);
-
-                    turnRightDegrees(90, parameters);
-                    //put down intake here
-
-
-                    straightWithEncoder(0.5, 10);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(37, parameters);
-
-                    leftPush.setPosition(.5);
-                    rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -16);
-                    sleep(300);
-
-                    //dump
-                    centerDump.setPosition(.8);
-                    leftDump.setPosition(.18);
-
-
-                    sleep(700);
-
-                    leftDump.setPosition(0.71);
-
-                    //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 5);
-                    break;
-                case "CENTER":
-                    telemetry.addLine("robot headed to centre position");
-                    telemetry.update();
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
-
-                    turnRightDegrees(90, parameters);
-                    leftPush.setPosition(.55);
-                    rightPush.setPosition(.55);
-
-                    straightWithEncoder(0.6, 28);
-
-                    turnRightDegrees(90, parameters);
-                    //put down intake here
-
-                    straightWithEncoder(0.5, 2);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(38, parameters);
-
-                    leftPush.setPosition(.5);
-                    rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -10);
-                    sleep(300);
-
-                    //dump
-                    centerDump.setPosition(.8);
-                    leftDump.setPosition(.18);
-
-
-                    sleep(700);
-
-                    leftDump.setPosition(0.71);
-
-                    //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 5);
-                    break;
-                case "RIGHT":
-                    telemetry.addLine("robot headed to right position");
-                    telemetry.update();
-
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
-
-                    turnRightDegrees(90, parameters);
-                    leftPush.setPosition(.55);
-                    rightPush.setPosition(.55);
-
-                    straightWithEncoder(0.6, 28);
-
-                    turnRightDegrees(90, parameters);
-                    //put down intake here
-
-                    straightWithEncoder(0.5, 5);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(18, parameters);
-
-                    leftPush.setPosition(.5);
-                    rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -6);
-                    sleep(300);
-
-                    //dump
-                    centerDump.setPosition(.8);
-                    leftDump.setPosition(.18);
-
-
-                    sleep(700);
-
-                    leftDump.setPosition(0.71);
-
-                    //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 6);
-                    break;
-                default:
-                    telemetry.addLine("boi i dont get a reading so i guess i am going to the left position");
-                    telemetry.update();
-
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
-
-                    turnRightDegrees(90, parameters);
-                    leftPush.setPosition(.55);
-                    rightPush.setPosition(.55);
-
-                    straightWithEncoder(0.6, 25);
-
-                    turnRightDegrees(90, parameters);
-                    //put down intake here
-
-
-                    straightWithEncoder(0.5, 10);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(37, parameters);
-
-                    leftPush.setPosition(.5);
-                    rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -16);
-                    sleep(300);
-
-                    //dump
-                    centerDump.setPosition(.8);
-                    leftDump.setPosition(.18);
-
-
-                    sleep(700);
-
-                    leftDump.setPosition(0.71);
-
-                    //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 5);
-            }
-
-            telemetry.update();
-
-            leftBack.setPower(0);
-            rightBack.setPower(0);
-            leftFront.setPower(0);
-            rightFront.setPower(0);
 
             leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
 
             idle();
             break;

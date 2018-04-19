@@ -87,9 +87,9 @@ public class HOUSTON_Manual_v6 extends LinearOpMode {
             //game pad one cotrls
 
             if(elevatorDown == true) {
-                if (gamepad1.dpad_up) {
-                    lBelt.setPower(-1);
-                    rBelt.setPower(1);
+                if (gamepad1.dpad_down) {
+                    lBelt.setPower(1);
+                    rBelt.setPower(-1);
                 }
                 if (gamepad1.dpad_left) {
                     lBelt.setPower(0.5);
@@ -97,9 +97,9 @@ public class HOUSTON_Manual_v6 extends LinearOpMode {
                 }
             }
 
-                if (gamepad1.dpad_down) {
-                    lBelt.setPower(1);
-                    rBelt.setPower(-1);
+                if (gamepad1.dpad_up) {
+                    lBelt.setPower(-1);
+                    rBelt.setPower(1);
                 }
                 if (gamepad1.dpad_right) {
                     lBelt.setPower(0);

@@ -212,7 +212,7 @@ public class HOUSTON_Manual_v5 extends LinearOpMode {
 
             if(gamepad2.dpad_right){relicMotor.setPower(-.5); }
 
-            else if(gamepad2.dpad_left) {relicMotor.setPower(.6);}
+            else if(gamepad2.dpad_left) {relicMotor.setPower(.25);}
 
 //            else if(gamepad2.dpad_down){motorWithEncoder(relicMotor,1,20);
 //            }

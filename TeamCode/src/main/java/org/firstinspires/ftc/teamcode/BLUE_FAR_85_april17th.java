@@ -321,23 +321,18 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     straightWithEncoder(0.4, -3);
                     straightWithEncoder(0.4, 2);
 
-                    turnRightDegrees(90, parameters);
+                    turnLeftDegress(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.6, 28);
+                    straightWithEncoder(0.6, -12);
 
-                    turnRightDegrees(90, parameters);
+                    turnLeftDegress(45, parameters);
                     //put down intake here
 
-                    straightWithEncoder(0.5, 5);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(13, parameters);
 
-                    leftPush.setPosition(.5);
-                    rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -6);
-                    sleep(300);
+                    leftDump.setPosition(.61);
+
 
                     //dump
                     centerDump.setPosition(.8);
@@ -345,17 +340,16 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
 
 
                     sleep(700);
-
                     leftDump.setPosition(0.71);
 
-                    //push cube
+//                    //push cube
                     straightWithEncoder(0.65, -7);
                     straightWithEncoder(0.65, 4);
                     straightWithEncoder(0.65, -5);
                     straightWithEncoder(0.65, 3);
                     break;
                 default:
-                    telemetry.addLine("boi i don't get a reading so i guess i am going to the left position");
+                    telemetry.addLine("boi i don't get a reading so i guess i am going to the centre position");
                     telemetry.update();
 
                     straightWithEncoder(0.5, 20);
@@ -366,19 +360,18 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.6, 25);
+                    straightWithEncoder(0.6, 28);
 
                     turnRightDegrees(90, parameters);
                     //put down intake here
 
-
-                    straightWithEncoder(0.5, 10);
+                    straightWithEncoder(0.5, 2);
                     leftDump.setPosition(.61);
-                    turnLeftDegress(37, parameters);
+                    turnLeftDegress(38, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -16);
+                    straightWithEncoder(0.6, -10);
                     sleep(300);
 
                     //dump

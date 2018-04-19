@@ -187,10 +187,8 @@ public class BLUE_RELIC_85_april19th extends LinearOpMode{
         while (opModeIsActive()) {
 
             arm(.13); // put arm down
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-
-            sleep(700);
+            sleep(1100);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
@@ -206,7 +204,9 @@ public class BLUE_RELIC_85_april19th extends LinearOpMode{
             leftPush.setPosition(.55);
             rightPush.setPosition(.55);
 
-            sleep(200);
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+            sleep(1500);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());
@@ -214,7 +214,7 @@ public class BLUE_RELIC_85_april19th extends LinearOpMode{
 
             String keyResult;
             keyResult = vuMark.toString();
-            keyResult = "RIGHT";
+            //keyResult = "CENTER";
 
 
             if(keyResult == "LEFT"){
@@ -352,46 +352,46 @@ public class BLUE_RELIC_85_april19th extends LinearOpMode{
                 centerDump.setPosition(.33);
 
 
-                //multiglyphh
-
-                //turns to face the pile
-                turnLeftDegress(20,parameters);
-                //turns on intake
-                intake(lBelt,rBelt,"IN");
-                //goes into pile
-                straightWithEncoder(.6,15);
-                //tries to not get a 3rd cube
-                intake(lBelt,rBelt,"OUT");
-                //turns to face the box, the left coloum
-                turnLeftDegress(45,parameters);
-                //goes to the box
-                straightWithEncoder(.6,15);
-
-                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
-
-                sleep(200);
-                leftDump.setPosition(.61);
-                straightWithEncoder(.6, -7);
-
-                sleep(700);
-
-                centerDump.setPosition(.8);
-                leftDump.setPosition(.18);
-
-                sleep(700);
-
-                leftDump.setPosition(0.45);
-                sleep(300);
-
-                //PUSHES THE CUBE AND PARKS
-
-                straightWithEncoder(.6, -10);
-                sleep(300);
-                straightWithEncoder(.6, 3);
-                sleep(200);
-                straightWithEncoder(.6,-4);
-                sleep(100);
-                straightWithEncoder(.6,3);
+//                //multiglyphh
+//
+//                //turns to face the pile
+//                turnLeftDegress(20,parameters);
+//                //turns on intake
+//                intake(lBelt,rBelt,"IN");
+//                //goes into pile
+//                straightWithEncoder(.6,15);
+//                //tries to not get a 3rd cube
+//                intake(lBelt,rBelt,"OUT");
+//                //turns to face the box, the left coloum
+//                turnLeftDegress(45,parameters);
+//                //goes to the box
+//                straightWithEncoder(.6,15);
+//
+//                //POSITIONS THE ROBOT AND SERVO TO DUMP AND RETRACT THE DUMPER AFTER
+//
+//                sleep(200);
+//                leftDump.setPosition(.61);
+//                straightWithEncoder(.6, -7);
+//
+//                sleep(700);
+//
+//                centerDump.setPosition(.8);
+//                leftDump.setPosition(.18);
+//
+//                sleep(700);
+//
+//                leftDump.setPosition(0.45);
+//                sleep(300);
+//
+//                //PUSHES THE CUBE AND PARKS
+//
+//                straightWithEncoder(.6, -10);
+//                sleep(300);
+//                straightWithEncoder(.6, 3);
+//                sleep(200);
+//                straightWithEncoder(.6,-4);
+//                sleep(100);
+//                straightWithEncoder(.6,3);
 
             }
 

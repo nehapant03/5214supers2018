@@ -212,7 +212,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
             telemetry.update();
 
             String keyResult = vuMark.toString();
-//            keyResult = "RIGHT";
+            keyResult = "RIGHT";
 
             if(keyResult == "LEFT"){
 
@@ -305,9 +305,9 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
                 telemetry.update();
 
 
-                straightWithEncoder(.5, -17);
+                straightWithEncoder(.5, -35);
                 leftDump.setPosition(.61);
-                turnRightDegrees(70, parameters);
+                turnRightDegrees(100, parameters);
 
                 //DROP THE INTAKE RAMP
 

@@ -358,14 +358,14 @@ public class BLUE_RELIC_85_april17th extends LinearOpMode{
                 telemetry.addLine("I'm going right");
                 telemetry.update();
 
-                straightWithEncoder(.3, 24);
+                straightWithEncoder(.3, 30);
                 sleep(200);
-                strafeWithEncoder(.3,10);
+//                strafeWithEncoder(.3,10);
+//                sleep(200);
+                turnRightDegrees(125, parameters);
                 sleep(200);
-                turnRightDegrees(120, parameters);
-                sleep(200);
-                strafeWithEncoder(.3,-7);
-                sleep(200);
+//                strafeWithEncoder(.3,-7);
+//                sleep(200);
 
 
                 leftPush.setPosition(.5);
@@ -409,13 +409,13 @@ public class BLUE_RELIC_85_april17th extends LinearOpMode{
 
                 telemetry.update();
 
-                straightWithEncoder(.3, 24);
+                straightWithEncoder(.3, 22);
                 sleep(200);
                 leftPush.setPosition(.5);
                 rightPush.setPosition(.5);
-                strafeWithEncoder(.3,10);
-                sleep(200);
-                turnRightDegrees(120, parameters);
+//                strafeWithEncoder(.3,10);
+//                sleep(200);
+                turnRightDegrees(119, parameters);
                 sleep(200);
 
 

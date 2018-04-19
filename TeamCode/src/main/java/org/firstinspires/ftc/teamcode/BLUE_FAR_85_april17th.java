@@ -200,17 +200,27 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
             arm(.15); // put arm down
             //
 
-            sleep(1100);
+            sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
             telemetry.update();
 
+//            if (colorid.equals("RED")){
+//                FLICKSERVO(0.8);
+//            }
+//            else if(checkColor(colorFront,.4).equals("BLUE")){
+//                FLICKSERVO(0.2);
+//            }
+
+
+            //uses thje sleeps to slow down the flicker
             if (colorid.equals("RED")){
-                FLICKSERVO(0.8);
+                FLICKSERVO(0.75);
             }
             else if(checkColor(colorFront,.4).equals("BLUE")){
-                FLICKSERVO(0.2);
+                FLICKSERVO(0.25);
+
             }
 
             sleep(300);
@@ -222,13 +232,13 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
 
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(1500);
+            sleep(1200);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
             String keyResult = vuMark.toString();
             //hard coded to left
-            // keyResult = "RIGHT";
+//             keyResult = "LEFT";
 
             switch (keyResult) {
                 case "LEFT":
@@ -236,26 +246,66 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     telemetry.update();
 
                     straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
+//                    straightWithEncoder(0.4, -3);
+//                    straightWithEncoder(0.4, 2);
+
+                    turnRightDegrees(90, parameters);
+                    leftPush.setPosition(.55);
+                    rightPush.setPosition(.55);
+
+                    straightWithEncoder(0.6, 23);
+
+                    turnRightDegrees(90, parameters);
+                    //put down intake here
+
+
+                    straightWithEncoder(0.5, 5);
+                    leftDump.setPosition(.61);
+                    turnLeftDegress(42, parameters);
+
+                    leftPush.setPosition(.5);
+                    rightPush.setPosition(.5);
+                    straightWithEncoder(0.6, -12);
+                    sleep(300);
+
+                    //dump
+                    centerDump.setPosition(.8);
+                    leftDump.setPosition(.18);
+
+
+                    sleep(700);
+
+                    leftDump.setPosition(0.71);
+
+                    //push cube
+                    straightWithEncoder(0.65, -7);
+                    straightWithEncoder(0.65, 3);
+                    straightWithEncoder(0.65, -4);
+                    straightWithEncoder(0.65, 3);
+                    break;
+                case "CENTER":
+                    telemetry.addLine("robot headed to centre position");
+                    telemetry.update();
+                    straightWithEncoder(0.3, 20);
+//                    straightWithEncoder(0.4, -3);
+//                    straightWithEncoder(0.4, 2);
 
                     turnRightDegrees(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
                     straightWithEncoder(0.6, 25);
-
-                    turnRightDegrees(90, parameters);
+                    leftDump.setPosition(.61);
+                    turnRightDegrees(49, parameters);
                     //put down intake here
 
-
-                    straightWithEncoder(0.5, 10);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(37, parameters);
+//                    straightWithEncoder(0.5, 2);
+//                    leftDump.setPosition(.61);
+//                    turnLeftDegress(38, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -16);
+                    straightWithEncoder(0.6, -2);
                     sleep(300);
 
                     //dump
@@ -268,110 +318,35 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
                     leftDump.setPosition(0.71);
 
                     //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
+                    straightWithEncoder(0.65, -8);
+                    straightWithEncoder(0.65, 3);
+                    straightWithEncoder(0.65, -4);
                     straightWithEncoder(0.65, 3);
                     break;
-                case "CENTER":
-                    telemetry.addLine("robot headed to centre position");
-                    telemetry.update();
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
-
-                    turnRightDegrees(90, parameters);
-                    leftPush.setPosition(.55);
-                    rightPush.setPosition(.55);
-
-                    straightWithEncoder(0.6, 28);
-
-                    turnRightDegrees(90, parameters);
-                    //put down intake here
-
-                    straightWithEncoder(0.5, 2);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(38, parameters);
-
-                    leftPush.setPosition(.5);
-                    rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -10);
-                    sleep(300);
-
-                    //dump
-                    centerDump.setPosition(.8);
-                    leftDump.setPosition(.18);
-
-
-                    sleep(700);
-
-                    leftDump.setPosition(0.71);
-
-                    //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 3);
-                    break;
-                case "RIGHT":
+                default: //RIGHT and ESLE if we dont get a reading
                     telemetry.addLine("robot headed to right position");
                     telemetry.update();
 
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
-
-                    turnLeftDegress(90, parameters);
-                    leftPush.setPosition(.55);
-                    rightPush.setPosition(.55);
-
-                    straightWithEncoder(0.6, -12);
-
-                    turnLeftDegress(45, parameters);
-                    //put down intake here
-
-
-                    leftDump.setPosition(.61);
-
-
-                    //dump
-                    centerDump.setPosition(.8);
-                    leftDump.setPosition(.18);
-
-
-                    sleep(700);
-                    leftDump.setPosition(0.71);
-
-//                    //push cube
-                    straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
-                    straightWithEncoder(0.65, 3);
-                    break;
-                default:
-                    telemetry.addLine("boi i don't get a reading so i guess i am going to the centre position");
-                    telemetry.update();
-
-                    straightWithEncoder(0.5, 20);
-                    straightWithEncoder(0.4, -3);
-                    straightWithEncoder(0.4, 2);
+                    straightWithEncoder(0.3, 20);
+//                    straightWithEncoder(0.4, -3);
+//                    straightWithEncoder(0.4, 2);
 
                     turnRightDegrees(90, parameters);
                     leftPush.setPosition(.55);
                     rightPush.setPosition(.55);
 
-                    straightWithEncoder(0.6, 28);
-
-                    turnRightDegrees(90, parameters);
+                    straightWithEncoder(0.6, 25);
+                    leftDump.setPosition(.61);
+                    turnRightDegrees(68, parameters);
                     //put down intake here
 
-                    straightWithEncoder(0.5, 2);
-                    leftDump.setPosition(.61);
-                    turnLeftDegress(38, parameters);
+//                    straightWithEncoder(0.5, 2);
+//                    leftDump.setPosition(.61);
+//                    turnLeftDegress(38, parameters);
 
                     leftPush.setPosition(.5);
                     rightPush.setPosition(.5);
-                    straightWithEncoder(0.6, -10);
+                    straightWithEncoder(0.6, -2);
                     sleep(300);
 
                     //dump
@@ -385,8 +360,8 @@ public class BLUE_FAR_85_april17th extends LinearOpMode{
 
                     //push cube
                     straightWithEncoder(0.65, -7);
-                    straightWithEncoder(0.65, 4);
-                    straightWithEncoder(0.65, -5);
+                    straightWithEncoder(0.65, 3);
+                    straightWithEncoder(0.65, -4);
                     straightWithEncoder(0.65, 3);
                     break;
             }

@@ -188,7 +188,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
             arm(.15); // put arm down
 
-            sleep(1100);
+            sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
@@ -206,14 +206,14 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
             rightPush.setPosition(.55);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(1500);
+            sleep(1400);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "CENTER";
+            //keyResult = "CENTER";
 
             if(keyResult == "LEFT"){
 
@@ -250,11 +250,11 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 straightWithEncoder(.5, -10);
 
-                straightWithEncoder(.45, 3);
+                straightWithEncoder(.45, 5);
 
-                straightWithEncoder(.45,-4);
+//                straightWithEncoder(.45,-4);
 
-                straightWithEncoder(.45,3);
+//                straightWithEncoder(.45,3);
 
 
                 //multiglyph start here
@@ -263,7 +263,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 centerDump.setPosition(0.33);
                 //go in the piles
-                straightWithEncoder(0.7, 18);
+                straightWithEncoder(0.7, 17);
 
                 //go out and in the piles again
                 straightWithEncoder(0.7, -5);
@@ -275,29 +275,31 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
 
                 //leave the piles and dump
-                straightWithEncoder(0.8, -8);
+                straightWithEncoder(0.8, -3);
 
 //                turnRightDegrees(25, parameters);
                 leftDump.setPosition(.61);
-                straightWithEncoder(0.8, -3);
+                straightWithEncoder(0.8, -4);
 //                sleep(500);
 
                 centerDump.setPosition(.8);
                 leftDump.setPosition(.18);
 
-                sleep(600);
+//                sleep(600);
 
-                leftDump.setPosition(0.71);
+//                leftDump.setPosition(0.71);
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.7, -2);
+                straightWithEncoder(.7, -4);
 
                 straightWithEncoder(.7, 3);
 
                 straightWithEncoder(.7,-4);
 
-                straightWithEncoder(.7,3);
+                straightWithEncoder(.7,4);
+
+                leftDump.setPosition(0.71);
 
 
             }else if(keyResult == "CENTER"){
@@ -308,7 +310,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
-                turnRightDegrees(53, parameters);
+                turnRightDegrees(55, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -336,11 +338,11 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 straightWithEncoder(.5, -10);
 
-                straightWithEncoder(.45, 3);
+//                straightWithEncoder(.45, 3);
 
-                straightWithEncoder(.45,-4);
+//                straightWithEncoder(.45,-4);
 
-                straightWithEncoder(.45,3);
+                straightWithEncoder(.45,6);
 
                 //multiglyph starts here
 
@@ -349,12 +351,12 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 centerDump.setPosition(0.33);
                 //go in the piles
-                straightWithEncoder(0.7, 18);
+                straightWithEncoder(0.7, 15);
 
                 //go out and in the piles again
                 straightWithEncoder(0.7, -5);
 //                turnLeftDegress(6, parameters);
-                turnRightDegrees(15, parameters);
+                turnRightDegrees(13, parameters);
 
 
                 //straightWithEncoder(0.7, 7);
@@ -362,7 +364,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
 
                 //leave the piles and dump
-                straightWithEncoder(0.8, -8);
+                straightWithEncoder(0.8, -4);
 
                 intake(lBelt, rBelt, "OUT");
                 sleep(500);
@@ -380,13 +382,13 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.7, -2);
+                straightWithEncoder(.7, -7);
 
-                straightWithEncoder(.7, 3);
+                straightWithEncoder(.7, 4);
 
-                straightWithEncoder(.7,-4);
+//                straightWithEncoder(.7,-4);
 
-                straightWithEncoder(.7,3);
+//                straightWithEncoder(.7,3);
 
 
             }else if (keyResult == "RIGHT"){
@@ -425,11 +427,11 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 straightWithEncoder(.5, -10);
 
-                straightWithEncoder(.45, 3);
+//                straightWithEncoder(.45, 3);
 
-                straightWithEncoder(.45,-4);
+//                straightWithEncoder(.45,-4);
 
-                straightWithEncoder(.45,3);
+                straightWithEncoder(.45,5);
 
                 //multiglyph start here
 
@@ -438,7 +440,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 centerDump.setPosition(0.33);
                 //go in the piles
-                straightWithEncoder(0.7, 18);
+                straightWithEncoder(0.7, 19);
 
                 //go out and in the piles again
                 straightWithEncoder(0.7, -5);
@@ -450,7 +452,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
 
                 //leave the piles and dump
-                straightWithEncoder(0.8, -9);
+                straightWithEncoder(0.8, -4);
 
 //                turnRightDegrees(25, parameters);
                 leftDump.setPosition(.61);
@@ -460,19 +462,19 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
                 centerDump.setPosition(.8);
                 leftDump.setPosition(.18);
 
-                sleep(900);
+                sleep(700);
 
                 leftDump.setPosition(0.71);
 
                 //PUSHES THE CUBE AND PARKS
 
-                straightWithEncoder(.7, -2);
+                straightWithEncoder(.7, -8);
 
-                straightWithEncoder(.7, 3);
+                straightWithEncoder(.7, 4);
 
-                straightWithEncoder(.7,-4);
+//                straightWithEncoder(.7,-4);
 
-                straightWithEncoder(.7,3);
+//                straightWithEncoder(.7,3);
 
             }
 
@@ -485,7 +487,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
-                turnRightDegrees(53, parameters);
+                turnRightDegrees(55, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -513,11 +515,58 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
 
                 straightWithEncoder(.5, -10);
 
-                straightWithEncoder(.45, 3);
+//                straightWithEncoder(.45, 3);
 
-                straightWithEncoder(.45,-4);
+//                straightWithEncoder(.45,-4);
 
-                straightWithEncoder(.45,3);
+                straightWithEncoder(.45,6);
+
+                //multiglyph starts here
+
+                turnRightDegrees(19, parameters);
+                intake(lBelt, rBelt, "IN");
+
+                centerDump.setPosition(0.33);
+                //go in the piles
+                straightWithEncoder(0.7, 15);
+
+                //go out and in the piles again
+                straightWithEncoder(0.7, -5);
+//                turnLeftDegress(6, parameters);
+                turnRightDegrees(13, parameters);
+
+
+                //straightWithEncoder(0.7, 7);
+//                turnRightDegrees(6, parameters);
+
+
+                //leave the piles and dump
+                straightWithEncoder(0.8, -4);
+
+                intake(lBelt, rBelt, "OUT");
+                sleep(500);
+//                turnRightDegrees(25, parameters);
+                leftDump.setPosition(.61);
+                straightWithEncoder(0.8, -3);
+//                sleep(500);
+
+                centerDump.setPosition(.8);
+                leftDump.setPosition(.18);
+
+                sleep(600);
+
+                leftDump.setPosition(0.71);
+
+                //PUSHES THE CUBE AND PARKS
+
+                straightWithEncoder(.7, -7);
+
+                straightWithEncoder(.7, 4);
+
+//                straightWithEncoder(.7,-4);
+
+//                straightWithEncoder(.7,3);
+
             }
 
 
@@ -723,7 +772,7 @@ public class RED_RELIC_MULTIGLYPH_april19th extends LinearOpMode{
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.3);
+            turn(.28);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));

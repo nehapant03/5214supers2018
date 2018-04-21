@@ -25,9 +25,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.Locale;
 
-@Autonomous(name="RED_RELIC_85_april17th", group="Team5214")
+@Autonomous(name="RED_RELIC_85_WORLD", group="Team5214")
 //@Disabled
-public class RED_RELIC_85_april17th extends LinearOpMode{
+public class RED_RELIC_85_WORLD extends LinearOpMode{
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftBack;
     private DcMotor rightBack;
@@ -188,7 +188,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
 
             arm(.15); // put arm down
 
-            sleep(1100);
+            sleep(1000);
             colorid = checkColor(colorFront, currentRatio);
 
             telemetry.addLine(colorid);
@@ -199,20 +199,21 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
 
             sleep(300);
             FLICKSERVO.setPosition(.5);
+
             arm(.68); // put arm up
             wrist.setPosition(1);
             leftPush.setPosition(.55);
             rightPush.setPosition(.55);
 
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            sleep(1500);
+            sleep(1400);
 //            leftPush.setPosition(.5);
 //            rightPush.setPosition(.5);
             telemetry.addLine(vuMark.toString());
             telemetry.update();
 
             String keyResult = vuMark.toString();
-            keyResult = "RIGHT";
+            //keyResult = "CENTER";
 
             if(keyResult == "LEFT"){
 
@@ -249,12 +250,57 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
 
                 straightWithEncoder(.5, -10);
 
-                straightWithEncoder(.45, 3);
+                straightWithEncoder(.45, 5);
 
                 straightWithEncoder(.45,-4);
 
                 straightWithEncoder(.45,3);
 
+//
+//                //multiglyph start here
+//                turnRightDegrees(19, parameters);
+//                intake(lBelt, rBelt, "IN");
+//
+//                centerDump.setPosition(0.33);
+//                //go in the piles
+//                straightWithEncoder(0.7, 17);
+//
+//                //go out and in the piles again
+//                straightWithEncoder(0.7, -5);
+////                turnLeftDegress(6, parameters);
+//                turnRightDegrees(25, parameters);
+//                intake(lBelt, rBelt, "OFF");
+//                //straightWithEncoder(0.7, 7);
+////                turnRightDegrees(6, parameters);
+//
+//
+//                //leave the piles and dump
+//                straightWithEncoder(0.8, -3);
+//
+////                turnRightDegrees(25, parameters);
+//                leftDump.setPosition(.61);
+//                straightWithEncoder(0.8, -4);
+////                sleep(500);
+//
+//                centerDump.setPosition(.8);
+//                leftDump.setPosition(.18);
+//
+////                sleep(600);
+//
+////                leftDump.setPosition(0.71);
+//
+//                //PUSHES THE CUBE AND PARKS
+//
+//                straightWithEncoder(.7, -4);
+//
+//                straightWithEncoder(.7, 3);
+//
+//                straightWithEncoder(.7,-4);
+//
+//                straightWithEncoder(.7,4);
+//
+//                leftDump.setPosition(0.71);
+//
 
             }else if(keyResult == "CENTER"){
 
@@ -264,7 +310,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
 
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
-                turnRightDegrees(53, parameters);
+                turnRightDegrees(55, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -297,6 +343,52 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
                 straightWithEncoder(.45,-4);
 
                 straightWithEncoder(.45,3);
+
+                //multiglyph starts here
+//
+//                turnRightDegrees(19, parameters);
+//                intake(lBelt, rBelt, "IN");
+//
+//                centerDump.setPosition(0.33);
+//                //go in the piles
+//                straightWithEncoder(0.7, 15);
+//
+//                //go out and in the piles again
+//                straightWithEncoder(0.7, -5);
+////                turnLeftDegress(6, parameters);
+//                turnRightDegrees(13, parameters);
+//
+//
+//                //straightWithEncoder(0.7, 7);
+////                turnRightDegrees(6, parameters);
+//
+//
+//                //leave the piles and dump
+//                straightWithEncoder(0.8, -4);
+//
+//                intake(lBelt, rBelt, "OUT");
+//                sleep(500);
+////                turnRightDegrees(25, parameters);
+//                leftDump.setPosition(.61);
+//                straightWithEncoder(0.8, -3);
+////                sleep(500);
+//
+//                centerDump.setPosition(.8);
+//                leftDump.setPosition(.18);
+//
+//                sleep(600);
+//
+//                leftDump.setPosition(0.71);
+//
+//                //PUSHES THE CUBE AND PARKS
+//
+//                straightWithEncoder(.7, -7);
+//
+//                straightWithEncoder(.7, 4);
+//
+////                straightWithEncoder(.7,-4);
+//
+////                straightWithEncoder(.7,3);
 
 
             }else if (keyResult == "RIGHT"){
@@ -307,7 +399,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
 
                 straightWithEncoder(.5, -35);
                 leftDump.setPosition(.61);
-                turnRightDegrees(100, parameters);
+                turnRightDegrees(105, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -340,6 +432,49 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
                 straightWithEncoder(.45,-4);
 
                 straightWithEncoder(.45,3);
+
+//                //multiglyph start here
+//
+//                turnLeftDegress(19, parameters);
+//                intake(lBelt, rBelt, "IN");
+//
+//                centerDump.setPosition(0.33);
+//                //go in the piles
+//                straightWithEncoder(0.7, 19);
+//
+//                //go out and in the piles again
+//                straightWithEncoder(0.7, -5);
+////                turnLeftDegress(6, parameters);
+//                turnLeftDegress(13, parameters);
+//                intake(lBelt, rBelt, "OFF");
+//                //straightWithEncoder(0.7, 7);
+////                turnRightDegrees(6, parameters);
+//
+//
+//                //leave the piles and dump
+//                straightWithEncoder(0.8, -4);
+//
+////                turnRightDegrees(25, parameters);
+//                leftDump.setPosition(.61);
+//                straightWithEncoder(0.8, -3);
+////                sleep(500);
+//
+//                centerDump.setPosition(.8);
+//                leftDump.setPosition(.18);
+//
+//                sleep(700);
+//
+//                leftDump.setPosition(0.71);
+//
+//                //PUSHES THE CUBE AND PARKS
+//
+//                straightWithEncoder(.7, -8);
+//
+//                straightWithEncoder(.7, 4);
+//
+////                straightWithEncoder(.7,-4);
+//
+////                straightWithEncoder(.7,3);
 
             }
 
@@ -352,7 +487,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
 
                 straightWithEncoder(.5, -24);
                 leftDump.setPosition(.61);
-                turnRightDegrees(53, parameters);
+                turnRightDegrees(55, parameters);
 
                 //DROP THE INTAKE RAMP
 
@@ -385,6 +520,53 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
                 straightWithEncoder(.45,-4);
 
                 straightWithEncoder(.45,3);
+
+//                //multiglyph starts here
+//
+//                turnRightDegrees(19, parameters);
+//                intake(lBelt, rBelt, "IN");
+//
+//                centerDump.setPosition(0.33);
+//                //go in the piles
+//                straightWithEncoder(0.7, 15);
+//
+//                //go out and in the piles again
+//                straightWithEncoder(0.7, -5);
+////                turnLeftDegress(6, parameters);
+//                turnRightDegrees(13, parameters);
+//
+//
+//                //straightWithEncoder(0.7, 7);
+////                turnRightDegrees(6, parameters);
+//
+//
+//                //leave the piles and dump
+//                straightWithEncoder(0.8, -4);
+//
+//                intake(lBelt, rBelt, "OUT");
+//                sleep(500);
+////                turnRightDegrees(25, parameters);
+//                leftDump.setPosition(.61);
+//                straightWithEncoder(0.8, -3);
+////                sleep(500);
+//
+//                centerDump.setPosition(.8);
+//                leftDump.setPosition(.18);
+//
+//                sleep(600);
+//
+//                leftDump.setPosition(0.71);
+//
+//                //PUSHES THE CUBE AND PARKS
+//
+//                straightWithEncoder(.7, -7);
+//
+//                straightWithEncoder(.7, 4);
+//
+////                straightWithEncoder(.7,-4);
+//
+////                straightWithEncoder(.7,3);
+
             }
 
 
@@ -590,7 +772,7 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
             telemetry.addLine("deg: " + Double.toString(deg));
             telemetry.addLine("current: " + Double.toString(curent));
 
-            turn(.3);
+            turn(.28);
 
             agl   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             curent = Double.parseDouble(formatAngle(agl.angleUnit,agl.firstAngle));
@@ -710,6 +892,28 @@ public class RED_RELIC_85_april17th extends LinearOpMode{
         //cpu will be back working when the loop reaches the target time
         while (System.currentTimeMillis() - initial_time < i) {
 
+        }
+    }
+
+    private void intake(DcMotor leftIntake, DcMotor rightIntake, String status) {
+        leftIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        switch (status) {
+            case "IN":
+                leftIntake.setPower(1);
+                rightIntake.setPower(-1);
+                break;
+            case "OUT":
+                leftIntake.setPower(-1);
+                rightIntake.setPower(1);
+                break;
+            case "OFF":
+                leftIntake.setPower(0);
+                rightIntake.setPower(0);
+                break;
+            default:
+                telemetry.addLine("ehhhhh i think you didnt write the correct status");
+                break;
         }
     }
     private String checkColor(ColorSensor sensor, double ratio) {
